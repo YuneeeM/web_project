@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>노인을 위한 웹 사이트 - 취업게시판 상세</title>
+    <link rel="stylesheet" type="text/css" href="style2.css" />
+  </head>
+  <body>
+    <h1>취업게시판 상세</h1>
+    <div id="post-details"></div>
+
+    <div id="back-button">
+      <button id="back-post"><a href="main_post.html">이전</a></button>
+    </div>
+
+    <div id="delete-button">
+      <button id="delete-post">삭제</button>
+    </div>
+
+    <script>
+      const postDetails = document.querySelector("#post-details");
+      const deleteButton = document.querySelector("#delete-post");
+
+      function renderPostDetails() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const postId = urlParams.get("id");
+
+        const posts = JSON.parse(localStorage.getItem("posts")) || [];
+        const post = posts[postId];
+
+        if (post) {
+          const postElement = document.createElement("div");
+          postElement.innerHTML = `
+            <h2>${post.title}</h2>
+            <p>${post.content}</p>
+          `;
+          postDetails.appendChild(postElement);
+        } else {
+          const errorElement = document.createElement("p");
+          errorElement.textContent = "게시물을 찾을 수 없습니다.";
+          postDetails.appendChild(errorElement);
+        }
+      }
+
+      function deletePost() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const postId = urlParams.get("id");
+
+        const posts = JSON.parse(localStorage.getItem("posts")) || [];
+
+        if (postId >= 0 && postId < posts.length) {
+          posts.splice(postId, 1);
+          localStorage.setItem("posts", JSON.stringify(posts));
+          window.location.href = "main_post.html";
+        }
+      }
+
+      renderPostDetails();
+      deleteButton.addEventListener("click", deletePost);
+    </script>
+  </body>
+</html>

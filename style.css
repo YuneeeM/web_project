@@ -1,0 +1,41 @@
+.location span::before {
+  content:'>';
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  margin-right: 5px;
+  color: #bbb;
+}
+
+.sub-visual-title {
+  margin-bottom: 40px;
+}
+
+.sub-visual-title .visual {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+
+.sub-visual-title .info {
+  display: inline-block;
+  vertical-align: middle;
+  margin-left: 10px; /* 필요한 경우 이미지와 글자 사이의 간격 조정 */
+}
+
+.sub-visual-title .info .title {
+  display: block;
+  margin-bottom: 5px;
+}
+.sub-visual-title .info .txt {
+  display: block;
+}
+
+table caption {
+  overflow: hidden;
+  visibility: hidden;;
+}
+
+.board-list > thead > tr > th {
+  border-bottom: 1px solid #e6e6e6;
+}

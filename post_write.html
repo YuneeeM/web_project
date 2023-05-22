@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" type="text/css" href="style1.css" />
+    <title>노인을 위한 웹 사이트 - 취업게시판 글쓰기</title>
+  </head>
+  <body>
+    <div id="banner_header">
+      <h2>취업 리뷰</h2>
+      <p>취업 성공을 위해 다른 회원들과 소중한 경험을 나누는 공간입니다.</p>
+      <p>작성한 정보를 통해 입사 지원시 유용한 정보를 활용하시기 바랍니다.</p>
+    </div>
+
+    <div id="blank"></div>
+    <!-- 새 게시물 제출 양식 -->
+    <form id="post-form">
+      <label for="title">제목</label>
+      <input type="text" id="title" name="title" />
+      <br />
+      <label for="content">내용</label>
+      <textarea id="content" name="content"></textarea>
+      <br />
+      <button type="submit">등록</button>
+    </form>
+
+    <div id="list">
+      <button id="list-button">목록</button>
+    </div>
+
+    <script>
+      const postForm = document.querySelector("#post-form");
+      const listButton = document.querySelector("#list-button");
+
+      postForm.addEventListener("submit", function (event) {
+        event.preventDefault();
+
+        const titleInput = document.querySelector("#title");
+        const contentInput = document.querySelector("#content");
+
+        const title = titleInput.value;
+        const content = contentInput.value;
+
+        const post = { title, content };
+
+        let posts = JSON.parse(localStorage.getItem("posts")) || [];
+        posts.push(post);
+        localStorage.setItem("posts", JSON.stringify(posts));
+
+        titleInput.value = "";
+        contentInput.value = "";
+      });
+
+      listButton.addEventListener("click", function () {
+        window.location.href = "main_post.html";
+      });
+    </script>
+  </body>
+</html>

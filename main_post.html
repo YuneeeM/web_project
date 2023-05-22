@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>노인을 위한 웹 사이트 - 취업게시판 목록</title>
+  <link rel="stylesheet" type="text/css" href="style.css" />
+</head>
+
+<body>
+
+  <div class="container" id="container" id="contents">
+    <div class="sub-util">
+      <div class="location">
+        <i class="iconset ico-home">홈</i>
+        <span>자유게시판</span>
+        <span><strong>취업 사례 게시판</strong></span>
+      </div>
+    </div>
+    <div class="inner-wrap no-lab">
+      <div id="contents">
+        <section id="contents">
+          <div class="title-util">
+            <h2 class="title">취업 사례 게시판</h2>
+          </div>
+        </section>
+      </div>
+    </div>
+    <div class="sub-visual-title">
+      <div class="visual"><img src="board_post_icon.jpg" width="150px" height="150px" alt></div>
+      <div class="info">
+        <strong class="title">노인 및 노숙인 취업 성공 소식</strong>
+        <span class="txt">취업 사례를 공유합시다!</span>
+      </div>
+    </div>
+    <div class="board-list-count">
+      <p class="count">전체 <strong class="font-lblue">2</strong> 건</p>
+    </div>
+    <div class="table-wrap">
+      <table class="board-list">
+        <caption>노인 노숙인 취업사례 목록</caption>
+        <colgroup>
+          <col style="width: 100px;">
+          <col>
+          <col style="width: 160px;">
+          <col style="width: 140px;">
+          <col style="width: 120px;">
+        </colgroup>
+        <thead>
+          <tr>
+            <th scope="col">번호</th>
+            <th scope="col">제목</th>
+            <th scope="col">작성자</th>
+            <th scope="col">좋아요 수</th>
+            <th scope="col">등록일</th>
+          </tr>
+        </thead>
+      </table>
+    </div>
+
+  </div>
+
+  </div>
+
+
+
+
+  <ul id="post-list"></ul>
+
+  <div id="write-button">
+    <button id="back-write"><a href="post_write.html">글쓰기</a></button>
+  </div>
+
+  <script>
+    const postList = document.querySelector("#post-list");
+
+    function renderPostList() {
+      const posts = JSON.parse(localStorage.getItem("posts")) || [];
+
+      posts.forEach((post, index) => {
+        const listItem = document.createElement("li");
+        listItem.innerHTML = `<a href="post_detail.html?id=${index}">${post.title}</a>`;
+        postList.appendChild(listItem);
+      });
+    }
+
+    renderPostList();
+  </script>
+</body>
+
+</html>
