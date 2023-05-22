@@ -31,6 +31,16 @@
   display: block;
 }
 
+.right-align {
+  display: flex;
+  justify-content: right;
+}
+
+.right-align button {
+  margin-right: 30px;
+  margin-top: 10px; /* 필요한 여백 조정 */
+}
+
 table caption {
   overflow: hidden;
   visibility: hidden;;

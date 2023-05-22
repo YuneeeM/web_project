@@ -7,8 +7,7 @@
 </head>
 
 <body>
-
-  <div class="container" id="container" id="contents">
+  <div class="container" id="container">
     <div class="sub-util">
       <div class="location">
         <i class="iconset ico-home">홈</i>
@@ -23,6 +22,7 @@
             <h2 class="title">취업 사례 게시판</h2>
           </div>
 
+        </section>
       </div>
     </div>
     <div class="sub-visual-title">
@@ -34,6 +34,7 @@
     </div>
     <div class="board-list-count">
       <p class="count">전체 <strong class="font-lblue">2</strong> 건</p>
+
     </div>
     <div class="table-wrap">
       <table class="board-list">
@@ -54,51 +55,93 @@
             <th scope="col">등록일</th>
           </tr>
         </thead>
-        <tbody>
-          <tr>
-            <td>2</td>
-            <td></td>
-            <td>삐약</td>
-            <td>105</td>
-            <td>2023.05.22</td>
-          </tr>
-          <tr>
-            <td>1</td>
-            <td></td>
-            <td>삐약</td>
-            <td>50</td>
-            <td>2023.05.23</td>
-          </tr>
+        <tbody id="post-table-body">
+          <!-- 동적으로 생성되는 부분 -->
         </tbody>
       </table>
+      <div id="write-button" class="right-align">
+        <button id="back-write"><a href="post_write.html">글쓰기</a></button>
+      </div>
     </div>
     <nav class="pagination">
       <strong class="active">1</strong>
     </nav>
-    </section>
-  </div>
   </div>
 
-
-
-
-  <ul id="post-list"></ul>
-
-  <div id="write-button">
-    <button id="back-write"><a href="post_write.html">글쓰기</a></button>
-  </div>
 
   <script>
-    const postList = document.querySelector("#post-list");
+    const postTableBody = document.getElementById("post-table-body");
+    const pagination = document.querySelector(".pagination");
+    const postsPerPage = 5;
+    let currentPage = 1;
 
     function renderPostList() {
       const posts = JSON.parse(localStorage.getItem("posts")) || [];
+      const startIndex = (currentPage - 1) * postsPerPage;
+      const endIndex = startIndex + postsPerPage;
+      const currentPosts = posts.slice(startIndex, endIndex);
 
-      posts.forEach((post, index) => {
-        const listItem = document.createElement("li");
-        listItem.innerHTML = `<a href="post_detail.html?id=${index}">${post.title}</a>`;
-        postList.appendChild(listItem);
+      postTableBody.innerHTML = "";
+
+      currentPosts.forEach((post, index) => {
+        const row = document.createElement("tr");
+        const numberCell = document.createElement("td");
+        const titleCell = document.createElement("td");
+        const authorCell = document.createElement("td");
+        const likesCell = document.createElement("td");
+        const dateCell = document.createElement("td");
+
+        // 제목을 클릭하면 상세 페이지로 이동
+        const link = document.createElement("a");
+        link.href = `post_detail.html?id=${startIndex + index}`;
+        link.textContent = post.title;
+        titleCell.appendChild(link);
+
+        authorCell.textContent = post.author;
+        likesCell.textContent = post.likes;
+
+        // 현재 시스템 상의 시간을 동적으로 받아 등록일로 표시
+        const currentDate = new Date();
+        const formattedDate = currentDate.toLocaleDateString("ko-KR");
+        dateCell.textContent = formattedDate;
+
+        // 순서를 동적으로 받아 번호로 표시
+        const number = startIndex + index + 1;
+        numberCell.textContent = number;
+
+        row.appendChild(numberCell);
+        row.appendChild(titleCell);
+        row.appendChild(authorCell);
+        row.appendChild(likesCell);
+        row.appendChild(dateCell);
+
+        postTableBody.appendChild(row);
       });
+
+      renderPagination(posts.length);
+    }
+
+    function renderPagination(totalPosts) {
+      pagination.innerHTML = "";
+
+      const totalPages = Math.ceil(totalPosts / postsPerPage);
+
+      for (let i = 1; i <= totalPages; i++) {
+        const pageLink = document.createElement("a");
+        pageLink.href = "#";
+        pageLink.textContent = i;
+
+        if (i === currentPage) {
+          pageLink.classList.add("active");
+        }
+
+        pageLink.addEventListener("click", () => {
+          currentPage = i;
+          renderPostList();
+        });
+
+        pagination.appendChild(pageLink);
+      }
     }
 
     renderPostList();
