@@ -1,61 +1,177 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <title>노인을 위한 웹 사이트 - 취업게시판 상세</title>
-    <link rel="stylesheet" type="text/css" href="style2.css" />
-  </head>
-  <body>
-    <h1>취업게시판 상세</h1>
-    <div id="post-details"></div>
+<html lang="ko">
 
-    <div id="back-button">
-      <button id="back-post"><a href="main_post.html">이전</a></button>
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" type="text/css" href="style2.css" />
+  <title>노인을 위한 웹 사이트 - 취업게시판 상세</title>
+</head>
+
+<body>
+  <div class="container" id="container">
+    <div class="sub-title">
+      <div class="location">
+        <i class="iconset ico-home">홈</i>
+        <span>자유게시판</span>
+        <span>취업 사례 게시판</span>
+        <span><strong>성공 사례</strong></span>
+      </div>
     </div>
-
-    <div id="delete-button">
-      <button id="delete-post">삭제</button>
+    <div class="inner-wrap no-lnb">
+      <div id="contents">
+        <section id="contents">
+          <div class="title-util">
+            <h2 class="title">취업 성공 사례</h2>
+          </div>
+          <section class="board-view">
+            <div class="title-area">
+              <h3 class="title" id="post-title">제목</h3>
+              <p class="date" style="font-size: 20px;">2023-05-23</p>
+            </div>
+            <div class="info">
+              <p class="title">작성자</p>
+              <p class="txt">민정윤</p>
+            </div>
+            <div class="info">
+              <p class="title">첨부파일</p>
+              <p class="add-file">
+                <i class="iconset ico-file">첨부파일</i>
+                <a href=""></a>
+                <br>
+              </p>
+            </div>
+            <div class="cont" id="post-content">
+              <!--게시물 내용이 동적으로 할당될 공간-->
+            </div>
+          </section>
+          <div class="prev-next">
+            <div class="line">
+              <p class="title">이전글
+                <i class="iconset arr-prev-list"></i>
+              </p>
+              <span class="link"><a class="link-a"></a></span>
+            </div>
+            <div class="line">
+              <p class="title">다음글
+                <i class="iconset arr-next-list"></i>
+              </p>
+              <span class="link"><a class="link-a"></a></span>
+            </div>
+          </div>
+        </section>
+      </div>
     </div>
+  </div>
 
-    <script>
-      const postDetails = document.querySelector("#post-details");
-      const deleteButton = document.querySelector("#delete-post");
+  <div class="reply-box">
+    <div class="box_left">
+      <div class="like_article">
+        <span class="u_ico _icon"><img src="media/heart.png" alt="좋아요" width="17px" height="17px"></span>
+        <em class="u_txt _label">좋아요</em>
+        <em class="u_cnt _count">0</em>
+      </div>
+    </div>
+  </div>
 
-      function renderPostDetails() {
-        const urlParams = new URLSearchParams(window.location.search);
-        const postId = urlParams.get("id");
+  <div id="back-button">
+    <button id="back-post"><a href="main_post.html">목록</a></button>
+  </div>
 
-        const posts = JSON.parse(localStorage.getItem("posts")) || [];
-        const post = posts[postId];
+  <div id="delete-button">
+    <button id="delete-post">삭제</button>
+  </div>
 
-        if (post) {
-          const postElement = document.createElement("div");
-          postElement.innerHTML = `
-            <h2>${post.title}</h2>
-            <p>${post.content}</p>
-          `;
-          postDetails.appendChild(postElement);
+  <script>
+    const postContent = document.getElementById("post-content");
+    const deleteButton = document.getElementById("delete-post");
+
+    const likeButton = document.querySelector(".like_article");
+    const likeCount = document.querySelector(".u_cnt._count");
+
+    let likes = parseInt(likeCount.textContent); // 초기 좋아요 수
+
+    // 좋아요 버튼 클릭 이벤트 핸들러
+    likeButton.addEventListener("click", function () {
+      // 좋아요 수 증가
+      likes++;
+
+      // 좋아요 수 업데이트
+      likeCount.textContent = likes;
+
+      // 클릭된 효과 주기
+      likeButton.classList.add("clicked");
+
+      // 1초 후 클릭된 효과 제거
+      setTimeout(function () {
+        likeButton.classList.remove("clicked");
+      }, 1000);
+    });
+
+    function renderPostDetails() {
+      const urlParams = new URLSearchParams(window.location.search);
+      const postId = urlParams.get("id");
+
+      const posts = JSON.parse(localStorage.getItem("posts")) || [];
+      const post = posts[postId];
+
+      if (post) {
+        const postElement = document.createElement("div");
+        postElement.innerHTML = post.content; // 게시물 내용을 할당합니다.
+        postContent.appendChild(postElement);
+
+        const postTitleElement = document.getElementById("post-title");
+        postTitleElement.textContent = post.title;
+
+        const prevPostId = Number(postId) - 1;
+        const nextPostId = Number(postId) + 1;
+
+        const prevPostLink = document.querySelector(".prev-next .line:first-child .link-a");
+        const nextPostLink = document.querySelector(".prev-next .line:last-child .link-a");
+
+        if (prevPostId >= 0) {
+          const prevPost = posts[prevPostId];
+          prevPostLink.textContent = prevPost.title;
+          prevPostLink.href = `post_detail.html?id=${prevPostId}`;
         } else {
-          const errorElement = document.createElement("p");
-          errorElement.textContent = "게시물을 찾을 수 없습니다.";
-          postDetails.appendChild(errorElement);
+          prevPostLink.textContent = "이전글이 없습니다";
+          prevPostLink.removeAttribute("href");
         }
-      }
 
-      function deletePost() {
-        const urlParams = new URLSearchParams(window.location.search);
-        const postId = urlParams.get("id");
-
-        const posts = JSON.parse(localStorage.getItem("posts")) || [];
-
-        if (postId >= 0 && postId < posts.length) {
-          posts.splice(postId, 1);
-          localStorage.setItem("posts", JSON.stringify(posts));
-          window.location.href = "main_post.html";
+        if (nextPostId < posts.length) {
+          const nextPost = posts[nextPostId];
+          nextPostLink.textContent = nextPost.title;
+          nextPostLink.href = `post_detail.html?id=${nextPostId}`;
+        } else {
+          nextPostLink.textContent = "다음글이 없습니다";
+          nextPostLink.removeAttribute("href");
         }
+      } else {
+        const errorElement = document.createElement("p");
+        errorElement.textContent = "게시물을 찾을 수 없습니다.";
+        postContent.appendChild(errorElement);
       }
+    }
 
-      renderPostDetails();
-      deleteButton.addEventListener("click", deletePost);
-    </script>
-  </body>
-</html>
+
+
+    function deletePost() {
+      const urlParams = new URLSearchParams(window.location.search);
+      const postId = urlParams.get("id");
+
+      const posts = JSON.parse(localStorage.getItem("posts")) || [];
+
+      if (postId >= 0 && postId < posts.length) {
+        posts.splice(postId, 1);
+        localStorage.setItem("posts", JSON.stringify(posts));
+        window.location.href = "main_post.html";
+      }
+    }
+
+
+
+    renderPostDetails();
+    deleteButton.addEventListener("click", deletePost);
+  </script>
+</body>

@@ -26,7 +26,7 @@
       </div>
     </div>
     <div class="sub-visual-title">
-      <div class="visual"><img src="board_post_icon.jpg" width="150px" height="150px" alt></div>
+      <div class="visual"><img src="media/board_post_icon.jpg" width="150px" height="150px" alt></div>
       <div class="info">
         <strong class="title">노인 및 노숙인 취업 성공 소식</strong>
         <span class="txt">취업 사례를 공유합시다!</span>
@@ -75,6 +75,13 @@
     const postsPerPage = 5;
     let currentPage = 1;
 
+
+    /*전체 건수 계산*/
+    const postCountElement = document.querySelector(".count .font-lblue");
+    const posts = JSON.parse(localStorage.getItem("posts")) || [];
+    const postCount = posts.length;
+    postCountElement.textContent = postCount;
+
     function renderPostList() {
       const posts = JSON.parse(localStorage.getItem("posts")) || [];
       const startIndex = (currentPage - 1) * postsPerPage;
@@ -93,12 +100,15 @@
 
         // 제목을 클릭하면 상세 페이지로 이동
         const link = document.createElement("a");
-        link.href = `post_detail.html?id=${startIndex + index}`;
+        link.href = `post_detail.html?id=${startIndex + index}&likes=${post.likes || 0}`;
         link.textContent = post.title;
         titleCell.appendChild(link);
 
         authorCell.textContent = post.author;
-        likesCell.textContent = post.likes;
+
+        // 좋아요 수 표시
+        const likes = post.likes || 0;
+        likesCell.textContent = likes;
 
         // 현재 시스템 상의 시간을 동적으로 받아 등록일로 표시
         const currentDate = new Date();
@@ -117,9 +127,10 @@
 
         postTableBody.appendChild(row);
       });
-
       renderPagination(posts.length);
     }
+
+
 
     function renderPagination(totalPosts) {
       pagination.innerHTML = "";
