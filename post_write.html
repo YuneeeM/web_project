@@ -1,61 +1,79 @@
 <!DOCTYPE html>
 <html lang="ko">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" type="text/css" href="style1.css" />
-    <title>노인을 위한 웹 사이트 - 취업게시판 글쓰기</title>
-  </head>
-  <body>
-    <div id="banner_header">
-      <h2>취업 리뷰</h2>
-      <p>취업 성공을 위해 다른 회원들과 소중한 경험을 나누는 공간입니다.</p>
-      <p>작성한 정보를 통해 입사 지원시 유용한 정보를 활용하시기 바랍니다.</p>
-    </div>
 
-    <div id="blank"></div>
-    <!-- 새 게시물 제출 양식 -->
-    <form id="post-form">
-      <label for="title">제목</label>
-      <input type="text" id="title" name="title" />
-      <br />
-      <label for="content">내용</label>
-      <textarea id="content" name="content"></textarea>
-      <br />
-      <button type="submit">등록</button>
-    </form>
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" type="text/css" href="style1.css" />
+  <title>노인을 위한 웹 사이트 - 취업게시판 글쓰기</title>
+</head>
 
-    <div id="list">
-      <button id="list-button">목록</button>
-    </div>
+<body>
+  <div id="banner_header">
+    <h2>취업 리뷰</h2>
+    <p>취업 성공을 위해 다른 회원들과 소중한 경험을 나누는 공간입니다.</p>
+    <p>작성한 정보를 통해 입사 지원시 유용한 정보를 활용하시기 바랍니다.</p>
+  </div>
 
-    <script>
-      const postForm = document.querySelector("#post-form");
-      const listButton = document.querySelector("#list-button");
+  <div id="blank"></div>
+  <!-- 새 게시물 제출 양식 -->
+  <form id="post-form" enctype="multipart/form-data">
+    <label for="title">제목</label>
+    <input type="text" id="title" name="title" />
+    <br />
+    <label for="writer">작성자</label>
+    <input type="text" id="writer" name="writer" />
+    <br>
+    <label for="content">내용</label>
+    <textarea id="content" name="content"></textarea>
+    <br />
+    <label for="attachment" style="text-align: left;">첨부파일</label>
+    <input type="file" id="attachment" name="attachment" />
+    <br />
+    <button type="submit">등록</button>
 
-      postForm.addEventListener("submit", function (event) {
-        event.preventDefault();
+  </form>
 
-        const titleInput = document.querySelector("#title");
-        const contentInput = document.querySelector("#content");
+  <div id="list">
+    <button id="list-button">목록</button>
+  </div>
 
-        const title = titleInput.value;
-        const content = contentInput.value;
+  <script>
+    const postForm = document.querySelector("#post-form");
+    const listButton = document.querySelector("#list-button");
 
-        const post = { title, content };
+    postForm.addEventListener("submit", function (event) {
+      event.preventDefault();
 
-        let posts = JSON.parse(localStorage.getItem("posts")) || [];
-        posts.push(post);
-        localStorage.setItem("posts", JSON.stringify(posts));
+      const titleInput = document.querySelector("#title");
+      const writerInput = document.querySelector("#writer");
+      const contentInput = document.querySelector("#content");
+      const attachmentInput = document.querySelector("#attachment");
 
-        titleInput.value = "";
-        contentInput.value = "";
-      });
+      const title = titleInput.value;
+      const writer = writerInput.value;
+      const content = contentInput.value;
+      const attachment = attachmentInput.files[0]; // 첨부파일 정보
 
-      listButton.addEventListener("click", function () {
-        window.location.href = "main_post.html";
-      });
-    </script>
-  </body>
+      const createdDate = new Date().toLocaleString("ko-KR", { timeZone: "Asia/Seoul" }); // 현재 시간 (한국 시간)
+
+      const post = { title, writer, content, attachment, createdDate };
+
+      let posts = JSON.parse(localStorage.getItem("posts")) || [];
+      posts.push(post);
+      localStorage.setItem("posts", JSON.stringify(posts));
+
+      titleInput.value = "";
+      writerInput.value = "";
+      contentInput.value = "";
+      attachmentInput.value = null; // 첨부파일 input 초기화
+    });
+
+    listButton.addEventListener("click", function () {
+      window.location.href = "main_post.html";
+    });
+  </script>
+</body>
+
 </html>

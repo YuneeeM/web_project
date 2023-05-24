@@ -1,10 +1,14 @@
-.location span::before {
+.location a::before {
   content:'>';
   display: inline-block;
   width: 10px;
   height: 10px;
   margin-right: 5px;
   color: #bbb;
+}
+
+a {
+  text-decoration: none;
 }
 
 .sub-visual-title {

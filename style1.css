@@ -5,6 +5,10 @@ body {
   text-align: center;
 }
 
+a {
+  text-decoration: none;
+}
+
 #banner_header {
   background-color: aliceblue;
   margin-left: 40px;

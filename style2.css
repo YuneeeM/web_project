@@ -2,6 +2,10 @@ body {
   font-size: 20px;
 }
 
+a{
+  text-decoration: none;
+}
+
 #post-details {
   border: 1dp black;
   width: 200px;
@@ -10,7 +14,7 @@ body {
 
 }
 
-.location span::before {
+.location a::before {
   content:'>';
   display: inline-block;
   width: 10px;
@@ -44,10 +48,10 @@ body {
 
 .board-view .title-area .date {
   display: table-cell;
-  width: 110px;
-  margin: 0;
+  width: 180px;
+  margin-right: 20px;
   padding: 0;
-  text-align: center;
+  text-align: left;
   vertical-align: middle;
 }
 

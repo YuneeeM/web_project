@@ -11,8 +11,8 @@
     <div class="sub-util">
       <div class="location">
         <i class="iconset ico-home">홈</i>
-        <span>자유게시판</span>
-        <span><strong>취업 사례 게시판</strong></span>
+        <a href="#">자유게시판</a>
+        <a href="./post_detail.html"><strong>취업 사례 게시판</strong></a>
       </div>
     </div>
     <div class="inner-wrap no-lab">
@@ -68,13 +68,11 @@
     </nav>
   </div>
 
-
   <script>
     const postTableBody = document.getElementById("post-table-body");
     const pagination = document.querySelector(".pagination");
     const postsPerPage = 5;
     let currentPage = 1;
-
 
     /*전체 건수 계산*/
     const postCountElement = document.querySelector(".count .font-lblue");
@@ -104,16 +102,14 @@
         link.textContent = post.title;
         titleCell.appendChild(link);
 
-        authorCell.textContent = post.author;
+        authorCell.textContent = post.writer; // 작성자 표시
 
         // 좋아요 수 표시
         const likes = post.likes || 0;
         likesCell.textContent = likes;
 
-        // 현재 시스템 상의 시간을 동적으로 받아 등록일로 표시
-        const currentDate = new Date();
-        const formattedDate = currentDate.toLocaleDateString("ko-KR");
-        dateCell.textContent = formattedDate;
+        // 등록일 표시
+        dateCell.textContent = post.createdDate;
 
         // 순서를 동적으로 받아 번호로 표시
         const number = startIndex + index + 1;
@@ -128,8 +124,17 @@
         postTableBody.appendChild(row);
       });
       renderPagination(posts.length);
-    }
 
+      // 좋아요 수를 반영하여 표시
+      const likeCounts = document.querySelectorAll(".u_cnt._count");
+      likeCounts.forEach((likeCount, index) => {
+        const postId = startIndex + index;
+        const post = posts[postId];
+        if (post) {
+          likeCount.textContent = post.likes || 0;
+        }
+      });
+    }
 
 
     function renderPagination(totalPosts) {
