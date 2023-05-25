@@ -1,0 +1,8 @@
+.disappear {
+  display: none;
+}
+
+col {
+  width: 40%;
+  display: table-column;
+}
