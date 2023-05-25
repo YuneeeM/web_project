@@ -1,0 +1,136 @@
+.location a::before {
+  content:'>';
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  margin-right: 5px;
+  color: #bbb;
+}
+
+a {
+  text-decoration: none;
+}
+
+.sub-visual-title {
+  margin-bottom: 40px;
+}
+
+.sub-visual-title .visual {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+
+.sub-visual-title .info {
+  display: inline-block;
+  vertical-align: middle;
+  margin-left: 10px; /* 필요한 경우 이미지와 글자 사이의 간격 조정 */
+}
+
+.sub-visual-title .info .title {
+  display: block;
+  margin-bottom: 5px;
+}
+.sub-visual-title .info .txt {
+  display: block;
+}
+
+.right-align {
+  display: flex;
+  justify-content: right;
+}
+
+.right-align button {
+  margin-right: 30px;
+  margin-top: 10px; /* 필요한 여백 조정 */
+}
+
+table caption {
+  overflow: hidden;
+  visibility: hidden;;
+}
+
+.board-list > thead > tr > th {
+  border-bottom: 1px solid #e6e6e6;
+  height: 48px;
+  padding: 7px 5px;
+  background-color: #f7f7f7;
+  font-weight: 700;
+}
+
+table {
+  display: table;
+  text-indent: initial;
+  border-spacing: 2px;
+  width: 100%;
+  table-layout: fixed;
+  border-collapse: collapse;
+  empty-cells: show;
+}
+
+thead {
+  display: table-header-group;
+  vertical-align: middle;
+  border-color: inherit;
+}
+
+.board-list {
+  line-height: 1.6;
+}
+
+tbody {
+  display: table-row-group;
+  vertical-align: middle;
+  border-color: inherit;
+}
+
+tr {
+  display: table-row;
+  vertical-align: inherit;
+  border-color: inherit;
+}
+
+table th, table td {
+  padding: 0;
+  word-break: break-all;
+}
+
+.board-list > tbody > tr > th, .board-list > tbody > tr > td {
+  height: 48px;
+  padding: 16px 5px;
+  border: 1px solid #f5f7f9;
+  border-width: 0 0 1px 0;
+  border-color: #e4ebf1;
+  text-align: center;
+  word-break: break-all;
+
+}
+
+.pagination {
+  clear: both;
+  position: relative;
+  margin: 0 auto;
+  padding: 30px 0 0 0;
+  text-align: center;
+}
+
+.pagination .active, .pagination a:hover {
+  color: #fff;
+  line-height: 32px;
+  background-color: #911ebf;
+  border: 0;
+}
+
+.pagination a, .pagination strong, .pagination .control {
+  display: inline-block;
+  position: relative;
+  min-width: 30px;
+  height: 30px;
+  padding: 0 4px;
+  text-decoration: none;
+  line-height: 30px;
+  color: #666;
+  font-weight: normal;
+  vertical-align: middle;
+}
+
