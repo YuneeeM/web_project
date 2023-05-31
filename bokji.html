@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8" />
+  <title>복지시설 현황</title>
+  <link type="text/css" rel="stylesheet" href="#">
+</head>
+
+<body>
+  <form onsubmit="return false;">
+    <label>도로명 주소를 입력하세요 <input id="addressInput" type="text" placeholder="부산광역시 해운대구 우동"><input type="submit"
+        value="확인" onclick="searchAddress();"></label>
+  </form>
+  <ul>
+    <li>노인 돌봄기관</li>
+    <li>노인 복지관</li>
+    <li>경로당</li>
+    <li>노인 교실</li>
+    <li>노인 급식시설</li>
+    <li>노인 요양시설</li>
+  </ul>
+  <div id="map" style="width: 750px; height: 500px;"></div>
+  <script src=""></script>
+  <script>
+    var mapContainer = document.getElementById('map'), // 지도를 표시할 div
+      mapOption = {
+        center: new kakao.maps.LatLng(35.179815, 129.074487), // 부산광역시 중심 좌표
+        level: 9, // 지도의 확대 레벨
+      };
+
+    var map = new kakao.maps.Map(mapContainer, mapOption);
+    var marker = null;
+
+    function searchAddress() {
+      var address = document.getElementById('addressInput').value;
+
+      var geocoder = new kakao.maps.services.Geocoder();
+
+      // 이전에 표시된 마커가 있다면 제거합니다.
+      if (marker !== null) {
+        marker.setMap(null);
+      }
+
+      // 주소로 좌표를 검색합니다
+      geocoder.addressSearch(address, function (result, status) {
+        if (status === kakao.maps.services.Status.OK) {
+          var coords = new kakao.maps.LatLng(result[0].y, result[0].x);
+          marker = new kakao.maps.Marker({
+            map: map,
+            position: coords
+          });
+          var infowindow = new kakao.maps.InfoWindow({
+            content: '<div style="width:150px;text-align:center;padding:6px 0;">우리회사</div>'
+          });
+          infowindow.open(map, marker);
+          map.setCenter(coords);
+        }
+      });
+    }
+  </script>
+</body>
+
+</html>
