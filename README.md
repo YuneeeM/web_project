@@ -6,4 +6,4 @@
   <li>공공데이터 부분은 url 지우고 올림</li>
 </ol>
 
-<img src="idea.jpg" width="200px" height="100px">
+<img src="idea.jpg" width="400px" height="300px">
