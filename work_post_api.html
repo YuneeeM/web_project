@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" type="text/css" href="style_workpost.css" />
+  <title>노인 일자리 현황</title>
+</head>
+
+<body>
+  <div class="content">
+    <div class="default_box">
+      <h1 class="title title_content">구인정보</h1>
+      <span class="title_sub">앞선 맞춤형 정보 기반으로 구인정보을 알려드립니다.</span>
+    </div>
+    <!--리스트형태 시작-->
+    <table class="board-list" style="width: 100%;">
+      <colgroup>
+        <col width="20%">
+        <col width="40%">
+        <col width="20%">
+        <col width="20%">
+      </colgroup>
+      <thead>
+        <tr>
+          <th>회사명/정보제공처</th>
+          <th>채용공고명/담당업무/지원자격</th>
+          <th>근무조건</th>
+          <th>등록/마감일</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td></td>
+        </tr>
+      </tbody>
+    </table>
+
+  </div>
+
+  <!--부산광역시_공공부문 일자리(채용) 정보-->
+
+  <p id="sample_data"></p>
+
+  <script>
+    const url = 'data.json';
+
+    const dataPane = document.getElementById("sample_data");
+
+    fetch(url)
+      .then(response => response.json())
+      .then(data => {
+        let html = '';
+        data.forEach(item => {
+          const { "회사명/정보제공처": company, "채용공고명/담당업무/지원자격": jobTitle, "근무조건": workingCondition, "등록/마감일": registrationDate } = item;
+          html += `<tr>
+                      <td>${company}</td>
+                      <td>${jobTitle}</td>
+                      <td>${workingCondition}</td>
+                      <td>${registrationDate}</td>
+                    </tr>`;
+        });
+        document.querySelector('tbody').innerHTML = html;
+      })
+      .catch(error => {
+        console.log(error);
+        dataPane.innerText = "데이터를 불러오는 중에 오류가 발생했습니다.";
+      });
+  </script>
+
+</body>
+
+</html>
