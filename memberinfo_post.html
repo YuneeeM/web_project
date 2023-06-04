@@ -7,7 +7,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>맞춤정보를 입력해주세요!</title>
 
+
   <style>
+    /* 입력 폼 스타일 */
     form {
       max-width: 400px;
       margin: 0 auto;
@@ -21,6 +23,20 @@
       margin-bottom: 10px;
       font-weight: bold;
     }
+
+    .gender-inputs {
+      display: flex;
+      /* 변경: 남성과 여성을 가로로 나열 */
+      justify-content: space-between;
+      /* 변경: 남성과 여성 사이에 여백 추가 */
+      width: 100%;
+    }
+
+    .gender-inputs label {
+      flex-basis: 20%;
+      /* 변경: 라벨 너비 조정 */
+    }
+
 
     .residence-input {
       display: flex;
@@ -39,6 +55,7 @@
       color: #fff;
       cursor: pointer;
     }
+
 
     input,
     select {
@@ -66,19 +83,20 @@
   <h1 style="text-align: center;">맞춤정보 입력</h1>
   <form>
     <label for="name">이름</label>
-    <input type="text" id="name" name="name" required><br><br>
+    <input type="text" id="name" name="name" placeholder="이름을 입력해주세요." required><br><br>
 
     <label for="age">나이</label>
-    <input type="number" id="age" name="age" required><br><br>
+    <input type="number" id="age" name="age" placeholder="나이를 입력해주세요." required><br><br>
+
+    <label for="gender" style="margin-bottom: 30px;">성별</label>
+
     <div class="gender-inputs">
-      <label>성별</label>
       <label for="male">남성</label>
       <input type="radio" id="male" name="gender" value="male" required>
       <label for="female">여성</label>
       <input type="radio" id="female" name="gender" value="female" required>
     </div>
-    <br><br>
-
+    <br>
 
     <label for="residence">거주지</label>
 
@@ -89,10 +107,28 @@
     <br>
 
     <label for="income">평균 소득</label>
-    <input type="number" id="income" name="income" required><br><br>
+    <input type="number" id="income" name="income" placeholder="평균소득을 입력해주세요." required><br><br>
+
+    <label for="gagu">가구유형</label>
+    <select id="gagu" name="gagu" required>
+      <option value="single">단독가구</option>
+      <option value="notsingle">부부가구</option>
+    </select><br><br>
 
     <label for="occupation">직업</label>
-    <input type="text" id="occupation" name="occupation" required><br><br>
+    <input type="text" id="occupation" name="occupation" placeholder="직업을 입력해주세요." required><br><br>
+
+
+    <label for="education">학력</label>
+    <select id="education" name="education" required>
+      <option value="">선택하세요</option>
+      <option value="중졸 이하">중졸 이하</option>
+      <option value="고졸/대졸(2~3년)">고졸/대졸(2~3년)</option>
+      <option value="대졸(4년)">대졸(4년)</option>
+      <option value="석사/박사">석사/박사</option>
+      <option value="학력 무관">학력 무관</option>
+    </select>
+    <br><br>
 
     <input type="submit" value="제출">
   </form>
@@ -100,9 +136,8 @@
 
 
 
-  <script>
+  <script src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=&libraries=services">
     const apiKey = process.env.API_KEY;
-    src = "https://dapi.kakao.com/v2/maps/sdk.js?appkey=${apiKey}&libraries=services";
   </script>
   <script>
     const form = document.getElementById('member-form');
@@ -133,6 +168,44 @@
         });
       }
     });
+
+    form.addEventListener('submit', function (event) {
+      event.preventDefault();
+
+      // 입력된 데이터 가져오기
+      const name = document.getElementById('name').value;
+      const age = document.getElementById('age').value;
+      const gender = document.querySelector('input[name="gender"]:checked').value;
+      const residence = document.getElementById('residence').value;
+      const gagu = document.getElementById('gagu').value;
+      const income = document.getElementById('income').value;
+      const occupation = document.getElementById('occupation').value;
+      const education = document.getElementById('education').value;
+
+      // 데이터를 객체로 저장
+      const memberData = {
+        name: name,
+        age: age,
+        gender: gender,
+        residence: residence,
+        gagu: gagu,
+        income: income,
+        occupation: occupation,
+        education: education
+      };
+
+      // 데이터를 localStorage에 저장
+      localStorage.setItem('memberData', JSON.stringify(memberData));
+
+      // 저장된 데이터 확인
+      console.log('저장된 데이터:', localStorage.getItem('memberData'));
+
+      // 폼 초기화
+      form.reset();
+    });
+
+
+
   </script>
 
 
