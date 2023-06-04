@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>맞춤정보를 입력해주세요!</title>
+
+  <style>
+    form {
+      max-width: 400px;
+      margin: 0 auto;
+      padding: 20px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 10px;
+      font-weight: bold;
+    }
+
+    .residence-input {
+      display: flex;
+      align-items: center;
+      width: 100%;
+    }
+
+    .residence-input input[type="text"] {
+      flex: 4;
+      margin-right: 10px;
+    }
+
+    .residence-input input[type="button"] {
+      flex: 1;
+      background-color: #4caf50;
+      color: #fff;
+      cursor: pointer;
+    }
+
+    input,
+    select {
+      width: 95%;
+      padding: 10px;
+      margin-bottom: 10px;
+      border: 1px solid #ccc;
+      border-radius: 3px;
+    }
+
+    input[type="submit"] {
+      background-color: #4caf50;
+      color: #fff;
+      cursor: pointer;
+    }
+
+    input[type="submit"]:hover,
+    .residence-input input[type="button"]:hover {
+      background-color: #45a049;
+    }
+  </style>
+</head>
+
+<body>
+  <h1 style="text-align: center;">맞춤정보 입력</h1>
+  <form>
+    <label for="name">이름</label>
+    <input type="text" id="name" name="name" required><br><br>
+
+    <label for="age">나이</label>
+    <input type="number" id="age" name="age" required><br><br>
+    <div class="gender-inputs">
+      <label>성별</label>
+      <label for="male">남성</label>
+      <input type="radio" id="male" name="gender" value="male" required>
+      <label for="female">여성</label>
+      <input type="radio" id="female" name="gender" value="female" required>
+    </div>
+    <br><br>
+
+
+    <label for="residence">거주지</label>
+
+    <div class="residence-input">
+      <input type="text" id="residence" name="residence" placeholder="도로명 주소를 입력해주세요." required>
+      <input type="button" value="검색" id="search-btn">
+    </div>
+    <br>
+
+    <label for="income">평균 소득</label>
+    <input type="number" id="income" name="income" required><br><br>
+
+    <label for="occupation">직업</label>
+    <input type="text" id="occupation" name="occupation" required><br><br>
+
+    <input type="submit" value="제출">
+  </form>
+
+
+
+
+  <script>
+    const apiKey = process.env.API_KEY;
+    src = "https://dapi.kakao.com/v2/maps/sdk.js?appkey=${apiKey}&libraries=services";
+  </script>
+  <script>
+    const form = document.getElementById('member-form');
+    const addressInput = document.getElementById('residence');
+    const searchBtn = document.getElementById('search-btn');
+
+    searchBtn.addEventListener('click', function (event) {
+      event.preventDefault();
+
+      const address = addressInput.value;
+      if (address) {
+        // 주소 검색 API 호출 및 결과 처리
+        const geocoder = new kakao.maps.services.Geocoder();
+
+        geocoder.addressSearch(address, function (result, status) {
+          if (status === kakao.maps.services.Status.OK) {
+            if (result.length > 0) {
+              const roadAddress = result[0].road_address.address_name;
+              console.log('도로명 주소:', roadAddress);
+              document.getElementById('residence').value = roadAddress;
+
+              // 폼 제출
+              form.submit();
+            }
+          } else {
+            console.log('주소 검색에 실패했습니다.');
+          }
+        });
+      }
+    });
+  </script>
+
+
+
+</body>
+
+</html>
