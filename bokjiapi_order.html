@@ -89,7 +89,7 @@
         style="height: 30px; font-size: 20px;"><input type="submit" value="확인"></label>
   </form>
   <ul class="facility" style="margin-top: 20px;">
-    <li class="facility-btn" onclick="facilities(null);">노인 돌봄기관</li>
+    <li class="facility-btn" onclick="facilities('dolbom.json');">노인 돌봄기관</li>
     <li class="facility-btn" onclick="facilities('bokjiguan.json');">노인 복지관</li>
     <li class="facility-btn" onclick="facilities('gyeongro.json');">경로당</li>
     <li class="facility-btn" onclick="facilities('gyosil.json');">노인 교실</li>
@@ -115,7 +115,7 @@
   </div>
 
 
-  <script src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=&libraries=services,clusterer"></script>
+  <script src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=c&libraries=services,clusterer"></script>
   <script>
 
     function facilities(url) {

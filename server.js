@@ -9,6 +9,10 @@ app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, '/bokjiapi_order.html'));
 });
 
+app.get('/dolbom.json', (req, res) => {
+  res.sendFile(path.join(__dirname, 'dolbom.json'));
+});
+
 app.get('/bokjiguan.json', (req, res) => {
   res.sendFile(path.join(__dirname, 'bokjiguan.json'));
 });
