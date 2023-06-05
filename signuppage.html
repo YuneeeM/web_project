@@ -5,8 +5,7 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>맞춤정보를 입력해주세요!</title>
-
+  <title>회원가입</title>
 
   <style>
     body {
@@ -56,7 +55,7 @@
 
     .residence-input input[type="button"] {
       flex: 1;
-      background-color: #4caf50;
+      background-color: #0099FF;
       color: #fff;
       cursor: pointer;
     }
@@ -72,7 +71,7 @@
     }
 
     input[type="submit"] {
-      background-color: #4caf50;
+      background-color: #0099FF;
       color: #fff;
       cursor: pointer;
       margin-inline-start: 10px;
@@ -80,16 +79,25 @@
 
     input[type="submit"]:hover,
     .residence-input input[type="button"]:hover {
-      background-color: #45a049;
+      background-color: #0099CF;
     }
   </style>
 </head>
 
 <body>
-  <h1 style="text-align: center; color:#003F5F">맞춤정보 입력</h1>
-  <form id="member-form">
-    <label for="name">이름</label>
-    <input type="text" id="name" name="name" placeholder="이름을 입력해주세요." required><br><br>
+  <h1 style="text-align: center; color:#003F5F">회원가입</h1>
+  <form id="user-form">
+    <label for="userid">아이디</label>
+    <input type="text" id="userid" name="userid" placeholder="아이디를 입력해주세요." required><br><br>
+
+    <label for="password">비밀번호</label>
+    <input type="password" id="password" name="password" placeholder="비밀번호를 입력해주세요." required><br><br>
+
+    <label for="phone">전화번호</label>
+    <input type="tel" id="phone" name="phone" placeholder="전화번호를 입력해주세요." required><br><br>
+
+    <label for="birth">생년월일</label>
+    <input type="date" id="birth" name="birth" placeholder="생년월일을 입력해주세요.(YYYY-MM-DD)" required><br><br>
 
     <label for="age">나이</label>
     <input type="number" id="age" name="age" placeholder="나이를 입력해주세요." required><br><br>
@@ -136,17 +144,15 @@
     </select>
     <br><br>
 
-    <input type="submit" value="제출">
+    <input type="submit" value="가입하기">
   </form>
-
-
 
 
   <script src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=&libraries=services">
     const apiKey = process.env.API_KEY;
   </script>
   <script>
-    const form = document.getElementById('member-form');
+    const form = document.getElementById('user-form');
     const addressInput = document.getElementById('residence');
     const searchBtn = document.getElementById('search-btn');
 
@@ -175,11 +181,15 @@
       }
     });
 
+
     form.addEventListener('submit', function (event) {
       event.preventDefault();
 
       // 입력된 데이터 가져오기
-      const name = document.getElementById('name').value;
+      const userid = document.getElementById('userid').value;
+      const password = document.getElementById('password').value;
+      const phone = document.getElementById('phone').value;
+      const birth = document.getElementById('birth').value;
       const age = document.getElementById('age').value;
       const gender = document.querySelector('input[name="gender"]:checked').value;
       const residence = document.getElementById('residence').value;
@@ -189,8 +199,11 @@
       const education = document.getElementById('education').value;
 
       // 데이터를 객체로 저장
-      const memberData = {
-        name: name,
+      const userData = {
+        userid: userid,
+        password: password,
+        phone: phone,
+        birth: birth,
         age: age,
         gender: gender,
         residence: residence,
@@ -201,16 +214,14 @@
       };
 
       // 데이터를 localStorage에 저장
-      localStorage.setItem('memberData', JSON.stringify(memberData));
+      localStorage.setItem('userData', JSON.stringify(userData));
 
       // 저장된 데이터 확인
-      console.log('저장된 데이터:', localStorage.getItem('memberData'));
+      console.log('저장된 데이터:', localStorage.getItem('userData'));
 
       // 폼 초기화
       form.reset();
     });
-
-
 
   </script>
 

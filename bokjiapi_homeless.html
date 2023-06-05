@@ -85,8 +85,8 @@
 
 <body>
   <form onsubmit="return searchAddress();">
-    <label>도로명 주소를 입력하세요 <input type=" text" placeholder="주소를 입력해주세요." style="height: 30px; font-size: 20px;"><input
-        type="submit" value="확인"></label>
+    <label>도로명 주소를 입력하세요 <input type="text" placeholder="주소를 입력해주세요." id="addressInput"
+        style="height: 30px; font-size: 20px;"><input type="submit" value="확인"></label>
   </form>
   <ul class="facility" style="margin-top: 20px;">
     <li class="facility-btn" onclick="facilities('homeless.json');">자활 시설</li>
@@ -147,6 +147,7 @@
               });
               // 마커 추가
               markers.push(marker);
+              infowindows.push(infoWindow);
 
               kakao.maps.event.addListener(marker, "mouseover", mouseOverListener(map, marker, infoWindow));
               kakao.maps.event.addListener(marker, "mouseout", mouseOutListener(infoWindow));
@@ -161,19 +162,7 @@
             // 오류가 발생하더라도 로딩 오버레이를 감추는 스타일 변경
             loadingOverlay.style.display = 'none';
           });
-
       }
-
-    }
-    function mouseOverListener(map, marker, infoWindow) {
-      return function () {
-        infoWindow.open(map, marker);
-      };
-    }
-    function mouseOutListener(infoWindow) {
-      return function () {
-        infoWindow.close();
-      };
     }
 
     var mapContainer = document.getElementById('map'), // 지도를 표시할 div
@@ -185,6 +174,8 @@
 
     var map = new kakao.maps.Map(mapContainer, mapOption);
     // // 지도에 마커를 생성하고 표시한다
+    var markers = [];
+    var infowindows = []; // 인포윈도우 배열
 
     var clusterer = new kakao.maps.MarkerClusterer({
       map: map,
@@ -192,13 +183,23 @@
       minLevel: 5,
     });
 
-    var markers = [];
-
     function removeMarkers() {
       for (var i = 0; i < markers.length; i++) {
         markers[i].setMap(null);
       }
       markers = [];
+    }
+
+
+    function mouseOverListener(map, marker, infoWindow) {
+      return function () {
+        infoWindow.open(map, marker);
+      };
+    }
+    function mouseOutListener(infoWindow) {
+      return function () {
+        infoWindow.close();
+      };
     }
 
     function displayPlaces(places) {
@@ -253,7 +254,14 @@
     }
 
     function searchAddress() {
-      var address = document.getElementById('addressInput').value;
+      var addressInput = document.getElementById('addressInput');
+      var address = addressInput.value;
+
+      // 이전 값 지우기
+      addressInput.value = '';
+
+      // 이전 마커 제거하기
+      removeMarkers();
 
       // 주소로 좌표를 검색합니다
       var geocoder = new kakao.maps.services.Geocoder();
@@ -274,14 +282,32 @@
           });
           infowindow.open(map, marker);
 
+          // 마커 배열에 추가
+          markers.push(marker);
+          infowindows.push(infowindow);
+
           // 지도의 중심을 결과값으로 받은 위치로 이동시킵니다
-          map.setCenter(coords);
+          map.panTo(coords);
         }
       });
 
       return false;
     }
 
+    function removeMarkers() {
+      for (var i = 0; i < markers.length; i++) {
+        markers[i].setMap(null);
+      }
+      markers = [];
+
+      // 인포윈도우 제거
+      if (infowindows) {
+        for (var i = 0; i < infowindows.length; i++) {
+          infowindows[i].close();
+        }
+      }
+      infowindows = [];
+    }
 
   </script>
 </body>
