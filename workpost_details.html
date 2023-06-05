@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" type="text/css" href="style_postdetail.css" />
+  <title>노인 일자리 - 일자리 정보 상세</title>
+</head>
+
+<body>
+  <div class="container" id="container">
+    <div class="sub-title">
+      <div class="location">
+        <i class="iconset ico-home">홈</i>
+        <a>일자리</a>
+        <a href="./work_post.html">공공 일자리 정보</a>
+        <a href="./workpost_details.html"><strong>일자리 상세 정보</strong></a>
+      </div>
+    </div>
+    <div class="inner-wrap no-lnb">
+      <div id="contents">
+        <section id="contents">
+          <div class="title-util">
+            <h2 class="title">일자리 상세 정보</h2>
+          </div>
+          <section class="board-view">
+            <div class="title-area">
+              <h3 class="title" id="post-title">제목</h3>
+              <p class="date" style="font-size: 15px;">2023-05-23</p>
+            </div>
+            <div class="info">
+              <p class="title" style="width:200px">회사명/정보제공처</p>
+              <p class="txt">워크넷</p>
+            </div>
+            <div class="info">
+              <p class="title">첨부파일</p>
+              <p class="add-file">
+                <a href=""></a>
+              </p>
+            </div>
+            <div class="cont" id="post-content">
+              <!--게시물 내용이 동적으로 할당될 공간-->
+            </div>
+          </section>
+          <div class="prev-next">
+            <div class="line">
+              <p class="title">이전글
+                <i class="iconset arr-prev-list"></i>
+              </p>
+              <span class="link"><a class="link-a"></a></span>
+            </div>
+            <div class="line">
+              <p class="title">다음글
+                <i class="iconset arr-next-list"></i>
+              </p>
+              <span class="link"><a class="link-a"></a></span>
+            </div>
+          </div>
+        </section>
+      </div>
+    </div>
+  </div>
+
+  <div class="reply-box">
+    <div class="box_left">
+      <div class="like_info">
+        <span class="u_ico _icon"><img src="media/heart.png" alt="좋아요" width="17px" height="17px"></span>
+        <em class="u_txt _label">스크랩</em>
+        <em class="u_cnt _count">0</em>
+      </div>
+    </div>
+  </div>
+
+  <div id="back-button">
+    <button id="back-post"><a href="work_post.html">목록</a></button>
+  </div>
+
+  <script>
+    const postContent = document.getElementById("post-content");
+
+    const likeButton = document.querySelector(".like_info");
+    const likeCount = document.querySelector(".u_cnt._count");
+
+    const attachmentLink = document.querySelector(".add-file a");
+
+    // 게시물 식별자 가져오기
+    const urlParams = new URLSearchParams(window.location.search);
+    const postId = urlParams.get("id");
+
+    // 게시물 식별자를 사용하여 해당 게시물의 좋아요 수 로컬 스토리지에서 가져오기
+    let likes = parseInt(localStorage.getItem(`likes_${postId}`)) || 0;
+
+    // 좋아요 버튼 클릭 이벤트 핸들러
+    likeButton.addEventListener("click", function () {
+      // 좋아요 수 증가
+      likes++;
+
+      // 좋아요 수 업데이트
+      likeCount.textContent = likes;
+
+      // 로컬 스토리지에 좋아요 수 저장
+      localStorage.setItem("likes", likes);
+
+      // 클릭된 효과 주기
+      likeButton.classList.add("clicked");
+
+      // 1초 후 클릭된 효과 제거
+      setTimeout(function () {
+        likeButton.classList.remove("clicked");
+      }, 1000);
+
+      // 로컬 스토리지에 해당 게시물의 좋아요 수 저장
+      localStorage.setItem(`likes_${postId}`, likes);
+
+      // 해당 글의 좋아요 수 업데이트
+      const posts = JSON.parse(localStorage.getItem("posts")) || [];
+      const post = posts[postId];
+
+      if (post) {
+        post.likes = likes;
+        localStorage.setItem("posts", JSON.stringify(posts));
+      }
+    });
+
+
+    // 로컬 스토리지에서 저장된 게시물 정보 가져오기
+    let posts = JSON.parse(localStorage.getItem("posts")) || [];
+
+    if (posts.length > 0 && postId < posts.length) {
+      const post = posts[postId];
+
+      if (post.attachment) {
+        attachmentLink.href = "파일URL"; // 파일의 URL을 설정합니다.
+        attachmentLink.textContent = "파일명"; // 출력할 파일명을 설정합니다.
+      } else {
+        attachmentLink.textContent = "파일이 없습니다.";
+      }
+    } else {
+      attachmentLink.textContent = "파일이 없습니다.";
+    }
+
+    function renderPostDetails() {
+      const posts = JSON.parse(localStorage.getItem("posts")) || [];
+      const post = posts[postId];
+
+      if (post) {
+        const postElement = document.createElement("div");
+        postElement.innerHTML = post.content; // 게시물 내용을 할당합니다.
+        postContent.appendChild(postElement);
+
+        const postTitleElement = document.getElementById("post-title");
+        postTitleElement.textContent = post.title;
+
+        const dateElement = document.querySelector(".date");
+        dateElement.textContent = post.createdDate;
+
+        const prevPostId = Number(postId) - 1;
+        const nextPostId = Number(postId) + 1;
+
+        const prevPostLink = document.querySelector(".prev-next .line:first-child .link-a");
+        const nextPostLink = document.querySelector(".prev-next .line:last-child .link-a");
+
+        if (prevPostId >= 0) {
+          const prevPost = posts[prevPostId];
+          prevPostLink.textContent = prevPost.title;
+          prevPostLink.href = `post_detail.html?id=${prevPostId}`;
+        } else {
+          prevPostLink.textContent = "이전글이 없습니다";
+          prevPostLink.removeAttribute("href");
+        }
+
+        if (nextPostId < posts.length) {
+          const nextPost = posts[nextPostId];
+          nextPostLink.textContent = nextPost.title;
+          nextPostLink.href = `post_detail.html?id=${nextPostId}`;
+        } else {
+          nextPostLink.textContent = "다음글이 없습니다";
+          nextPostLink.removeAttribute("href");
+        }
+      } else {
+        const errorElement = document.createElement("p");
+        errorElement.textContent = "게시물을 찾을 수 없습니다.";
+        postContent.appendChild(errorElement);
+      }
+
+      // 좋아요 수 업데이트
+      likeCount.textContent = likes;
+    }
+
+    function deletePost() {
+      const posts = JSON.parse(localStorage.getItem("posts")) || [];
+
+      if (postId >= 0 && postId < posts.length) {
+        posts.splice(postId, 1);
+        localStorage.setItem("posts", JSON.stringify(posts));
+
+        // 좋아요 수 초기화
+        localStorage.removeItem(`likes_${postId}`);
+
+        // 전체 좋아요 수 업데이트
+        likes = 0;
+        likeCount.textContent = likes;
+
+        // 좋아요 수 엘리먼트 초기화
+        const likeCountElement = document.querySelector(".u_cnt._count");
+        likeCountElement.textContent = "0";
+
+        window.location.href = "main_post.html";
+      }
+    }
+
+    renderPostDetails();
+    deleteButton.addEventListener("click", deletePost);
+  </script>
+</body>
+
+</html>

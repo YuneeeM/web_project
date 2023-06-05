@@ -5,59 +5,298 @@
   <meta charset="utf-8" />
   <title>복지시설 현황</title>
   <link type="text/css" rel="stylesheet" href="#">
+  <style>
+    /* 추가된 CSS 스타일 */
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f8f8f8;
+      margin: 0;
+      padding: 20px;
+    }
+
+    form {
+      margin-bottom: 20px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 10px;
+    }
+
+    input[type="text"] {
+      width: 300px;
+      height: 30px;
+      padding: 5px;
+      font-size: 16px;
+      border-radius: 5px;
+    }
+
+    input[type="submit"] {
+      padding: 5px 10px;
+      font-size: 20px;
+      background-color: #4caf50;
+      color: #fff;
+      border: none;
+      cursor: pointer;
+      border-radius: 5px;
+      margin-left: 10px;
+    }
+
+    input[type="submit"]:hover {
+      background-color: #45a049;
+    }
+
+    ul {
+      list-style-type: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    li {
+      display: inline-block;
+      margin-right: 10px;
+      padding: 8px 16px;
+      font-size: 16px;
+      background-color: #4caf50;
+      color: #fff;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    .facility-btn:hover {
+      background-color: #45a049;
+    }
+
+    #map_wrap {
+      position: relative;
+      overflow: hidden;
+      width: 1000px;
+      height: 600px;
+    }
+
+    #map {
+      width: 100%;
+      height: 500px;
+    }
+
+    #menu {
+      width: 300px;
+      height: 600px;
+      display: inline-block;
+    }
+
+    #placeList {
+      overflow: auto;
+      width: 250px;
+      height: 600px;
+    }
+
+    .item {
+      cursor: pointer;
+      overflow: hidden;
+      padding: 5px;
+      border-bottom: 1px solid #ddd;
+    }
+
+    .markerbg {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      width: 15px;
+      height: 15px;
+      background: url(http://t1.daumcdn.net/localimg/localimages/07/mapapidoc/marker_number_blue.png) no-repeat;
+      text-align: center;
+      color: #fff;
+      font-size: 10px;
+      font-weight: bold;
+      line-height: 16px;
+    }
+
+    .jibun {
+      font-size: 11px;
+      color: #888;
+      margin-top: 2px;
+    }
+
+    .tel {
+      margin-top: 2px;
+      color: #01a0e2;
+      font-size: 12px;
+    }
+
+    .item {
+      cursor: pointer;
+    }
+
+    .item:hover {
+      background-color: #45a049;
+    }
+  </style>
 </head>
 
 <body>
-  <form onsubmit="return false;">
-    <label>도로명 주소를 입력하세요 <input id="addressInput" type="text" placeholder="부산광역시 해운대구 우동"><input type="submit"
-        value="확인" onclick="searchAddress();"></label>
+  <form onsubmit="return searchAddress();">
+    <label>도로명 주소를 입력하세요 <input type="text" id="addressInput" placeholder="OO시 OO로 OO"><input type="submit"
+        id="search-btn" value="확인"></label>
   </form>
   <ul>
-    <li>노인 돌봄기관</li>
-    <li>노인 복지관</li>
-    <li>경로당</li>
-    <li>노인 교실</li>
-    <li>노인 급식시설</li>
-    <li>노인 요양시설</li>
+    <li class="facility-btn" onclick="facilities(null);">노인 돌봄기관</li>
+    <li class="facility-btn" onclick="facilities(bokji);">노인 복지관</li>
+    <li class="facility-btn" onclick="facilities(null);">경로당</li>
+    <li class="facility-btn" onclick="facilities(null);">노인 교실</li>
+    <li class="facility-btn" onclick="facilities(null);">노인 급식시설</li>
+    <li class="facility-btn" onclick="facilities(null);">노인 요양시설</li>
   </ul>
-  <div id="map" style="width: 750px; height: 500px;"></div>
-  <script src=""></script>
+  <div id="menu" style="width: 300px; height: 500px; display: inline-block;">
+    <ul id="placeList"></ul>
+    <div id="pagination"></div>
+  </div>
+  <div id="map_wrap">
+    <div id="menu">
+      <ul id="placeList"></ul>
+    </div>
+
+  </div>
+
+  <div id="map"></div>
+
+  <script src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=&libraries=services"></script>
+
   <script>
     var mapContainer = document.getElementById('map'), // 지도를 표시할 div
       mapOption = {
-        center: new kakao.maps.LatLng(35.179815, 129.074487), // 부산광역시 중심 좌표
-        level: 9, // 지도의 확대 레벨
+        center: new kakao.maps.LatLng(35.13417, 129.11397), // 지도의 중심좌표
+        level: 6, // 지도의 확대 레벨
       };
+    // 지도를 생성한다
 
     var map = new kakao.maps.Map(mapContainer, mapOption);
-    var marker = null;
+    // // 지도에 마커를 생성하고 표시한다
+
+    var clusterer = new kakao.maps.MarkerClusterer({
+      map: map,
+      averageCentr: true,
+      minLevel: 5,
+    });
+
+    var markers = [];
+
+
+    function facilities(data) {
+      removeMarkers();
+      clusterer.clear();
+
+      if (data != null) {
+        var centers = JSON.parse(JSON.stringify(data));
+        displayPlaces(centers);
+
+        for (var i = 0; i < centers.length; i++) {
+          var lat = centers[i]["위도"];
+          var lng = centers[i]["경도"];
+
+          var marker = new kakao.maps.Marker({
+            position: new kakao.maps.LatLng(lat, lng),
+            map: map,
+          });
+
+          var infoWindow = new kakao.maps.InfoWindow({
+            content: centers[i]["시설명"],
+          });
+
+          markers.push(marker);
+
+          kakao.maps.event.addListener(marker, "mouseover", mouseOverListener(map, marker, infoWindow));
+          kakao.maps.event.addListener(marker, "mouseout", mouseOutListener(infoWindow));
+        }
+
+        clusterer.addMarkers(markers);
+      }
+    }
+
+    function mouseOverListener(map, marker, infoWindow) {
+      return function () {
+        infoWindow.open(map, marker);
+      };
+    }
+
+    function mouseOutListener(infoWindow) {
+      return function () {
+        infoWindow.close();
+      };
+    }
+
+    function removeMarkers() {
+      for (var i = 0; i < markers.length; i++) {
+        markers[i].setMap(null);
+      }
+      markers = [];
+    }
+
+    function displayPlaces(places) {
+      var listEI = document.getElementById('placeList'),
+        menuEI = document.getElementById('menu'),
+        fragment = document.createDocumentFragment(),
+        bounds = new kakao.maps.LatLngBounds(),
+        listStr = "";
+
+      removeAllChildNods(listEI);
+
+      for (var i = 0; i < places.length; i++) {
+        var placePosition = new kakao.maps.LatLng(places[i]["위도"], places[i]["경도"]),
+          itemEI = getListItem(i, places[i]);
+
+        bounds.extend(placePosition);
+
+        fragment.appendChild(itemEI);
+      }
+
+      listEI.appendChild(fragment);
+      menuEI.scrollTop = 0;
+
+      map.setBounds(bounds);
+    }
+
+    function removeAllChildNods(el) {
+      while (el.hasChildNodes()) {
+        el.removeChild(el.lastChild);
+      }
+    }
+
+    function getListItem(index, places) {
+      var el = document.createElement('li');
+      itemStr = '<span class="markerbg marker_' + (index + 1) + '"></span>' +
+        '<div class="info">' + '	<h5>' + places["시설명"] + '</h5>';
+
+      itemStr += '	<span class="jibun gray">' + places["주소"] + '</span><br>';
+
+      itemStr += '	<span class="tel">' + places["전화번호"] + '</span>' + '</div>'
+
+      el.innerHTML = itemStr;
+      el.className = 'item';
+
+      return el;
+    }
+
 
     function searchAddress() {
       var address = document.getElementById('addressInput').value;
 
-      var geocoder = new kakao.maps.services.Geocoder();
-
-      // 이전에 표시된 마커가 있다면 제거합니다.
-      if (marker !== null) {
-        marker.setMap(null);
-      }
-
       // 주소로 좌표를 검색합니다
+      var geocoder = new kakao.maps.services.Geocoder();
       geocoder.addressSearch(address, function (result, status) {
+        // 정상적으로 검색이 완료됐으면
         if (status === kakao.maps.services.Status.OK) {
           var coords = new kakao.maps.LatLng(result[0].y, result[0].x);
-          marker = new kakao.maps.Marker({
-            map: map,
-            position: coords
-          });
-          var infowindow = new kakao.maps.InfoWindow({
-            content: '<div style="width:150px;text-align:center;padding:6px 0;">우리회사</div>'
-          });
-          infowindow.open(map, marker);
+
+          // 지도의 중심을 결과값으로 받은 위치로 이동시킵니다
           map.setCenter(coords);
         }
       });
+
+      return false;
     }
+
+
   </script>
 </body>
 
