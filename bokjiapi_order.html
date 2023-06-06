@@ -7,28 +7,43 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>복지시설 현황-노인</title>
 
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Jua&display=swap" rel="stylesheet">
+
+
   <style>
+    body {
+      background-color: #F1F5FF;
+      font-family: 'Jua', sans-serif;
+    }
+
     input[type="text"] {
       width: 300px;
       height: 30px;
       padding: 5px;
       font-size: 16px;
       border-radius: 5px;
+      border: 1px solid #ccc;
+      font-family: 'Jua', sans-serif;
     }
 
     input[type="submit"] {
-      padding: 5px 10px;
+      width: 70px;
+      height: 40px;
       font-size: 20px;
-      background-color: #4caf50;
+      margin-top: -5px;
+      background-color: #0099FF;
       color: #fff;
       border: none;
       cursor: pointer;
       border-radius: 5px;
       margin-left: 10px;
+      font-family: 'Jua', sans-serif;
     }
 
     input[type="submit"]:hover {
-      background-color: #45a049;
+      background-color: #0099CF;
     }
 
     ul {
@@ -40,16 +55,19 @@
     .facility li {
       display: inline-block;
       margin-right: 10px;
-      padding: 8px 16px;
-      font-size: 16px;
-      background-color: #4caf50;
+      font-size: 20px;
+      background-color: #0099FF;
       color: #fff;
       border-radius: 4px;
       cursor: pointer;
+      width: 150px;
+      height: 35px;
+      text-align: center;
+      padding-top: 10px;
     }
 
     .facility-btn:hover {
-      background-color: #45a049;
+      background-color: #0099C0;
     }
 
 
@@ -79,14 +97,27 @@
       color: white;
       font-size: 24px;
     }
+
+    #map {
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+      border-radius: 25px;
+      background-color: #fff;
+    }
+
+    #menu {
+      border-radius: 0;
+      background-color: #F1F5FF;
+
+    }
   </style>
 
 </head>
 
 <body>
   <form onsubmit="return searchAddress();">
-    <label>도로명 주소를 입력하세요 <input type="text" placeholder="주소를 입력해주세요." id="addressInput"
-        style="height: 30px; font-size: 20px;"><input type="submit" value="확인"></label>
+    <label id="roadway"><img src="media/free-icon-family-4547180.png" width="40px" height="40px"
+        style="margin-bottom: -10px; margin-right: 10px;"><input type="text" placeholder="도로명 주소를 입력하세요."
+        id="addressInput" style="height: 30px; font-size: 20px;"><input type="submit" value="확인"></label>
   </form>
   <ul class="facility" style="margin-top: 20px;">
     <li class="facility-btn" onclick="facilities('dolbom.json');">노인 돌봄기관</li>
@@ -108,15 +139,42 @@
   </div>
 
   <div id="map_wrap" style="margin-top: 20px;">
-    <div id="menu" style="width:500px; height: 600px; display:inline-block;">
-      <ul id="placeList" style="overflow:auto; width: 400px; height:600px;"></ul>
+    <div id="menu" style="width:420px; height: 600px; display:inline-block;">
+      <ul id="placeList" style="overflow:auto; width: 400px; height:600px;padding-left: 20px;"></ul>
     </div>
     <div id="map" style="width: 750px; height: 600px; display:inline-block;"></div>
   </div>
 
 
-  <script src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=c&libraries=services,clusterer"></script>
+  <script src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=&libraries=services,clusterer"></script>
   <script>
+
+    // HTML 버튼 요소들을 가져옵니다.
+    var facilityButtons = document.querySelectorAll('.facility-btn');
+
+    // 메뉴 요소를 가져옵니다.
+    var menu = document.getElementById('menu');
+
+    // 버튼 클릭 이벤트에 대한 핸들러 함수를 정의합니다.
+    function buttonClickHandler(event) {
+      // 선택된 버튼의 색상을 변경합니다.
+      facilityButtons.forEach(function (button) {
+        if (button === event.target) {
+          button.style.backgroundColor = '#0099C0';
+          button.style.boxShadow = "0 0 10px rgba(0, 0, 0, 0.2)";
+          menu.style.backgroundColor = "#FFFFFF";
+          menu.style.borderRadius = "25px";
+          menu.style.boxShadow = "0 0 10px rgba(0, 0, 0, 0.2)";
+        } else {
+          button.style.backgroundColor = '#0099FF';
+        }
+      });
+    }
+
+    // 각 버튼에 클릭 이벤트 핸들러를 등록합니다.
+    facilityButtons.forEach(function (button) {
+      button.addEventListener('click', buttonClickHandler);
+    });
 
     function facilities(url) {
 
@@ -239,7 +297,7 @@
     function getListItem(index, places) {
       var el = document.createElement('li');
       itemStr = '<span class="markerbg marker_' + (index + 1) + "></span>" +
-        '<div class="info">' + '	<h5>' + places["시설명"] + '</h5>';
+        '<div class="info">' + '	<h4>' + places["시설명"] + '</h4>';
 
       itemStr += '	<span class="jibun gray">' + places["주소"] + '</span><br>';
 
@@ -282,7 +340,7 @@
 
           // 인포윈도우로 장소에 대한 설명을 표시합니다
           var infowindow = new kakao.maps.InfoWindow({
-            content: '<div style="width:150px;text-align:center;padding:6px 0;">' + address + '</div>'
+            content: '<div style="width: 200px; text-align: center; padding: 6px 0; font-size: 20px;">' + address + '</div>'
           });
           infowindow.open(map, marker);
 

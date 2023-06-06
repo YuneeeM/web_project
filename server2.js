@@ -21,6 +21,10 @@ app.get('/jinryo.json', (req, res) => {
   res.sendFile(path.join(__dirname, 'jinryo.json'));
 });
 
+app.get('/media/free-icon-help-7071035.png', (req, res) => {
+  res.sendFile(path.join(__dirname, '/media/free-icon-help-7071035.png'));
+});
+
 
 app.listen(port, () => {
   console.log(`서버가 http://localhost:${port} 에서 실행 중입니다.`);

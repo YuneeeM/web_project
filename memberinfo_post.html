@@ -7,10 +7,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>맞춤정보를 입력해주세요!</title>
 
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Jua&display=swap" rel="stylesheet">
 
   <style>
     body {
       background-color: #F1F5FF;
+      font-family: 'Jua', sans-serif;
     }
 
     /* 입력 폼 스타일 */
@@ -56,11 +60,11 @@
 
     .residence-input input[type="button"] {
       flex: 1;
-      background-color: #4caf50;
-      color: #fff;
+      background-color: #0099FF;
+      color: #FFFFFF;
       cursor: pointer;
+      border: 1px solid #ffff;
     }
-
 
     input,
     select {
@@ -69,24 +73,41 @@
       margin-bottom: 10px;
       border: 1px solid #ccc;
       border-radius: 3px;
+      font-family: 'Jua', sans-serif;
     }
 
     input[type="submit"] {
-      background-color: #4caf50;
-      color: #fff;
+      background-color: #0099FF;
+      border: 1px solid #ffff;
+      color: #FFFFFF;
       cursor: pointer;
       margin-inline-start: 10px;
+      font-family: 'Jua', sans-serif;
     }
 
     input[type="submit"]:hover,
     .residence-input input[type="button"]:hover {
-      background-color: #45a049;
+      background-color: #0099CF;
+      font-family: 'Jua', sans-serif;
+    }
+
+    h1 {
+      margin-left: -30px;
+    }
+
+    h1 img {
+      width: 40px;
+      height: 40px;
+      margin-right: 10px;
+      margin-bottom: -8px;
+      align-items: center;
+      justify-content: center;
     }
   </style>
 </head>
 
 <body>
-  <h1 style="text-align: center; color:#003F5F">맞춤정보 입력</h1>
+  <h1 style="text-align: center; color:#003F5F"><img src="media/free-icon-demand-1935064.png">맞춤정보 입력</h1>
   <form id="member-form">
     <label for="name">이름</label>
     <input type="text" id="name" name="name" placeholder="이름을 입력해주세요." required><br><br>

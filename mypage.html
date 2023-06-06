@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>마이페이지</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Jua&display=swap" rel="stylesheet">
+
+  <style>
+    body {
+      background-color: #F1F5FF;
+      font-family: 'Jua', sans-serif;
+    }
+
+    /* 페이지 컨테이너 스타일 */
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+      border-radius: 32px;
+      background-color: #FFFFFF;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    }
+
+    /* 제목 스타일 */
+    h1 {
+      text-align: center;
+      color: #003F5F;
+      margin-bottom: 40px;
+    }
+
+    /* 박스 컨테이너 스타일 */
+    .box-container {
+      display: flex;
+      justify-content: space-between;
+      font-family: 'Jua', sans-serif;
+    }
+
+    /* 박스 스타일 */
+    .box {
+      flex-basis: calc(25% - 10px);
+      margin-bottom: 20px;
+      padding: 10px;
+      border: 1px solid none;
+      border-radius: 5px;
+      background-color: #D2EDFF;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+    }
+
+    /* 박스 간격 */
+    .box+.box {
+      margin-inline-start: 20px;
+    }
+
+    /* 박스 호버 스타일 */
+    .box:hover {
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    }
+
+    /* 상세화면 스타일 */
+    .detail {
+      margin-top: 20px;
+      padding: 20px;
+      border: 1px solid none;
+      border-radius: 5px;
+      background-color: #F1F5FF;
+
+    }
+
+    /* 상세화면 숨김 */
+    .detail {
+      display: none;
+    }
+
+    /* 상세화면 표시 */
+    .detail.show {
+      display: block;
+    }
+  </style>
+
+  <script>
+    // 상세화면 표시 함수
+    function showDetail(detailId) {
+      // 모든 상세화면 숨김
+      var details = document.getElementsByClassName("detail");
+      for (var i = 0; i < details.length; i++) {
+        details[i].classList.remove("show");
+      }
+
+      // 선택한 상세화면 표시
+      document.getElementById(detailId).classList.add("show");
+    }
+
+
+
+
+
+
+
+
+  </script>
+</head>
+
+<body>
+  <div class="container">
+    <h1>마이페이지</h1>
+
+    <!-- 박스 컨테이너 -->
+    <div class="box-container">
+      <!-- 회원정보 박스 -->
+      <div class="box" onclick="showDetail('detail-1')">회원정보</div>
+
+      <!-- 검색기록 박스 -->
+      <div class="box" onclick="showDetail('detail-2')">검색기록</div>
+
+      <!-- 좋아요한 게시물 박스 -->
+      <div class="box" onclick="showDetail('detail-3')">좋아요한 게시물</div>
+
+      <!-- 좋아요한 일자리 박스 -->
+      <div class="box" onclick="showDetail('detail-4')">좋아요한 일자리</div>
+    </div>
+
+    <!-- 상세화면 1 -->
+    <div id="detail-1" class="detail">
+      <!-- 상세화면 내용 -->
+      <!-- 내용을 추가하세요 -->
+    </div>
+
+    <!-- 상세화면 2 -->
+    <div id="detail-2" class="detail">
+      <!-- 상세화면 내용 -->
+      <!-- 내용을 추가하세요 -->
+    </div>
+
+    <!-- 상세화면 3 -->
+    <div id="detail-3" class="detail">
+      <!-- 상세화면 내용 -->
+      <!-- 내용을 추가하세요 -->
+    </div>
+
+    <!-- 상세화면 4 -->
+    <div id="detail-4" class="detail">
+      <!-- 상세화면 내용 -->
+      <!-- 내용을 추가하세요 -->
+    </div>
+  </div>
+
+
+  <script>
+    // 상세화면 표시 함수
+    function showDetail(detailId) {
+      var detailElement = document.getElementById(detailId);
+
+      // 상세화면이 이미 표시되어 있는 경우 숨김 처리
+      if (detailElement.classList.contains("show")) {
+        detailElement.classList.remove("show");
+      } else {
+        // 모든 상세화면 숨김
+        var details = document.getElementsByClassName("detail");
+        for (var i = 0; i < details.length; i++) {
+          details[i].classList.remove("show");
+        }
+
+        // 선택한 상세화면 표시
+        detailElement.classList.add("show");
+      }
+    }
+  </script>
+</body>
+
+</html>
