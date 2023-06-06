@@ -83,16 +83,54 @@
 <body>
   <h1 style="text-align: center; color:#003F5F"><img src="media/free-icon-login-2250207.png">로그인</h1>
   <form>
-    <label for=" userid">사용자명</label>
+    <label for="userid">사용자명</label>
     <input type="text" id="userid" name="userid" placeholder="아이디를 입력해주세요." required><br><br>
 
     <label for="password">비밀번호</label>
     <input type="password" id="password" name="password" placeholder="비밀번호를 입력해주세요." required><br><br>
 
-    <input type="submit" value="로그인">
+    <input type="submit" value="로그인" onclick="login()">
     <h5 id="sign-up" style="text-align: center; margin-top: 10px; "><a href="./signuppage.html"
         style="text-decoration: none; color: #003F5F;">아직 회원이 아니신가요?</a></h5>
   </form>
+
+  <script>
+    // 로그인 버튼 클릭 시 실행되는 함수
+    const url = 'userdata.json';
+
+    function login() {
+      // 입력한 아이디와 비밀번호 가져오기
+      var userId = document.getElementById('userid').value;
+      var password = document.getElementById('password').value;
+
+      if (url) {
+        fetch(url)
+          .then(response => response.json())
+          .then(data => {
+
+            for (let i = 0; i < data.length; i++) {
+              const user = data[i];
+              if (user.userid === userId && user.password === password) {
+                // 일치할 경우 startpage.html로 이동
+                redirectToMainPost();
+                return; // 일치하는 사용자를 찾았으므로 더 이상 반복할 필요가 없음
+              }
+            }
+
+            // 일치하는 사용자가 없을 경우 에러 메시지 표시
+            alert('아이디 또는 비밀번호가 잘못되었습니다.');
+
+          })
+          .catch(error => {
+            console.error('데이터를 불러오는 중 오류가 발생했습니다.', error);
+          });
+      }
+    }
+
+    function redirectToMainPost() {
+      window.location.href = 'startpage.html';
+    }
+  </script>
 
 
 </body>

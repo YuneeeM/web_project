@@ -5,7 +5,7 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>회원가입</title>
+  <title>회원정보 수정</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -107,43 +107,41 @@
 </head>
 
 <body>
-  <h1 style="text-align: center; color:#003F5F"><img src="media/free-icon-up-sign-3601914.png">회원가입</h1>
-  <form id="signup-form">
-    <label for="userid">아이디</label>
-    <input type="text" id="userid" name="userid" placeholder="아이디를 입력해주세요." required><br><br>
+  <h1 style="text-align: center; color:#003F5F"><img src="media/free-icon-correction-tape-3196902.png">회원 정보 수정</h1>
+  <form id="user-form">
 
     <label for="password">비밀번호</label>
-    <input type="password" id="password" name="password" placeholder="비밀번호를 입력해주세요." required><br><br>
+    <input type="password" id="password" name="password" placeholder="새로운 비밀번호를 입력해주세요."><br><br>
 
     <label for="phone">전화번호</label>
-    <input type="tel" id="phone" name="phone" placeholder="전화번호를 입력해주세요." required><br><br>
+    <input type="tel" id="phone" name="phone" placeholder="변경할 전화번호를 입력해주세요."><br><br>
 
     <label for="birth">생년월일</label>
-    <input type="date" id="birth" name="birth" placeholder="생년월일을 입력해주세요.(YYYY-MM-DD)" required><br><br>
+    <input type="date" id="birth" name="birth" placeholder="변경할 생년월일을 입력해주세요.(YYYY-MM-DD)"><br><br>
 
     <label for="age">나이</label>
-    <input type="number" id="age" name="age" placeholder="나이를 입력해주세요." required><br><br>
+    <input type="number" id="age" name="age" placeholder="변경할 나이를 입력해주세요."><br><br>
 
     <label for="gender" style="margin-bottom: 30px;">성별</label>
 
     <div class="gender-inputs">
       <label for="male">남성</label>
-      <input type="radio" id="male" name="gender" value="male" required>
+      <input type="radio" id="male" name="gender" value="male">
       <label for="female">여성</label>
-      <input type="radio" id="female" name="gender" value="female" required>
+      <input type="radio" id="female" name="gender" value="female">
     </div>
     <br>
 
     <label for="residence">거주지</label>
 
     <div class="residence-input">
-      <input type="text" id="residence" name="residence" placeholder="도로명 주소를 입력해주세요." required>
+      <input type="text" id="residence" name="residence" placeholder="변경할 도로명 주소를 입력해주세요.">
       <input type="button" value="검색" id="search-btn">
     </div>
     <br>
 
     <label for="income">평균 소득</label>
-    <input type="number" id="income" name="income" placeholder="평균소득을 입력해주세요." required><br><br>
+    <input type="number" id="income" name="income" placeholder="변경할 평균소득을 입력해주세요."><br><br>
 
     <label for="gagu">가구유형</label>
     <select id="gagu" name="gagu" required>
@@ -152,11 +150,11 @@
     </select><br><br>
 
     <label for="occupation">직업</label>
-    <input type="text" id="occupation" name="occupation" placeholder="직업을 입력해주세요." required><br><br>
+    <input type="text" id="occupation" name="occupation" placeholder="변경할 직업을 입력해주세요."><br><br>
 
 
     <label for="education">학력</label>
-    <select id="education" name="education" required>
+    <select id="education" name="education">
       <option value="">선택하세요</option>
       <option value="중졸 이하">중졸 이하</option>
       <option value="고졸/대졸(2~3년)">고졸/대졸(2~3년)</option>
@@ -166,14 +164,15 @@
     </select>
     <br><br>
 
-    <input type="submit" value="가입하기">
+    <input type="submit" value="변경하기">
   </form>
 
 
   <script src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=&libraries=services">
+    const apiKey = process.env.API_KEY;
   </script>
   <script>
-    const form = document.getElementById('signup-form');
+    const form = document.getElementById('user-form');
     const addressInput = document.getElementById('residence');
     const searchBtn = document.getElementById('search-btn');
 
@@ -191,6 +190,9 @@
               const roadAddress = result[0].road_address.address_name;
               console.log('도로명 주소:', roadAddress);
               document.getElementById('residence').value = roadAddress;
+
+              // 폼 제출
+              form.submit();
             }
           } else {
             console.log('주소 검색에 실패했습니다.');
@@ -199,11 +201,11 @@
       }
     });
 
+
     form.addEventListener('submit', function (event) {
       event.preventDefault();
 
-      // 사용자가 입력한 값들 가져오기
-      const userid = document.getElementById('userid').value;
+      // 입력된 데이터 가져오기
       const password = document.getElementById('password').value;
       const phone = document.getElementById('phone').value;
       const birth = document.getElementById('birth').value;
@@ -215,20 +217,8 @@
       const occupation = document.getElementById('occupation').value;
       const education = document.getElementById('education').value;
 
-      // personid 값을 localStorage에서 가져와서 다음 값을 계산
-      let personId = localStorage.getItem('personid');
-      if (!personId) {
-        personId = 0;
-      }
-      const nextPersonId = Number(personId) + 1;
-
-      // personid 값을 localStorage에 저장
-      localStorage.setItem('personid', nextPersonId);
-
-      // 회원가입 정보를 JSON 형식으로 구성
+      // 데이터를 객체로 저장
       const userData = {
-        personid: nextPersonId,
-        userid: userid,
         password: password,
         phone: phone,
         birth: birth,
@@ -241,43 +231,20 @@
         education: education
       };
 
-      // 서버로 회원가입 정보 전송
-      fetch('/register', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(userData)
-      })
-        .then(response => {
-          console.log('회원가입 완료');
-          // personid 값을 JSON 파일에 저장
-          fetch('/personid.json', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ personid: nextPersonId })
-          })
-            .then(response => {
-              console.log('personid 저장 완료');
-              // 회원가입 완료 후 처리할 로직 작성
-              // login.html 페이지로 이동
-              window.location.href = 'loginpage.html';
-            })
-            .catch(error => {
-              console.error('personid 저장 실패:', error);
-            });
-        })
-        .catch(error => {
-          console.error('회원가입 실패:', error);
-        });
+      // 데이터를 localStorage에 저장
+      localStorage.setItem('userData', JSON.stringify(userData));
 
+      // 저장된 데이터 확인
+      console.log('저장된 데이터:', localStorage.getItem('userData'));
+
+      // 폼 초기화
       form.reset();
     });
-  </script>
 
   </script>
+
+
+
 </body>
 
 </html>

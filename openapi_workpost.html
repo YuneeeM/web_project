@@ -64,7 +64,7 @@
       const end = start + pageSize; // 현재 페이지에 해당하는 데이터 끝 인덱스
 
       fetch(url)
-        .then((res) => res.json())
+        .then((response) => response.json())
         .then((resJson) => {
           if (
             resJson.getJobOpnngInfo &&
