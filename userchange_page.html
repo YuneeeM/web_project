@@ -15,6 +15,12 @@
     body {
       background-color: #F1F5FF;
       font-family: 'Jua', sans-serif;
+      font-size: 20px;
+    }
+
+    h1 {
+      font-size: 50px;
+      margin-left: -30px;
     }
 
     /* 입력 폼 스타일 */
@@ -31,6 +37,8 @@
       display: block;
       margin-bottom: 10px;
       font-weight: bold;
+      font-size: 23px;
+      margin-inline-start: 10px;
     }
 
     .gender-inputs {
@@ -65,6 +73,7 @@
       color: #fff;
       cursor: pointer;
       font-family: 'Jua', sans-serif;
+      font-size: 20px;
     }
 
 
@@ -76,6 +85,7 @@
       border: 1px solid #ccc;
       border-radius: 3px;
       font-family: 'Jua', sans-serif;
+      font-size: 20px;
     }
 
     input[type="submit"] {
@@ -83,6 +93,7 @@
       color: #fff;
       cursor: pointer;
       margin-inline-start: 10px;
+      font-size: 20px;
     }
 
     input[type="submit"]:hover,
@@ -90,16 +101,12 @@
       background-color: #0099CF;
     }
 
-    h1 {
-      margin-left: -30px;
-    }
-
 
     h1 img {
       width: 40px;
       height: 40px;
       margin-right: 10px;
-      margin-bottom: -8px;
+      margin-bottom: -5px;
       align-items: center;
       justify-content: center;
     }
@@ -125,9 +132,9 @@
     <label for="gender" style="margin-bottom: 30px;">성별</label>
 
     <div class="gender-inputs">
-      <label for="male">남성</label>
+      <label for="male" style="font-size: 19px;">남성</label>
       <input type="radio" id="male" name="gender" value="male">
-      <label for="female">여성</label>
+      <label for="female" style="font-size: 19px;">여성</label>
       <input type="radio" id="female" name="gender" value="female">
     </div>
     <br>

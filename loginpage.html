@@ -15,6 +15,12 @@
     body {
       background-color: #F1F5FF;
       font-family: 'Jua', sans-serif;
+      font-size: 20px;
+    }
+
+    h1 {
+      font-size: 50px;
+      margin-left: -30px;
     }
 
     /* 입력 폼 스타일 */
@@ -31,6 +37,8 @@
       display: block;
       margin-bottom: 10px;
       font-weight: bold;
+      font-size: 23px;
+      margin-inline-start: 10px;
     }
 
     input,
@@ -42,14 +50,15 @@
       border: 1px solid #ccc;
       border-radius: 5px;
       font-family: 'Jua', sans-serif;
+      font-size: 20px;
     }
 
     input[type="submit"] {
-      height: 40px;
+      height: 50px;
       background-color: #0099FF;
       color: #fff;
       cursor: pointer;
-      font-size: 16px;
+      font-size: 20px;
       margin-inline-start: 10px;
       font-family: 'Jua', sans-serif;
     }
@@ -64,16 +73,12 @@
 
     }
 
-    h1 {
-      margin-left: -30px;
-    }
-
 
     h1 img {
       width: 40px;
       height: 40px;
       margin-right: 10px;
-      margin-bottom: -8px;
+      margin-bottom: -5px;
       align-items: center;
       justify-content: center;
     }
@@ -89,7 +94,7 @@
     <label for="password">비밀번호</label>
     <input type="password" id="password" name="password" placeholder="비밀번호를 입력해주세요." required><br><br>
 
-    <input type="submit" value="로그인" onclick="login()">
+    <input type="submit" value="로그인" onclick="login()" id="login-btn">
     <h5 id="sign-up" style="text-align: center; margin-top: 10px; "><a href="./signuppage.html"
         style="text-decoration: none; color: #003F5F;">아직 회원이 아니신가요?</a></h5>
   </form>
@@ -112,6 +117,7 @@
               const user = data[i];
               if (user.userid === userId && user.password === password) {
                 // 일치할 경우 startpage.html로 이동
+                saveAuthToken(user)
                 redirectToMainPost();
                 return; // 일치하는 사용자를 찾았으므로 더 이상 반복할 필요가 없음
               }
@@ -125,11 +131,60 @@
             console.error('데이터를 불러오는 중 오류가 발생했습니다.', error);
           });
       }
+
+
     }
 
     function redirectToMainPost() {
       window.location.href = 'startpage.html';
     }
+
+    // 로그인 버튼 클릭 이벤트 핸들러
+    document.getElementById('login-btn').addEventListener('click', function (event) {
+      event.preventDefault();
+
+      // 입력한 사용자 정보 가져오기
+      const inputUserId = document.getElementById('userid').value;
+      const inputPassword = document.getElementById('password').value;
+
+      // localStorage에서 사용자 정보 가져오기
+      const users = JSON.parse(localStorage.getItem('users'));
+
+      // 사용자 정보 확인
+      const user = users.find(user => user.userid === inputUserId && user.password === inputPassword);
+
+      if (user) {
+        // 로그인 성공
+        // 다음 페이지로 이동하는 로직 작성
+        saveAuthToken(user)
+        window.location.href = 'startpage.html';
+      } else {
+        // 로그인 실패
+        // 실패 처리 로직 작성 (예: 오류 메시지 출력)
+        console.log('로그인 실패');
+      }
+    });
+
+    // 로그인 성공 시 토큰 생성 및 저장
+    function saveAuthToken(user) {
+      // 토큰 생성
+      const token = generateToken(user);
+
+      // 토큰을 localStorage에 저장
+      localStorage.setItem('authToken', token);
+    }
+
+    // 토큰 생성 함수 (예시)
+    function generateToken(user) {
+      // 사용자 정보를 기반으로 토큰 생성 로직 작성
+      // 예시로 간단히 userid를 토큰으로 사용
+      return user.personid;
+    }
+
+
+
+
+
   </script>
 
 

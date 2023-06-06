@@ -15,6 +15,7 @@
     body {
       background-color: #F1F5FF;
       font-family: 'Jua', sans-serif;
+      font-size: 20px;
     }
 
     /* 입력 폼 스타일 */
@@ -31,6 +32,8 @@
       display: block;
       margin-bottom: 10px;
       font-weight: bold;
+      font-size: 23px;
+      margin-inline-start: 10px;
     }
 
     .gender-inputs {
@@ -65,6 +68,7 @@
       color: #fff;
       cursor: pointer;
       font-family: 'Jua', sans-serif;
+      font-size: 20px;
     }
 
 
@@ -76,6 +80,7 @@
       border: 1px solid #ccc;
       border-radius: 3px;
       font-family: 'Jua', sans-serif;
+      font-size: 20px;
     }
 
     input[type="submit"] {
@@ -83,6 +88,7 @@
       color: #fff;
       cursor: pointer;
       margin-inline-start: 10px;
+      font-size: 20px;
     }
 
     input[type="submit"]:hover,
@@ -92,6 +98,7 @@
 
     h1 {
       margin-left: -30px;
+      font-size: 50px;
     }
 
 
@@ -99,7 +106,7 @@
       width: 40px;
       height: 40px;
       margin-right: 10px;
-      margin-bottom: -8px;
+      margin-bottom: -5px;
       align-items: center;
       justify-content: center;
     }
@@ -127,9 +134,9 @@
     <label for="gender" style="margin-bottom: 30px;">성별</label>
 
     <div class="gender-inputs">
-      <label for="male">남성</label>
+      <label for="male" style="font-size: 19px;">남성</label>
       <input type="radio" id="male" name="gender" value="male" required>
-      <label for="female">여성</label>
+      <label for="female" style="font-size: 19px;">여성</label>
       <input type="radio" id="female" name="gender" value="female" required>
     </div>
     <br>
@@ -240,6 +247,14 @@
         occupation: occupation,
         education: education
       };
+
+      //데이터를 저장할 배열 생성
+      let users = [];
+
+      users.push(userData);
+
+      // 배열을 JSON 문자열로 변환하여 localStorage에 저장
+      localStorage.setItem("users", JSON.stringify(users));
 
       // 서버로 회원가입 정보 전송
       fetch('/register', {
