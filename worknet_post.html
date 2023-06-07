@@ -128,7 +128,7 @@
         <col width="20%">
       </colgroup>
       <thead>
-        <tr onclick="redirectToDetailsPage('workpost_details.html', this)">
+        <tr>
           <th>회사명/정보제공처</th>
           <th>채용공고명/담당업무/지원자격</th>
           <th>근무조건</th>
@@ -136,49 +136,8 @@
         </tr>
       </thead>
       <tbody>
-        <tr onclick="redirectToDetailsPage('workpost_details.html', this)">
-          <td>
-            회사명/정보제공처
-          </td>
-          <td>채용공고명/담당업무/지원자격</td>
-          <td>근무조건</td>
-          <td>등록/마감일</td>
-        </tr>
-
-        <tr onclick="redirectToDetailsPage('workpost_details.html', this)">
-          <td>
-            회사명/정보제공처
-          </td>
-          <td>채용공고명/담당업무/지원자격</td>
-          <td>근무조건</td>
-          <td>등록/마감일</td>
-        </tr>
-
-        <tr onclick="redirectToDetailsPage('workpost_details.html', this)">
-          <td>
-            회사명/정보제공처
-          </td>
-          <td>채용공고명/담당업무/지원자격</td>
-          <td>근무조건</td>
-          <td>등록/마감일</td>
-        </tr>
-
-        <tr onclick="redirectToDetailsPage('workpost_details.html', this)">
-          <td>
-            회사명/정보제공처
-          </td>
-          <td>채용공고명/담당업무/지원자격</td>
-          <td>근무조건</td>
-          <td>등록/마감일</td>
-        </tr>
-
-        <tr onclick="redirectToDetailsPage('workpost_details.html', this)">
-          <td>
-            회사명/정보제공처
-          </td>
-          <td>채용공고명/담당업무/지원자격</td>
-          <td>근무조건</td>
-          <td>등록/마감일</td>
+        <tr>
+          <td></td>
         </tr>
       </tbody>
     </table>
@@ -217,7 +176,7 @@
           let html = '';
           for (let i = start; i < end && i < totalData; i++) {
             const { "회사명/정보제공처": company, "채용공고명/담당업무/지원자격": jobTitle, "근무조건": workingCondition, "등록/마감일": registrationDate } = data[i];
-            html += `<tr>
+            html += `<tr onclick="redirectToDetailsPage('worknet_details.html', this)">
                   <td>${company}</td>
                   <td>${jobTitle}</td>
                   <td>${workingCondition}</td>

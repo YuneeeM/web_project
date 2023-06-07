@@ -142,6 +142,44 @@
       box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
       background-color: #0892f6;
     }
+
+    #detail-4 table {
+      border-collapse: collapse;
+      text-align: center;
+    }
+
+    #detail-4 thead {
+      display: table-header-group;
+      vertical-align: middle;
+    }
+
+    #detail-4>table>thead>tr {
+      background-color: #0892f6;
+      color: #FFFFFF;
+      height: 20px;
+      border-bottom: 2px solid slategray;
+    }
+
+    table th,
+    table td {
+      padding: 8px;
+      border-right: 1px solid #ccc;
+      border-bottom: 1px solid #ccc;
+    }
+
+    table th:last-child,
+    table td:last-child {
+      border-right: none;
+    }
+
+    #like img {
+      margin-right: 5px;
+
+    }
+
+    #like {
+      margin-top: -10px;
+    }
   </style>
 
   <script>
@@ -162,8 +200,8 @@
 
 <body>
 
-  <div class="logout"><span>로그아웃</span><img src="media/free-icon-arrow-10900295.png" alt="로그아웃" width="60px"
-      height="50px"></div>
+  <div class="logout" onclick="logout()"><span>로그아웃</span><img src="media/free-icon-arrow-10900295.png" alt="로그아웃"
+      width="60px" height="50px"></div>
   <div class="container">
     <h1 style="text-align: center; color:#003F5F"><img src="media/free-icon-developer-4293722.png">마이페이지</h1>
 
@@ -172,14 +210,14 @@
       <!-- 회원정보 박스 -->
       <div class="box" onclick="showDetail1()">회원정보</div>
 
-      <!-- 검색기록 박스 -->
-      <div class="box" onclick="showDetail('detail-2')">검색기록</div>
+      <!-- 작성기록 박스 -->
+      <div class="box" onclick="showDetail('detail-2')">게시물 작성</div>
 
       <!-- 좋아요한 게시물 박스 -->
       <div class="box" onclick="showDetail('detail-3')">좋아요한 게시물</div>
 
       <!-- 좋아요한 일자리 박스 -->
-      <div class="box" onclick="showDetail('detail-4')">좋아요한 일자리</div>
+      <div class="box" onclick="showDetail('detail-4'), addLikedJobsToTable()">좋아요한 일자리</div>
     </div>
 
     <!-- 회원정보 1 -->
@@ -225,7 +263,29 @@
     <!-- 상세화면 4 -->
     <div id="detail-4" class="detail">
       <!-- 상세화면 내용 -->
-      <!-- 내용을 추가하세요 -->
+      <h3 id="like"><img src="media/free-icon-hearts-138533.png" width="20px" height="20px" alt="좋아요">좋아요한 일자리</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>회사명/정보제공처</th>
+            <th>채용공고명/담당업무/지원자격</th>
+            <th>근무조건</th>
+            <th>등록/마감일</th>
+            <th>정보제공</th>
+          </tr>
+          <colgroup>
+            <col width="15%">
+            <col width="35%">
+            <col width="20%">
+            <col width="20%">
+            <col width="10%">
+          </colgroup>
+        </thead>
+        <tbody id="liked-jobs">
+          <!-- 좋아요한 일자리 행들이 여기에 동적으로 추가될 것입니다 -->
+        </tbody>
+      </table>
+      <p id="message"></p>
     </div>
   </div>
 
@@ -318,6 +378,90 @@
       document.getElementById('d_job').textContent = printcontent.occupation;
       document.getElementById('d_edu').textContent = printcontent.education;
 
+    }
+
+
+    // 좋아요한 일자리를 테이블에 동적으로 추가하는 함수
+    function addLikedJobsToTable() {
+
+      var tbody = document.getElementById("liked-jobs");
+      var messageElement = document.getElementById("message");
+
+      // 기존 내용 초기화
+      tbody.innerHTML = "";
+
+      // localStorage에서 worknet_list 가져오기
+      var worknetList = JSON.parse(localStorage.getItem("worknet_list")) || [];
+
+      // localStorage에서 openapi_list 가져오기
+      var openapiList = JSON.parse(localStorage.getItem("openapi_list")) || [];
+
+      // localStorage에서 authToken 가져오기
+      var token = parseInt(localStorage.getItem("authToken")) || 0;
+
+
+      // authToken과 personid 값이 일치하는 경우에만 테이블에 추가
+      var filteredWorknetList = worknetList.filter(function (job) {
+        return String(job.personid) === String(token);
+      });
+
+      console.log(filteredWorknetList);
+
+      var filteredOpenapiList = openapiList.filter(function (job) {
+        return String(job.personid) === String(token);
+      });
+
+
+      // 좋아요를 누른 일자리가 없는 경우 메시지 출력
+      if (filteredWorknetList.length === 0 && filteredOpenapiList.length === 0) {
+        tbody.innerHTML = "<tr><td colspan='6'>좋아요를 누른 일자리가 없습니다.</td></tr>";
+      }
+
+      if (filteredWorknetList.length > 0 || filteredOpenapiList.length > 0) {
+        // worknet_list의 일자리를 테이블에 추가
+        filteredWorknetList.forEach(function (job) {
+          var row = document.createElement("tr");
+          row.innerHTML = `
+          <td>${job.company}</td>
+          <td>${job.title}</td>
+          <td>${job.working}</td>
+          <td>${job.date}</td>
+          <td>${job.info}</td>
+      `;
+          tbody.appendChild(row);
+        });
+
+        // openapi_list의 일자리를 테이블에 추가
+        filteredOpenapiList.forEach(function (job) {
+          var row = document.createElement("tr");
+          row.innerHTML = `
+          <td>${job.company}</td>
+          <td>${job.title}</td>
+          <td>${job.working}</td>
+          <td>${job.date}</td>
+          <td>${job.info}</td>
+      `;
+          tbody.appendChild(row);
+        });
+      } else {
+        messageElement.innerText = "좋아요를 눌린 일자리가 없습니다.";
+      }
+    }
+
+    // 페이지가 로드될 때 좋아요한 일자리를 테이블에 추가
+    window.addEventListener("DOMContentLoaded", addLikedJobsToTable);
+
+    function logout() {
+      // 확인 메시지 출력
+      var confirmLogout = confirm("정말 로그아웃하시겠습니까?");
+
+      if (confirmLogout) {
+        // authToken 값을 null로 변경
+        localStorage.setItem("authToken", null);
+
+        // startpage.html로 이동
+        window.location.href = "startpage.html";
+      }
     }
   </script>
 </body>

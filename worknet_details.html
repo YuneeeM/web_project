@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>사설 일자리 - 일자리 정보 상세</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Jua&display=swap" rel="stylesheet">
+</head>
+
+<style>
+  body {
+    font-size: 20px;
+    font-family: 'Jua', sans-serif;
+  }
+
+  a {
+    text-decoration: none;
+  }
+
+  .location a::before {
+    content: '>';
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    margin-right: 5px;
+    color: #bbb;
+  }
+
+  .contents .title-util .title {
+    padding-left: 10px;
+  }
+
+  .board-view {
+    word-break: break-all;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    border-top-left-radius: 25px;
+    border-top-right-radius: 25px;
+  }
+
+  .board-view .title-area {
+    display: table;
+    width: 100%;
+    background-color: #e4eff2;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    border-top-left-radius: 25px;
+    border-top-right-radius: 25px;
+  }
+
+  .board-view .title-area .title {
+    display: table-cell;
+    margin: 0;
+    padding: 20px 20px;
+    color: #333;
+
+  }
+
+  .board-view .title-area .date {
+    display: table-cell;
+    width: 180px;
+    margin-right: 20px;
+    padding: 0;
+    text-align: left;
+    vertical-align: middle;
+  }
+
+  .board-view .info {
+    display: table;
+    margin: 0 auto;
+    width: 100%;
+    table-layout: fixed;
+  }
+
+  .board-view .info p {
+    display: table-cell;
+    padding: 15px 0;
+    vertical-align: top;
+  }
+
+  .board-view .info p.title {
+    width: 100px;
+    padding: 15px 5px 15px 20px;
+    color: #333;
+    font-weight: 700;
+  }
+
+  .board-list-view .span {
+    padding-left: 10px;
+    display: inline-block;
+    position: relative;
+    margin-left: 9px;
+  }
+
+  .board-view .cont {
+    width: 100%;
+    padding: 20px;
+    border-top: 1px solid #e6e6e6;
+
+  }
+
+  .help_worknet {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    margin-right: 30px;
+  }
+
+  .help_worknet p#work_tag {
+    order: 1;
+  }
+
+  .help_worknet a {
+    order: 2;
+  }
+
+  .back-button {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    margin-right: 20px;
+    margin-left: auto;
+    background-color: #10a1fbbc;
+    width: 50px;
+    height: 30px;
+    text-align: center;
+    border-radius: 5px;
+    color: #fff;
+  }
+
+  .back-button a::after {
+    color: #fff;
+  }
+
+  .back-button a:visited {
+    color: #fff;
+  }
+
+  .cont {
+    height: 70%;
+    width: 100%;
+  }
+
+  .reply-box {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 20px;
+  }
+
+  .like_info {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    /* 요소 사이의 간격 설정 */
+  }
+
+
+  .u_ico {
+    width: 20px;
+    height: 20px;
+    margin-right: 6px;
+    background-image: url(media/heart.png)
+  }
+
+  .like_article.clicked .u_ico {
+    animation: pulse 1s;
+  }
+
+  @keyframes pulse {
+    0% {
+      transform: scale(1);
+    }
+
+    50% {
+      transform: scale(1.2);
+    }
+
+    100% {
+      transform: scale(1);
+    }
+  }
+</style>
+
+<body>
+  <div class="container" id="container">
+    <div class="sub-title">
+      <div class="location">
+        <i class="iconset ico-home">홈</i>
+        <a>일자리</a>
+        <a href="./worknet_post.html">사설 일자리 정보</a>
+        <a href="./worknet_details.html"><strong>일자리 상세 정보</strong></a>
+      </div>
+    </div>
+    <div class="inner-wrap no-lnb">
+      <div id="contents">
+        <section id="contents">
+          <div class="title-util">
+            <h2 class="title">일자리 상세 정보</h2>
+          </div>
+          <section class="board-view">
+            <div class="title-area">
+              <h3 class="title" id="post-title">제목</h3>
+            </div>
+            <div class="info">
+              <p class="title" style="width:200px">회사명/정보제공처</p>
+              <p class="txt" id="company">워크넷</p>
+            </div>
+            <div class="info">
+              <p class="title">첨부파일</p>
+              <p class="add-file">
+                <a href="">첨부파일이 없습니다.</a>
+              </p>
+            </div>
+            <div class="cont" id="post-content">
+              <h3 id="element1">채용공고명 / 담당업무 / 지원자격</h3>
+              <p id="element1-content"></p>
+              <p id="element1-address"></p>
+              <h3 id="element2">근무조건</h3>
+              <p id="element2-content"></p>
+              <h3 id="element3">등록 / 마감일</h3>
+              <p id="element3-content"></p>
+
+              <div class="help_worknet">
+                <p id="work_tag">자세한 내용 확인 ↓</p>
+                <a href="https://www.work.go.kr/empInfo/empInfoSrch/list/dtlEmpSrchList.do"><img
+                    src="media/worknet_logo.jpg" alt="워크넷" width="200px" height="100px"></a>
+              </div>
+
+            </div>
+          </section>
+        </section>
+      </div>
+    </div>
+  </div>
+
+  <div class="reply-box">
+    <div class="box_left">
+      <div class="like_info">
+        <span class="u_ico _icon"><img src="media/heart.png" alt="좋아요" width="17px" height="17px"></span>
+        <em class="u_txt _label">좋아요</em>
+        <em class="u_cnt _count">0</em>
+      </div>
+    </div>
+  </div>
+
+  <div class="back-button" id="back-button"><a href="worknet_post.html">목록</a></div>
+
+  <script>
+    // URL 매개변수 가져오기
+    const urlParams = new URLSearchParams(window.location.search);
+
+    const title = urlParams.get('jobTitle');
+    const company = urlParams.get('company');
+    const working = urlParams.get('workingCondition');
+    const date = urlParams.get('registrationDate');
+
+    // "담당업무" 이전과 이후의 글자 추출
+    const jobTitleWithBreak = title.replace(/[.*-]/g, '<br>');
+    const startIndex = jobTitleWithBreak.indexOf('담당');
+    const endIndex = startIndex !== -1 ? startIndex + 2 : jobTitleWithBreak.length;
+    const jobTitle = jobTitleWithBreak.substring(0, startIndex).trim();
+    let remainingText = jobTitleWithBreak.substring(startIndex).trim();
+    const addressStartIndex = remainingText.indexOf('부산');
+    const address = remainingText.substring(addressStartIndex);
+
+    remainingText = remainingText.substring(0, addressStartIndex).trim();
+
+
+    // id가 'company'인 HTML 요소의 내용 업데이트
+    const companyElement = document.getElementById('company');
+
+    //id가 'post-title'인 HTML 요소의 내용 업데이트
+    const titleElement = document.getElementById('post-title');
+    const content1 = document.getElementById('element1-content');
+    const content2 = document.getElementById('element2-content');
+    const content3 = document.getElementById('element3-content');
+    const content1_1 = document.getElementById('element1-address');
+
+
+    companyElement.textContent = company;
+    titleElement.innerHTML = jobTitle;
+    content1.innerHTML = remainingText;
+    content1_1.textContent = address;
+    content2.textContent = working;
+    content3.textContent = date;
+
+
+    // worknet_list 배열을 localStorage에서 가져오기
+    let worknet_list = localStorage.getItem('worknet_list');
+    if (worknet_list) {
+      worknet_list = JSON.parse(worknet_list);
+    } else {
+      worknet_list = [];
+    }
+
+    // 좋아요 버튼 클릭 이벤트 처리
+    const likeButton = document.querySelector('.like_info');
+    const likeCount = document.querySelector('.u_cnt');
+
+    likeButton.addEventListener('click', function () {
+      // 좋아요 수 증가
+      const currentCount = parseInt(likeCount.textContent);
+      const updatedCount = currentCount + 1;
+      likeCount.textContent = updatedCount;
+
+
+      const token = localStorage.getItem('authToken');
+      const worknetItem = {
+        personid: token,
+        title: title,
+        company: company,
+        working: working,
+        date: date,
+        likeCount: updatedCount,  // 좋아요 개수 저장
+        info: "사설"
+      };
+
+      // worknet_list에 작업 정보 추가
+      worknet_list.push(worknetItem);
+
+      // worknet_list 배열을 localStorage에 저장
+      localStorage.setItem('worknet_list', JSON.stringify(worknet_list));
+    });
+
+    // 좋아요 개수와 제목 출력
+    function displayLikeCountAndTitle() {
+      const currentURL = window.location.href;
+
+      // 현재 URL에 해당하는 작업 정보 찾기
+      const currentWorknet = worknet_list.find(item => item.title === title);
+      if (currentWorknet) {
+        likeCount.textContent = currentWorknet.likeCount;
+        const titleElement = document.getElementById('post-title');
+        titleElement.textContent = currentWorknet.title;
+      }
+    }
+
+    // 페이지 로드 시 좋아요 개수와 제목 출력
+    displayLikeCountAndTitle();
+
+
+
+
+  </script>
+</body>
+
+</html>
