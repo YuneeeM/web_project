@@ -5,75 +5,215 @@
   <meta charset="UTF-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link rel="stylesheet" type="text/css" href="style_postwrite.css" />
-  <title>노인을 위한 웹 사이트 - 취업게시판 글쓰기</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Jua&display=swap" rel="stylesheet">
+
+  <title>웃는시간 - 취업게시판 글쓰기</title>
+
+  <style>
+    body {
+      background-color: #F1F5FF;
+      font-family: 'Jua', sans-serif;
+      font-size: 20px;
+    }
+
+    h1 {
+      font-size: 50px;
+      margin-left: -30px;
+    }
+
+    a {
+      text-decoration: none;
+    }
+
+    #banner_header {
+      text-align: center;
+    }
+
+    /* 입력 폼 스타일 */
+    form {
+      max-width: 500px;
+      margin: 0 auto;
+      padding: 20px;
+      border-radius: 32px;
+      background-color: #FFFFFF;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    }
+
+    label {
+      display: block;
+      margin-bottom: 10px;
+      font-weight: bold;
+      font-size: 23px;
+      margin-inline-start: 10px;
+    }
+
+    input,
+    select {
+      width: 95%;
+      height: 30px;
+      padding: 10px;
+      margin-bottom: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      font-family: 'Jua', sans-serif;
+      font-size: 20px;
+    }
+
+    textarea {
+      width: 95%;
+      height: 300px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      font-family: 'Jua', sans-serif;
+      font-size: 20px;
+      padding: 10px;
+
+    }
+
+    input[type="submit"] {
+      height: 50px;
+      background-color: #0099FF;
+      color: #fff;
+      cursor: pointer;
+      font-size: 20px;
+      margin-inline-start: 10px;
+      font-family: 'Jua', sans-serif;
+    }
+
+    input[type="submit"]:hover {
+      font-family: 'Jua', sans-serif;
+      background-color: #0099CF;
+    }
+
+    h1 img {
+      width: 40px;
+      height: 40px;
+      margin-right: 10px;
+      margin-bottom: -5px;
+      align-items: center;
+      justify-content: center;
+    }
+
+
+    .list-button {
+      margin-top: 10px;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      margin-right: 20px;
+      margin-left: auto;
+      background-color: #10a1fbbc;
+      width: 80px;
+      height: 31px;
+      text-align: center;
+      border-radius: 5px;
+      color: #fff;
+
+    }
+
+    .list-button:hover {
+      background-color: #1289d3bc;
+    }
+
+    .list-button a::after {
+      color: #fff;
+    }
+
+    .list-button a:visited {
+      color: #fff;
+    }
+  </style>
 </head>
 
 <body>
   <div id="banner_header">
-    <h2>취업 리뷰</h2>
+    <h1 style="text-align: center; color:#003F5F"><img src="media/free-icon-instagram-post-5660560.png">취업리뷰</h1>
     <p>취업 성공을 위해 다른 회원들과 소중한 경험을 나누는 공간입니다.</p>
     <p>작성한 정보를 통해 입사 지원시 유용한 정보를 활용하시기 바랍니다.</p>
   </div>
 
-  <div id="blank"></div>
-  <!-- 새 게시물 제출 양식 -->
   <form id="post-form" enctype="multipart/form-data">
     <label for="title">제목</label>
-    <input type="text" id="title" name="title" />
-    <br />
-    <label for="writer">작성자</label>
-    <input type="text" id="writer" name="writer" />
-    <br>
+    <input type="text" id="title" name="title" required><br><br>
+
     <label for="content">내용</label>
-    <textarea id="content" name="content"></textarea>
-    <br />
+    <textarea id="content" name="content" required></textarea><br><br>
+
     <label for="attachment" style="text-align: left;">첨부파일</label>
-    <input type="file" id="attachment" name="attachment" />
-    <br />
-    <button type="submit">등록</button>
+    <input type="file" id="attachment" name="attachment" /><br><br>
+
+    <input type="submit" value="등록" id="register-btn">
 
   </form>
 
-  <div id="list">
-    <button id="list-button">목록</button>
-  </div>
+  <div id="list-button" class="list-button"><a href="main_post.html">목록</a></div>
 
   <script>
     const postForm = document.querySelector("#post-form");
+
     const listButton = document.querySelector("#list-button");
 
     postForm.addEventListener("submit", function (event) {
       event.preventDefault();
 
       const titleInput = document.querySelector("#title");
-      const writerInput = document.querySelector("#writer");
       const contentInput = document.querySelector("#content");
       const attachmentInput = document.querySelector("#attachment");
 
       const title = titleInput.value;
-      const writer = writerInput.value;
       const content = contentInput.value;
       const attachment = attachmentInput.files[0]; // 첨부파일 정보
 
       const createdDate = new Date().toLocaleString("ko-KR", { timeZone: "Asia/Seoul" }); // 현재 시간 (한국 시간)
 
-      const post = { title, writer, content, attachment, createdDate };
+      // 로컬스토리지에서 토큰값(personid) 가져오기
+      var token = parseInt(localStorage.getItem('authToken'));
 
-      let posts = JSON.parse(localStorage.getItem("posts")) || [];
-      posts.push(post);
-      localStorage.setItem("posts", JSON.stringify(posts));
+      // 로컬스토리지에서 users 배열 가져오기
+      var storedUsers = JSON.parse(localStorage.getItem('users'));
 
-      titleInput.value = "";
-      writerInput.value = "";
-      contentInput.value = "";
-      attachmentInput.value = null; // 첨부파일 input 초기화
+
+      var printcontent = storedUsers.filter(function (user) {
+        return user.personid === token;
+      });
+
+      console.log(printcontent);
+
+      if (printcontent.length > 0) {
+        var writer = printcontent[0].userid; // writer에 userid 저장
+
+        console.log(writer);
+
+        // 저장된 post_list 가져오기
+        let postList = JSON.parse(localStorage.getItem("post_list")) || [];
+
+        // 현재 글의 순번 계산
+        const postNumber = postList.length + 1;
+
+        // 새로운 글 객체 생성
+        const post = { postNumber, title, content, attachment, createdDate, writer };
+
+        // post_list에 새로운 글 추가
+        postList.push(post);
+
+        // post_list를 localStorage에 저장
+        localStorage.setItem("post_list", JSON.stringify(postList));
+
+        titleInput.value = "";
+        contentInput.value = "";
+        attachmentInput.value = null; // 첨부파일 input 초기화
+
+        window.location.href = "main_post.html";
+      } else {
+        // 인증 실패 처리
+        console.log("인증에 실패하였습니다.");
+      }
     });
 
-    listButton.addEventListener("click", function () {
-      window.location.href = "main_post.html";
-    });
   </script>
+
 </body>
 
 </html>

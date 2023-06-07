@@ -6,7 +6,184 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>노인을 위한 웹 사이트 - 취업게시판 목록</title>
-  <link rel="stylesheet" type="text/css" href="style_mainpost.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Jua&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-size: 20px;
+      font-family: 'Jua', sans-serif;
+      background-color: #F1F5FF;
+    }
+
+    .location a::before {
+      content: '>';
+      display: inline-block;
+      width: 10px;
+      height: 10px;
+      margin-right: 5px;
+      color: #bbb;
+    }
+
+    a:visited {
+      color: inherit;
+    }
+
+    .location a {
+      text-decoration: underline;
+    }
+
+    .sub-visual-title {
+      margin-bottom: 40px;
+    }
+
+    .sub-visual-title .visual {
+      display: inline-block;
+      vertical-align: middle;
+    }
+
+
+    .sub-visual-title .info {
+      display: inline-block;
+      vertical-align: middle;
+      margin-left: 10px;
+      /* 필요한 경우 이미지와 글자 사이의 간격 조정 */
+    }
+
+    .sub-visual-title .info .title {
+      display: block;
+      margin-bottom: 5px;
+    }
+
+    .sub-visual-title .info .txt {
+      display: block;
+    }
+
+    .write-btn {
+      margin-top: 10px;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      margin-right: 20px;
+      margin-left: auto;
+      background-color: #10a1fbbc;
+      width: 80px;
+      height: 30px;
+      text-align: center;
+      border-radius: 5px;
+      color: #fff;
+
+    }
+
+    .write-btn:hover {
+      background-color: #1289d3bc;
+    }
+
+    .write-btn a::after {
+      color: #fff;
+    }
+
+    .write-btn a:visited {
+      color: #fff;
+    }
+
+    table caption {
+      overflow: hidden;
+      visibility: hidden;
+      ;
+    }
+
+    .board-list>thead>tr>th {
+      border-bottom: 1px solid #e6e6e6;
+      height: 48px;
+      padding: 7px 5px;
+      background-color: #f7f7f7;
+      font-weight: 700;
+    }
+
+    table {
+      display: table;
+      text-indent: initial;
+      border-spacing: 2px;
+      width: 100%;
+      table-layout: fixed;
+      border-collapse: collapse;
+      empty-cells: show;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    }
+
+    thead {
+      display: table-header-group;
+      vertical-align: middle;
+      border-color: inherit;
+    }
+
+    .board-list {
+      line-height: 2;
+    }
+
+    tbody {
+      display: table-row-group;
+      vertical-align: middle;
+      border-color: inherit;
+      background-color: #fff;
+    }
+
+    tr {
+      display: table-row;
+      vertical-align: inherit;
+      border-color: inherit;
+    }
+
+    table th,
+    table td {
+      padding: 0;
+      word-break: break-all;
+    }
+
+    .board-list>tbody>tr>th,
+    .board-list>tbody>tr>td {
+      height: 48px;
+      padding: 16px 5px;
+      border: 1px solid #f5f7f9;
+      border-width: 0 0 1px 0;
+      border-color: #e4ebf1;
+      text-align: center;
+      word-break: break-all;
+
+    }
+
+    .pagination {
+      clear: both;
+      position: relative;
+      margin: 0 auto;
+      padding: 30px 0 0 0;
+      text-align: center;
+    }
+
+    .pagination .active,
+    .pagination a:hover {
+      color: #fff;
+      line-height: 32px;
+      background-color: #911ebf;
+      border: 0;
+    }
+
+    .pagination a,
+    .pagination strong,
+    .pagination .control {
+      display: inline-block;
+      position: relative;
+      min-width: 30px;
+      height: 30px;
+      padding: 0 4px;
+      text-decoration: none;
+      line-height: 30px;
+      color: #666;
+      font-weight: normal;
+      vertical-align: middle;
+    }
+  </style>
 </head>
 
 <body>
@@ -43,11 +220,11 @@
       <table class="board-list">
         <caption>노인 노숙인 취업사례 목록</caption>
         <colgroup>
-          <col style="width: 100px;">
-          <col>
-          <col style="width: 160px;">
-          <col style="width: 140px;">
-          <col style="width: 140px;">
+          <col width="10%">
+          <col width="30%">
+          <col width="20%">
+          <col width="20%">
+          <col width="20%">
         </colgroup>
         <thead>
           <tr>
@@ -62,9 +239,8 @@
           <!-- 동적으로 생성되는 부분 -->
         </tbody>
       </table>
-      <div id="write-button" class="right-align">
-        <button id="back-write"><a href="post_write.html">글쓰기</a></button>
-      </div>
+      <div class="write-btn" id="write-btn"><a href="post_write.html" style="text-decoration: none;">글쓰기</a></div>
+
     </div>
     <nav class="pagination">
       <strong class="active">1</strong>
@@ -72,125 +248,71 @@
   </div>
 
   <script>
-    const postTableBody = document.getElementById("post-table-body");
-    const pagination = document.querySelector(".pagination");
-    const postsPerPage = 5;
-    let currentPage = 1;
 
-    /*전체 건수 계산*/
-    const postCountElement = document.querySelector(".count .font-lblue");
-    const posts = JSON.parse(localStorage.getItem("posts")) || [];
-    const postCount = posts.length;
-    postCountElement.textContent = postCount;
+    // post_list를 localStorage에서 검색합니다.
+    const postList = JSON.parse(localStorage.getItem('post_list'));
 
-    function renderPostList() {
-      const posts = JSON.parse(localStorage.getItem("posts")) || [];
-      const startIndex = (currentPage - 1) * postsPerPage;
-      const endIndex = startIndex + postsPerPage;
-      const currentPosts = posts.slice(startIndex, endIndex);
+    // 테이블 본문 요소에 대한 참조를 가져옵니다.
+    const tableBody = document.getElementById('post-table-body');
 
-      postTableBody.innerHTML = "";
+    // post_list 데이터를 기반으로 동적으로 테이블 행과 셀을 생성합니다.
+    if (postList && postList.length > 0) {
+      postList.forEach((post, index) => {
+        // 새로운 테이블 행을 생성합니다.
+        const row = document.createElement('tr');
 
-      currentPosts.forEach((post, index) => {
-        const row = document.createElement("tr");
-        const numberCell = document.createElement("td");
-        const titleCell = document.createElement("td");
-        const authorCell = document.createElement("td");
-        const likesCell = document.createElement("td");
-        const dateCell = document.createElement("td");
-
-        // 제목을 클릭하면 상세 페이지로 이동
-        const titleLink = document.createElement("a");
-        titleLink.href = `post_detail.html?id=${startIndex + index}&likes=${post.likes || 0}`;
-        titleLink.textContent = post.title;
-        titleLink.addEventListener("click", () => {
-          window.location.href = titleLink.href;
-        });
-
-        titleCell.appendChild(titleLink);
-
-
-        // 번호 셀
-        const numberLink = document.createElement("a");
-        numberLink.textContent = startIndex + index + 1;
-        numberLink.href = `post_detail.html?id=${startIndex + index}&likes=${post.likes || 0}`;
-        numberCell.appendChild(numberLink);
-
-
-        // 작성자를 클릭하면 상세 페이지로 이동
-        const authorLink = document.createElement("a");
-        authorLink.href = `post_detail.html?id=${startIndex + index}&likes=${post.likes || 0}`;
-        authorLink.textContent = post.writer;
-        authorLink.addEventListener("click", () => {
-          window.location.href = authorLink.href;
-        });
-        authorCell.appendChild(authorLink);
-
-
-        // 좋아요 수 표시
-        const likes = post.likes || 0;
-        likesCell.textContent = likes;
-        likesCell.addEventListener("click", () => {
-          window.location.href = likesCell.href;
-        });
-
-        // 등록일 표시
-        dateCell.textContent = post.createdDate;
-        dateCell.addEventListener("click", () => {
-          window.location.href = dateCell.href;
-        });
-
-        // 순서를 동적으로 받아 번호로 표시
-        const number = startIndex + index + 1;
-        numberCell.textContent = number;
-
+        // 번호 셀을 생성하고 값 설정합니다.
+        const numberCell = document.createElement('td');
+        numberCell.textContent = index + 1;
         row.appendChild(numberCell);
+
+        // 제목 셀을 생성하고 값 설정합니다.
+        const titleCell = document.createElement('td');
+        titleCell.textContent = post.title;
         row.appendChild(titleCell);
+
+        // 작성자 셀을 생성하고 값 설정합니다.
+        const authorCell = document.createElement('td');
+        authorCell.textContent = post.writer;
         row.appendChild(authorCell);
+
+        // 좋아요 수 셀을 생성하고 값 설정합니다.
+        const likesCell = document.createElement('td');
+        likesCell.textContent = post.likes ? post.likes : 0; // 저장된 값이 존재하면 출력하고, 없으면 0을 출력합니다.
         row.appendChild(likesCell);
+
+        // 등록일 셀을 생성하고 값 설정합니다.
+        const dateCell = document.createElement('td');
+        dateCell.textContent = post.createdDate;
         row.appendChild(dateCell);
 
-        postTableBody.appendChild(row);
+        // 생성된 행을 테이블 본문에 추가합니다.
+        tableBody.appendChild(row);
       });
-      renderPagination(posts.length);
 
-      // 좋아요 수를 반영하여 표시
-      const likeCounts = document.querySelectorAll(".u_cnt._count");
-      likeCounts.forEach((likeCount, index) => {
-        const postId = startIndex + index;
-        const post = posts[postId];
-        if (post) {
-          likeCount.textContent = post.likes || 0;
-        }
-      });
-    }
+      // 전체 게시물 개수를 가져옵니다.
+      const totalCount = postList ? postList.length : 0;
+
+      // 전체 게시물 개수를 표시하는 요소에 접근합니다.
+      const countElement = document.querySelector('.count strong.font-lblue');
+
+      // 개수를 업데이트합니다.
+      countElement.textContent = totalCount;
 
 
-    function renderPagination(totalPosts) {
-      pagination.innerHTML = "";
+      // 동적으로 생성된 행들에 대해 클릭 이벤트를 추가합니다.
+      const rows = document.querySelectorAll('#post-table-body tr');
+      rows.forEach((row, index) => {
+        row.addEventListener('click', () => {
+          // 해당 게시물의 상세 페이지 URL을 가져옵니다.
+          const postDetailURL = `./post_detail.html?id=${index}`;
 
-      const totalPages = Math.ceil(totalPosts / postsPerPage);
-
-      for (let i = 1; i <= totalPages; i++) {
-        const pageLink = document.createElement("a");
-        pageLink.href = "#";
-        pageLink.textContent = i;
-
-        if (i === currentPage) {
-          pageLink.classList.add("active");
-        }
-
-        pageLink.addEventListener("click", () => {
-          currentPage = i;
-          renderPostList();
+          // 상세 페이지로 이동합니다.
+          window.location.href = postDetailURL;
         });
-
-        pagination.appendChild(pageLink);
-      }
+      });
     }
 
-    // 페이지 다시 렌더링
-    renderPostList();
 
 
   </script>

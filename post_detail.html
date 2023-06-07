@@ -5,8 +5,250 @@
   <meta charset="UTF-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link rel="stylesheet" type="text/css" href="style_postdetail.css" />
   <title>노인을 위한 웹 사이트 - 취업게시판 상세</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Jua&display=swap" rel="stylesheet">
+
+
+  <style>
+    body {
+      font-size: 20px;
+      font-family: 'Jua', sans-serif;
+    }
+
+    a {
+      text-decoration: none;
+    }
+
+    a:visited {
+      color: inherit;
+    }
+
+    .location a {
+      text-decoration: underline;
+    }
+
+
+    #post-details {
+      border: 1dp black;
+      width: 200px;
+      height: 200px;
+      border-radius: 25px;
+
+    }
+
+    .location a::before {
+      content: '>';
+      display: inline-block;
+      width: 10px;
+      height: 10px;
+      margin-right: 5px;
+      color: #bbb;
+    }
+
+    .contents .title-util .title {
+      padding-left: 10px;
+    }
+
+    .board-view {
+
+      word-break: break-all;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+      border-top-left-radius: 25px;
+      border-top-right-radius: 25px;
+    }
+
+
+    .board-view .title-area {
+      display: table;
+      width: 100%;
+      background-color: #e4eff2;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+      border-top-left-radius: 25px;
+      border-top-right-radius: 25px;
+    }
+
+
+    .board-view .title-area .title {
+      display: table-cell;
+      margin: 0;
+      padding: 15px 20px;
+      color: #333;
+    }
+
+    .board-view .title-area .date {
+      display: table-cell;
+      width: 180px;
+      margin-right: 20px;
+      padding: 0;
+      text-align: left;
+      vertical-align: middle;
+    }
+
+    .board-view .info {
+      display: table;
+      margin: 0 auto;
+      width: 100%;
+      table-layout: fixed;
+    }
+
+    .board-view .info p {
+      display: table-cell;
+      padding: 15px 0;
+      vertical-align: top;
+    }
+
+    .board-view .info p.title {
+      width: 100px;
+      padding: 15px 5px 15px 20px;
+      color: #333;
+      font-weight: 700;
+    }
+
+    .board-list-view .span {
+      padding-left: 10px;
+      display: inline-block;
+      position: relative;
+      margin-left: 9px;
+    }
+
+    .board-view .cont {
+      width: 100%;
+      padding: 20px;
+      border-top: 1px solid #e6e6e6;
+    }
+
+    .prev-next {
+      border: 1px solid #e6e6e6;
+      border-width: 1px 0;
+    }
+
+    .prev-next .line {
+      display: flex;
+      align-items: center;
+      padding: 0 0 0 100px;
+      word-break: break-all;
+    }
+
+    .prev-next .line .title {
+      display: flex;
+      align-items: center;
+    }
+
+    .prev-next .line .title i {
+      margin-left: 4px;
+      margin-right: 5px;
+    }
+
+    .prev-next .line .link {
+      display: inline-block;
+      line-height: 50px;
+      margin-left: 8px;
+    }
+
+    .arr-prev-list {
+      width: 15px;
+      height: 15px;
+      background-image: url(media/free-icon-up-arrow-3385656.png);
+    }
+
+    .arr-next-list {
+      width: 15px;
+      height: 15px;
+      background-image: url(media/free-icon-arrow-down-sign-to-navigate-32195.png);
+    }
+
+    .iconset {
+      overflow: hidden;
+      display: inline-block;
+      margin-bottom: 10px;
+      padding: 0;
+      font-size: 0;
+      line-height: 0;
+      vertical-align: middle;
+      background-position: 0 0;
+      background-repeat: no-repeat;
+      background-size: 100% auto;
+    }
+
+    .prev-next .line a.link-a {
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      width: 100%;
+      padding: 0 20px 0 0;
+      color: #333;
+      font-weight: 700;
+    }
+
+    .back-button {
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      margin-right: 20px;
+      margin-left: auto;
+      background-color: #10a1fbbc;
+      width: 50px;
+      height: 30px;
+      text-align: center;
+      border-radius: 5px;
+      color: #fff;
+    }
+
+    .back-button a::after {
+      color: #fff;
+    }
+
+    .back-button a:visited {
+      color: #fff;
+    }
+
+    .cont {
+      height: 30vh;
+      width: 100%;
+    }
+
+    .reply-box {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 20px;
+    }
+
+    .like_info {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      /* 요소 사이의 간격 설정 */
+    }
+
+
+    .u_ico {
+      width: 20px;
+      height: 20px;
+      margin-right: 6px;
+      background-image: url(media/heart.png)
+    }
+
+    .like_article.clicked .u_ico {
+      animation: pulse 1s;
+    }
+
+    @keyframes pulse {
+      0% {
+        transform: scale(1);
+      }
+
+      50% {
+        transform: scale(1.2);
+      }
+
+      100% {
+        transform: scale(1);
+      }
+    }
+  </style>
 </head>
 
 <body>
@@ -73,13 +315,10 @@
     </div>
   </div>
 
-  <div id="back-button">
-    <button id="back-post"><a href="main_post.html">목록</a></button>
-  </div>
+  <div class="back-button" id="back-button"><a href="main_post.html">목록</a></div>
 
-  <div id="delete-button">
-    <button id="delete-post">삭제</button>
-  </div>
+  <div class="back-button" id="back-button"><a href="">삭제</a></div>
+
 
   <script>
     const postContent = document.getElementById("post-content");
