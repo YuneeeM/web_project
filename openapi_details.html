@@ -259,12 +259,12 @@
     const date = urlParams.get('registrationDate');
 
     // "담당업무" 이전과 이후의 글자 추출
-    const jobTitleWithBreak = title.replace(/[.*-]/g, '<br>');
-    const startIndex = jobTitleWithBreak.indexOf('담당업무');
-    const endIndex = startIndex !== -1 ? startIndex + 4 : jobTitleWithBreak.length;
+    const startIndex = title.indexOf('/');
+    const jobTitleWithBreak = title.replace(/[/]/g, '<br>');
+    const endIndex = startIndex !== -1 ? startIndex + 1 : title.length;
     const jobTitle = jobTitleWithBreak.substring(0, startIndex).trim();
     let remainingText = jobTitleWithBreak.substring(startIndex).trim();
-    const addressStartIndex = remainingText.indexOf('부산');
+    const addressStartIndex = remainingText.indexOf('부산 ');
     const address = remainingText.substring(addressStartIndex);
 
     remainingText = remainingText.substring(0, addressStartIndex).trim();
@@ -284,13 +284,13 @@
     companyElement.textContent = company;
     titleElement.innerHTML = jobTitle;
     content1.innerHTML = remainingText;
-    content1_1.textContent = address;
+    content1_1.innerHTML = address;
     content2.textContent = working;
     content3.textContent = date;
 
 
     // openapi_list 배열을 localStorage에서 가져오기
-    let openapi_list = localStorage.getItem('worknet_list');
+    let openapi_list = localStorage.getItem('openapi_list');
     if (openapi_list) {
       openapi_list = JSON.parse(openapi_list);
     } else {
@@ -309,8 +309,8 @@
 
 
       const token = localStorage.getItem('authToken');
-      const worknetItem = {
-        persionid: token,
+      const openapiItem = {
+        personid: token,
         title: title,
         company: company,
         working: working,
@@ -321,10 +321,10 @@
       };
 
       // worknet_list에 작업 정보 추가
-      worknet_list.push(worknetItem);
+      openapi_list.push(openapiItem);
 
       // worknet_list 배열을 localStorage에 저장
-      localStorage.setItem('worknet_list', JSON.stringify(worknet_list));
+      localStorage.setItem('openapi_list', JSON.stringify(openapi_list));
     });
 
     // 좋아요 개수와 제목 출력

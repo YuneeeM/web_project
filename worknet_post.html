@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" type="text/css" href="style_workpost.css" />
-  <title>노인 일자리 현황-사설</title>
+  <title>노인,노숙인 일자리 현황-사설</title>
 
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -110,6 +110,28 @@
     .board-list>tbody>tr>td {
       padding-left: 10px;
     }
+
+    .pagination div:hover {
+      background-color: #0b8ddebc;
+      color: #ffffff;
+    }
+
+    .pagination-button {
+      display: inline-block;
+      width: 25px;
+      height: 25px;
+      text-align: center;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+      background-color: #10a1fbbc;
+      color: #ffffff;
+      cursor: pointer;
+    }
+
+    .pagination-button.active {
+      background-color: #0b8ddebc;
+      color: #ffffff;
+    }
   </style>
 </head>
 
@@ -198,16 +220,31 @@
 
       // 페이지네이션 버튼 생성 및 추가
       for (let i = 1; i <= totalPages; i++) {
-        const button = document.createElement('button');
+        const button = document.createElement('div');
         button.textContent = i;
+        button.classList.add('pagination-button'); // 버튼에 클래스 추가
         button.addEventListener('click', () => {
           currentPage = i;
           updateTableData(currentPage);
+
+          // 페이지네이션 버튼 클릭 시 스타일 변경
+          updatePaginationStyle();
         });
         paginationContainer.appendChild(button);
       }
     }
 
+    // 페이지네이션 스타일 업데이트 함수
+    function updatePaginationStyle() {
+      const buttons = paginationContainer.querySelectorAll('.pagination-button');
+
+      buttons.forEach((button) => {
+        button.classList.remove('active'); // 모든 버튼의 active 클래스 제거
+      });
+
+      // 현재 페이지 버튼에 active 클래스 추가
+      buttons[currentPage - 1].classList.add('active');
+    }
     // 초기 데이터 로딩
     updateTableData(currentPage);
 

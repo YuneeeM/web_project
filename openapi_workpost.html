@@ -5,24 +5,150 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" type="text/css" href="style_workpost.css" />
-  <title>노인 일자리 현황(공공)</title>
+  <title>노인,노숙인 일자리 현황-공공</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Jua&display=swap" rel="stylesheet">
+
+  <style>
+    body {
+      background-color: #F1F5FF;
+      font-family: 'Jua', sans-serif;
+      font-size: 20px;
+    }
+
+    .default_box {
+      margin-bottom: 30px;
+    }
+
+    th:nth-child(1),
+    td:nth-child(1) {
+      width: 10%;
+    }
+
+    th:nth-child(2),
+    td:nth-child(2) {
+      width: 50%;
+    }
+
+    td:nth-child(2),
+    td:nth-child(3) {
+      color: rgb(116, 116, 116);
+    }
+
+    th:nth-child(3),
+    td:nth-child(3),
+    th:nth-child(4),
+    td:nth-child(4) {
+      width: 20%;
+    }
+
+    .board-list>thead>tr>th {
+      border-bottom: 3px solid #e6e6e6;
+      height: 48px;
+      background-color: aliceblue;
+      font-weight: 700;
+    }
+
+    table {
+      display: table;
+      text-indent: initial;
+      width: 100%;
+      table-layout: fixed;
+      border-collapse: collapse;
+      empty-cells: show;
+      table-layout: fixed;
+      width: 100%;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+      border-radius: 25px;
+      margin-top: 10px;
+    }
+
+    thead {
+      display: table-header-group;
+      vertical-align: middle;
+      border-color: inherit;
+
+    }
+
+    .board-list {
+      line-height: 2;
+    }
+
+    tbody {
+      display: table-row-group;
+      vertical-align: middle;
+      border-color: inherit;
+      background-color: #ffffff;
+    }
+
+    tr {
+      display: table-row;
+      vertical-align: inherit;
+      border-color: inherit;
+    }
+
+    table th,
+    table td {
+      padding: 0;
+      word-break: break-all;
+    }
+
+    .board-list>tbody>tr>th,
+    .board-list>tbody>tr>td {
+      height: 48px;
+      border: 1px solid #f5f7f9;
+      border-width: 0 0 1px 0;
+      border-color: #e4ebf1;
+      text-align: center;
+      word-break: break-all;
+
+    }
+
+    .board-list>tbody>tr>td {
+      padding-left: 10px;
+    }
+
+    .pagination div:hover {
+      background-color: #0b8ddebc;
+      color: #ffffff;
+    }
+
+    .pagination-button {
+      display: inline-block;
+      width: 25px;
+      height: 25px;
+      text-align: center;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+      background-color: #10a1fbbc;
+      color: #ffffff;
+      cursor: pointer;
+    }
+
+    .pagination-button.active {
+      background-color: #0b8ddebc;
+      color: #ffffff;
+    }
+  </style>
+
 </head>
 
 <body>
 
   <div id="content">
     <div id="default_box">
-      <h1 class="title title_content">구인정보(공공)</h1>
+      <h1 class="title title_content">공공 구인정보</h1>
       <span class="title_sub">앞선 맞춤형 정보 기반으로 구인정보을 알려드립니다.</span>
     </div>
     <!--리스트형태 시작-->
     <table class="board-list" style="width: 100%" ;>
       <colgroup>
-        <col width="5%">
-        <col width="45%">
-        <col width="25%">
-        <col width="25%">
+        <col width="20%">
+        <col width="40%">
+        <col width="20%">
+        <col width="20%">
       </colgroup>
       <thead>
         <tr>
@@ -48,7 +174,7 @@
   <div id="pagination"></div>
 
   <script>
-    const url = 'https://apis.data.go.kr/6260000/BusanJobOpnngInfoService/getJobOpnngInfo?serviceKey=&numOfRows=50&pageNo=1&resultType=json';
+    const url = '';
     const pageSize = 5; // 페이지당 리스트 개수
 
     const table = document.querySelector('.board-list');
@@ -58,6 +184,16 @@
 
     let currentPage = 1; // 현재 페이지 번호
     let totalData = 0; // 전체 데이터 항목 개수
+
+    // 현재 날짜와 비교하여 2023-06-01 이전인지 확인하는 함수
+    function isBefore2023June(date) {
+      const currentDate = new Date();
+      const targetDate = new Date(date);
+      const comparisonDate = new Date('2023-06-01');
+
+      return targetDate > comparisonDate && targetDate > currentDate;
+    }
+
 
     function updateTableData(page) {
       const start = (page - 1) * pageSize; // 현재 페이지에 해당하는 데이터 시작 인덱스
@@ -78,7 +214,14 @@
                 workDateTypes.includes('무기계약직') ||
                 workDateTypes.includes('비정규직') ||
                 workDateTypes.includes('정규직')
-              );
+              ) && isBefore2023June(item.reqDate_e); // 2023-06 이전 데이터만 필터링
+            });
+
+            // 마감일을 최신순으로 정렬
+            const sortedData = filteredData.sort((a, b) => {
+              const dateA = new Date(a.reqDate_e);
+              const dateB = new Date(b.reqDate_e);
+              return dateB - dateA;
             });
 
             totalData = filteredData.length; // 전체 데이터 항목 개수 업데이트
@@ -87,7 +230,7 @@
               tbody.innerHTML = ''; // 이전 데이터 지우기
 
               for (let i = start; i < end && i < totalData; i++) {
-                const item = filteredData[i];
+                const item = sortedData[i];
                 const row = document.createElement('tr');
 
                 // 회사명/정보제공처
@@ -97,7 +240,7 @@
 
                 // 채용공고명/담당업무/지원자격
                 const recruitmentCell = document.createElement('td');
-                recruitmentCell.textContent = item.title;
+                recruitmentCell.textContent = item.title + ' / ' + item.recruitAgencyName + ' / ' + item.mngDept + ' / ' + item.bunya;
                 row.appendChild(recruitmentCell);
 
                 // 근무조건
@@ -107,13 +250,13 @@
 
                 // 등록/마감일
                 const dateCell = document.createElement('td');
-                dateCell.textContent = item.reqDate_s + ' ~ ' + item.reqDate_e;
+                dateCell.textContent = item.reqDate_s + ' ~ ' + item.reqDate_e + ' / ' + item.reqType_nm;
                 row.appendChild(dateCell);
 
                 tbody.appendChild(row);
               }
 
-              dataPane.innerText = '조건을 만족하는 데이터가 있습니다.';
+              //dataPane.innerText = '조건을 만족하는 데이터가 있습니다.';
             } else {
               tbody.innerHTML = ''; // 이전 데이터 지우기
               dataPane.innerText = '';
@@ -138,18 +281,70 @@
 
       // 페이지네이션 버튼 생성 및 추가
       for (let i = 1; i <= totalPages; i++) {
-        const button = document.createElement('button');
+        const button = document.createElement('div');
         button.textContent = i;
+        button.classList.add('pagination-button'); // 버튼에 클래스 추가
         button.addEventListener('click', () => {
           currentPage = i;
           updateTableData(currentPage);
+
+          // 페이지네이션 버튼 클릭 시 스타일 변경
+          updatePaginationStyle();
         });
         paginationContainer.appendChild(button);
       }
     }
 
+    // 페이지네이션 스타일 업데이트 함수
+    function updatePaginationStyle() {
+      const buttons = paginationContainer.querySelectorAll('.pagination-button');
+
+      buttons.forEach((button) => {
+        button.classList.remove('active'); // 모든 버튼의 active 클래스 제거
+      });
+
+      // 현재 페이지 버튼에 active 클래스 추가
+      buttons[currentPage - 1].classList.add('active');
+    }
     // 초기 데이터 로딩
     updateTableData(currentPage);
+
+
+    function redirectToDetailsPage(page, row) {
+      const company = row.cells[0].textContent.trim();
+      const jobTitle = row.cells[1].textContent.trim();
+      const workingCondition = row.cells[2].textContent.trim();
+      const registrationDate = row.cells[3].textContent.trim();
+
+      // 선택된 행의 데이터를 URL 파라미터로 인코딩하여 .html 파일로 넘어갑니다.
+      const url = `${page}?company=${encodeURIComponent(company)}&jobTitle=${encodeURIComponent(jobTitle)}&workingCondition=${encodeURIComponent(workingCondition)}&registrationDate=${encodeURIComponent(registrationDate)}`;
+      window.location.href = url;
+    }
+
+
+    function rowClickHandler(event) {
+      const row = event.target.closest('tr');
+      if (row) {
+        redirectToDetailsPage('openapi_details.html', row);
+      }
+    }
+
+    // 각 행에 클릭 이벤트 리스너 추가
+    tbody.addEventListener('click', rowClickHandler);
+
+    // ...
+
+    // 선택된 행의 데이터를 URL 파라미터로 인코딩하여 상세 페이지로 전달하는 함수
+    function redirectToDetailsPage(page, row) {
+      const company = row.cells[0].textContent.trim();
+      const jobTitle = row.cells[1].textContent.trim();
+      const workingCondition = row.cells[2].textContent.trim();
+      const registrationDate = row.cells[3].textContent.trim();
+
+      // 선택된 행의 데이터를 URL 파라미터로 인코딩하여 .html 파일로 넘어갑니다.
+      const url = `${page}?company=${encodeURIComponent(company)}&jobTitle=${encodeURIComponent(jobTitle)}&workingCondition=${encodeURIComponent(workingCondition)}&registrationDate=${encodeURIComponent(registrationDate)}`;
+      window.location.href = url;
+    }
   </script>
 
 
