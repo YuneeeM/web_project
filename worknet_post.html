@@ -7,6 +7,110 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" type="text/css" href="style_workpost.css" />
   <title>노인 일자리 현황-사설</title>
+
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Jua&display=swap" rel="stylesheet">
+
+  <style>
+    body {
+      background-color: #F1F5FF;
+      font-family: 'Jua', sans-serif;
+      font-size: 20px;
+    }
+
+    .default_box {
+      margin-bottom: 30px;
+    }
+
+    th:nth-child(1),
+    td:nth-child(1) {
+      width: 10%;
+    }
+
+    th:nth-child(2),
+    td:nth-child(2) {
+      width: 50%;
+    }
+
+    td:nth-child(2),
+    td:nth-child(3) {
+      color: rgb(116, 116, 116);
+    }
+
+    th:nth-child(3),
+    td:nth-child(3),
+    th:nth-child(4),
+    td:nth-child(4) {
+      width: 20%;
+    }
+
+    .board-list>thead>tr>th {
+      border-bottom: 3px solid #e6e6e6;
+      height: 48px;
+      background-color: aliceblue;
+      font-weight: 700;
+    }
+
+    table {
+      display: table;
+      text-indent: initial;
+      width: 100%;
+      table-layout: fixed;
+      border-collapse: collapse;
+      empty-cells: show;
+      table-layout: fixed;
+      width: 100%;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+      border-radius: 25px;
+    }
+
+    thead {
+      display: table-header-group;
+      vertical-align: middle;
+      border-color: inherit;
+
+    }
+
+    .board-list {
+      line-height: 2;
+    }
+
+    tbody {
+      display: table-row-group;
+      vertical-align: middle;
+      border-color: inherit;
+      background-color: #ffffff;
+    }
+
+    tr {
+      display: table-row;
+      vertical-align: inherit;
+      border-color: inherit;
+    }
+
+    table th,
+    table td {
+      padding: 0;
+      word-break: break-all;
+    }
+
+    .board-list>tbody>tr>th,
+    .board-list>tbody>tr>td {
+      height: 48px;
+      border: 1px solid #f5f7f9;
+      border-width: 0 0 1px 0;
+      border-color: #e4ebf1;
+      text-align: center;
+      word-break: break-all;
+
+    }
+
+    .board-list>tbody>tr>td {
+      padding-left: 10px;
+    }
+  </style>
 </head>
 
 <body>
@@ -24,7 +128,7 @@
         <col width="20%">
       </colgroup>
       <thead>
-        <tr>
+        <tr onclick="redirectToDetailsPage('workpost_details.html', this)">
           <th>회사명/정보제공처</th>
           <th>채용공고명/담당업무/지원자격</th>
           <th>근무조건</th>
@@ -32,8 +136,49 @@
         </tr>
       </thead>
       <tbody>
-        <tr>
-          <td></td>
+        <tr onclick="redirectToDetailsPage('workpost_details.html', this)">
+          <td>
+            회사명/정보제공처
+          </td>
+          <td>채용공고명/담당업무/지원자격</td>
+          <td>근무조건</td>
+          <td>등록/마감일</td>
+        </tr>
+
+        <tr onclick="redirectToDetailsPage('workpost_details.html', this)">
+          <td>
+            회사명/정보제공처
+          </td>
+          <td>채용공고명/담당업무/지원자격</td>
+          <td>근무조건</td>
+          <td>등록/마감일</td>
+        </tr>
+
+        <tr onclick="redirectToDetailsPage('workpost_details.html', this)">
+          <td>
+            회사명/정보제공처
+          </td>
+          <td>채용공고명/담당업무/지원자격</td>
+          <td>근무조건</td>
+          <td>등록/마감일</td>
+        </tr>
+
+        <tr onclick="redirectToDetailsPage('workpost_details.html', this)">
+          <td>
+            회사명/정보제공처
+          </td>
+          <td>채용공고명/담당업무/지원자격</td>
+          <td>근무조건</td>
+          <td>등록/마감일</td>
+        </tr>
+
+        <tr onclick="redirectToDetailsPage('workpost_details.html', this)">
+          <td>
+            회사명/정보제공처
+          </td>
+          <td>채용공고명/담당업무/지원자격</td>
+          <td>근무조건</td>
+          <td>등록/마감일</td>
         </tr>
       </tbody>
     </table>
@@ -67,17 +212,17 @@
         .then(response => response.json())
         .then(data => {
           totalData = data.length; // 데이터 항목 개수를 totalData에 설정
-          totalPage = Math.ceil(totalData / pageSize); // 전체 페이지 개수
+          totalPages = Math.ceil(totalData / pageSize); // 전체 페이지 개수
 
           let html = '';
           for (let i = start; i < end && i < totalData; i++) {
             const { "회사명/정보제공처": company, "채용공고명/담당업무/지원자격": jobTitle, "근무조건": workingCondition, "등록/마감일": registrationDate } = data[i];
             html += `<tr>
-                      <td>${company}</td>
-                      <td>${jobTitle}</td>
-                      <td>${workingCondition}</td>
-                      <td>${registrationDate}</td>
-                    </tr>`;
+                  <td>${company}</td>
+                  <td>${jobTitle}</td>
+                  <td>${workingCondition}</td>
+                  <td>${registrationDate}</td>
+                </tr>`;
           }
 
           document.querySelector('tbody').innerHTML = html;
@@ -85,16 +230,12 @@
         })
         .catch(error => {
           console.log(error);
-          dataPane.innerText = "데이터를 불러오는 중에 오류가 발생했습니다.";
         });
-
     }
 
     // 현재 페이지와 전체 데이터 항목에 기반하여 페이지네이션 컨트롤 업데이트하는 함수
     function updatePagination() {
       paginationContainer.innerHTML = ''; // 이전 페이지네이션 컨트롤 지우기
-
-
 
       // 페이지네이션 버튼 생성 및 추가
       for (let i = 1; i <= totalPages; i++) {
@@ -111,6 +252,17 @@
     // 초기 데이터 로딩
     updateTableData(currentPage);
 
+
+    function redirectToDetailsPage(page, row) {
+      const company = row.cells[0].textContent.trim();
+      const jobTitle = row.cells[1].textContent.trim();
+      const workingCondition = row.cells[2].textContent.trim();
+      const registrationDate = row.cells[3].textContent.trim();
+
+      // 선택된 행의 데이터를 URL 파라미터로 인코딩하여 .html 파일로 넘어갑니다.
+      const url = `${page}?company=${encodeURIComponent(company)}&jobTitle=${encodeURIComponent(jobTitle)}&workingCondition=${encodeURIComponent(workingCondition)}&registrationDate=${encodeURIComponent(registrationDate)}`;
+      window.location.href = url;
+    }
 
   </script>
 
