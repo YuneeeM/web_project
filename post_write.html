@@ -164,7 +164,7 @@
 
       const title = titleInput.value;
       const content = contentInput.value;
-      const attachment = attachmentInput.files[0]; // 첨부파일 정보
+      const attachment = attachmentInput.files.length > 0 ? attachmentInput.files[0] : null; // 첨부파일 정보
 
       const createdDate = new Date().toLocaleString("ko-KR", { timeZone: "Asia/Seoul" }); // 현재 시간 (한국 시간)
 
@@ -179,6 +179,7 @@
         return user.personid === token;
       });
 
+
       console.log(printcontent);
 
       if (printcontent.length > 0) {
@@ -192,8 +193,10 @@
         // 현재 글의 순번 계산
         const postNumber = postList.length + 1;
 
+        const likes = 0
+
         // 새로운 글 객체 생성
-        const post = { postNumber, title, content, attachment, createdDate, writer };
+        const post = { postNumber, title, content, attachment, createdDate, writer, likes };
 
         // post_list에 새로운 글 추가
         postList.push(post);

@@ -143,17 +143,23 @@
       background-color: #0892f6;
     }
 
-    #detail-4 table {
+    #detail-4 table,
+    #detail-3 table,
+    #detail-2 table {
       border-collapse: collapse;
       text-align: center;
     }
 
-    #detail-4 thead {
+    #detail-4 thead,
+    #detail-3 thead,
+    #detail-2 thead {
       display: table-header-group;
       vertical-align: middle;
     }
 
-    #detail-4>table>thead>tr {
+    #detail-4>table>thead>tr,
+    #detail-3>table>thead>tr,
+    #detail-2>table>thead>tr {
       background-color: #0892f6;
       color: #FFFFFF;
       height: 20px;
@@ -211,10 +217,10 @@
       <div class="box" onclick="showDetail1()">회원정보</div>
 
       <!-- 작성기록 박스 -->
-      <div class="box" onclick="showDetail('detail-2')">게시물 작성</div>
+      <div class="box" onclick="showDetail('detail-2'), addWrotePostsToTable()">게시물 작성</div>
 
       <!-- 좋아요한 게시물 박스 -->
-      <div class="box" onclick="showDetail('detail-3')">좋아요한 게시물</div>
+      <div class="box" onclick="showDetail('detail-3'), addLikedPostsToTable()">좋아요한 게시물</div>
 
       <!-- 좋아요한 일자리 박스 -->
       <div class="box" onclick="showDetail('detail-4'), addLikedJobsToTable()">좋아요한 일자리</div>
@@ -251,13 +257,59 @@
     <!-- 상세화면 2 -->
     <div id="detail-2" class="detail">
       <!-- 상세화면 내용 -->
+      <!-- 상세화면 내용 -->
+      <h3 id="like"><img src="media/free-icon-hearts-138533.png" width="20px" height="20px" alt="좋아요">작성한 게시물</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>번호</th>
+            <th>제목</th>
+            <th>작성자</th>
+            <th>좋아요 수</th>
+            <th>등록일</th>
+          </tr>
+          <colgroup>
+            <col width="10%">
+            <col width="30%">
+            <col width="20%">
+            <col width="20%">
+            <col width="20%">
+          </colgroup>
+        </thead>
+        <tbody id="wrote-posts">
+          <!-- 좋아요한 게시물 행들이 여기에 동적으로 추가될 것입니다 -->
+        </tbody>
+      </table>
+      <p id="message"></p>
 
     </div>
 
     <!-- 상세화면 3 -->
     <div id="detail-3" class="detail">
       <!-- 상세화면 내용 -->
-      <!-- 내용을 추가하세요 -->
+      <h3 id="like"><img src="media/free-icon-hearts-138533.png" width="20px" height="20px" alt="좋아요">좋아요한 게시물</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>번호</th>
+            <th>제목</th>
+            <th>작성자</th>
+            <th>좋아요 수</th>
+            <th>등록일</th>
+          </tr>
+          <colgroup>
+            <col width="10%">
+            <col width="30%">
+            <col width="20%">
+            <col width="20%">
+            <col width="20%">
+          </colgroup>
+        </thead>
+        <tbody id="liked-posts">
+          <!-- 좋아요한 게시물 행들이 여기에 동적으로 추가될 것입니다 -->
+        </tbody>
+      </table>
+      <p id="message"></p>
     </div>
 
     <!-- 상세화면 4 -->
@@ -355,8 +407,6 @@
       // 로컬스토리지에서 토큰값(personid) 가져오기
       var token = parseInt(localStorage.getItem('authToken'));
 
-      console.log(token);
-
       // 로컬스토리지에서 users 배열 가져오기
       var storedUsers = JSON.parse(localStorage.getItem('users'));
 
@@ -364,7 +414,6 @@
         return user.personid === token;
       });
 
-      console.log(printcontent);
 
       document.getElementById('d_id').textContent = printcontent.userid;
       document.getElementById('d_pw').textContent = printcontent.password;
@@ -379,6 +428,127 @@
       document.getElementById('d_edu').textContent = printcontent.education;
 
     }
+
+    function addWrotePostsToTable() {
+      var tbody = document.getElementById("wrote-posts");
+      var messageElement = document.getElementById("message");
+
+      // 기존 내용 초기화
+      tbody.innerHTML = "";
+
+      // 로컬 스토리지에서 데이터 가져오기
+      var users = JSON.parse(localStorage.getItem("users"));
+      var post_list = JSON.parse(localStorage.getItem("post_list")) || [];
+      // localStorage에서 authToken 가져오기
+      var token = parseInt(localStorage.getItem("authToken"));
+
+
+      var print_value = users.find(function (user) {
+        return user.personid === token;
+      });
+
+      console.log(print_value);
+
+
+      const userId = print_value.userid;
+
+
+      var filteredPosts = [];
+
+      // userid와 동일한 writer를 가진 게시물 추출
+      var filteredPosts = post_list.filter(function (post) {
+        return String(post.writer) === String(userId);
+      });
+
+
+      console.log(filteredPosts.length);
+      console.log(filteredPosts);
+
+
+      // 작성한 게시물이 없는 경우 메시지 출력
+      if (filteredPosts.length === 0) {
+        tbody.innerHTML = "<tr><td colspan='6'> 작성하신 게시물이 없습니다.</td></tr>";
+      }
+
+      if (filteredPosts.length > 0) {
+        // post_list의 게시물을 테이블에 추가
+        filteredPosts.forEach(function (post) {
+          var row = document.createElement("tr");
+          row.innerHTML = `
+          <td>${post.postNumber}</td>
+          <td>${post.title}</td>
+          <td>${post.writer}</td>
+          <td>${post.likes}</td>
+          <td>${post.createdDate}</td>`;
+          row.addEventListener("click", function () {
+            // 클릭 이벤트 처리
+            // 상세게시판 페이지로 이동하고, 데이터를 전달하는 로직을 구현
+            // 예시: 상세게시판 페이지로 postId 전달
+            window.location.href = "post_detail.html?id=" + post.postNumber;
+          });
+          tbody.appendChild(row);
+        });
+      } else {
+        messageElement.innerText = "작성한 게시물이 없습니다.";
+      }
+    }
+
+    // 페이지가 로드될 때 작성한 게시물 테이블에 추가
+    window.addEventListener("DOMContentLoaded", addWrotePostsToTable);
+
+
+    // 좋아요한 게시물을 테이블에 동적으로 추가하는 함수
+    function addLikedPostsToTable() {
+
+      var tbody = document.getElementById("liked-posts");
+      var messageElement = document.getElementById("message");
+
+      // 기존 내용 초기화
+      tbody.innerHTML = "";
+
+      // localStorage에서 like_posts 가져오기
+      var likePosts = JSON.parse(localStorage.getItem("like_posts")) || [];
+
+      // localStorage에서 authToken 가져오기
+      var token = parseInt(localStorage.getItem("authToken")) || 0;
+
+
+      // authToken과 token값이 일치하는 경우에만 테이블에 추가
+      var filteredpostList = likePosts.filter(function (post) {
+        return String(post.token) === String(token);
+      });
+
+      // 좋아요를 누른 일자리가 없는 경우 메시지 출력
+      if (filteredpostList.length === 0) {
+        tbody.innerHTML = "<tr><td colspan='6'>좋아요를 누른 게시물이 없습니다.</td></tr>";
+      }
+
+      if (filteredpostList.length > 0) {
+        // like_posts의 게시물을 테이블에 추가
+        filteredpostList.forEach(function (post) {
+          var row = document.createElement("tr");
+          row.innerHTML = `
+    <td>${post.postId}</td>
+    <td>${post.data.title}</td>
+    <td>${post.data.writer}</td>
+    <td>${post.data.likes}</td>
+    <td>${post.data.createdDate}</td>
+`;
+          row.addEventListener("click", function () {
+            // 클릭 이벤트 처리
+            // 상세게시판 페이지로 이동하고, 데이터를 전달하는 로직을 구현
+            // 예시: 상세게시판 페이지로 postId 전달
+            window.location.href = "post_detail.html?id=" + post.postId;
+          });
+          tbody.appendChild(row);
+        });
+      } else {
+        messageElement.innerText = "좋아요를 눌린 게시물이 없습니다.";
+      }
+    }
+
+    // 페이지가 로드될 때 좋아요한 게시물을 테이블에 추가
+    window.addEventListener("DOMContentLoaded", addLikedPostsToTable);
 
 
     // 좋아요한 일자리를 테이블에 동적으로 추가하는 함수
@@ -405,8 +575,6 @@
         return String(job.personid) === String(token);
       });
 
-      console.log(filteredWorknetList);
-
       var filteredOpenapiList = openapiList.filter(function (job) {
         return String(job.personid) === String(token);
       });
@@ -428,8 +596,14 @@
           <td>${job.date}</td>
           <td>${job.info}</td>
       `;
+          row.addEventListener("click", function () {
+            // 클릭 이벤트 처리
+            // 상세게시판 페이지로 이동하고, 데이터를 전달하는 로직을 구현
+            window.location.href = "worknet_details.html?company=" + job.company + "&jobTitle=" + job.title + "&workingCondition=" + job.working + "&registrationDate=" + job.date;
+          });
           tbody.appendChild(row);
         });
+
 
         // openapi_list의 일자리를 테이블에 추가
         filteredOpenapiList.forEach(function (job) {
@@ -441,6 +615,12 @@
           <td>${job.date}</td>
           <td>${job.info}</td>
       `;
+
+          row.addEventListener("click", function () {
+            // 클릭 이벤트 처리
+            // 상세게시판 페이지로 이동하고, 데이터를 전달하는 로직을 구현
+            window.location.href = "openapi_details.html?company=" + job.company + "&jobTitle=" + job.title + "&workingCondition=" + job.working + "&registrationDate=" + job.date;
+          });
           tbody.appendChild(row);
         });
       } else {
