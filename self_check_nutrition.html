@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>영양상태 체크리스트</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Jua&display=swap" rel="stylesheet">
+
+  <style>
+    body {
+      background-color: #F1F5FF;
+      font-family: 'Jua', sans-serif;
+      font-size: 20px;
+    }
+
+    /* 입력 폼 스타일 */
+    form {
+      max-width: 500px;
+      margin: 0 auto;
+      padding: 20px;
+      border-radius: 32px;
+      background-color: #FFFFFF;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    }
+
+    label {
+      display: block;
+      margin-bottom: 10px;
+      font-weight: bold;
+      font-size: 22px;
+      margin-inline-start: 30px;
+      flex-basis: 20%;
+      /* 변경: 라벨 너비 조정 */
+      display: flex;
+
+    }
+
+    #y {
+      margin-left: 20px;
+    }
+
+    #n {
+      margin-left: 20px;
+    }
+
+
+    .yes {
+      width: 50%;
+    }
+
+    .no {
+      width: 50%;
+    }
+
+    .blue {
+      color: blue;
+    }
+
+    .red {
+      color: red;
+    }
+
+    h3 {
+      margin-inline-start: 20px;
+    }
+
+    input[type="submit"] {
+      width: 95%;
+      padding: 10px;
+      margin-bottom: 10px;
+      border: 1px solid #ccc;
+      border-radius: 3px;
+      font-family: 'Jua', sans-serif;
+      font-size: 20px;
+      background-color: #0099FF;
+      color: #fff;
+      cursor: pointer;
+      margin-inline-start: 10px;
+      font-size: 20px;
+    }
+
+    input[type="submit"]:hover,
+    .residence-input input[type="button"]:hover {
+      background-color: #0099CF;
+    }
+
+    h1 {
+      margin-left: -30px;
+      font-size: 50px;
+    }
+
+
+    h1 img {
+      width: 40px;
+      height: 40px;
+      margin-right: 10px;
+      margin-bottom: 0px;
+      align-items: center;
+      justify-content: center;
+    }
+  </style>
+</head>
+
+<body>
+  <h1 style="text-align: center; color:#003F5F"><img src="media/free-icon-nutrients-5286612.png">영양상태 체크리스트</h1>
+  <p style="text-align: center;">노년기에 건강한 식생활을 위해 영양상태를 체크 해봅시다!</p>
+  <form id="ncheck-form">
+
+    <h3>질문 1.<br>육고기를 전혀 먹지 않는다.</h3>
+    <label>
+      <input type="radio" name="choice1" id="yes" onclick="updateCount(0, 'yes')">
+      <p id="y">예</p>
+    </label>
+    <label>
+      <input type="radio" name="choice1" id="no" onclick="updateCount(0, 'no')">
+      <p id="n">아니오</p>
+    </label>
+    <h3>질문 2.<br>하루에 한끼의 식사를 한다.</h3>
+    <label>
+      <input type="radio" name="choice2" id="yes" onclick="updateCount(1, 'yes')">
+      <p id="y2">예</p>
+    </label>
+    <label>
+      <input type="radio" name="choice2" id="no" onclick="updateCount(1, 'no')">
+      <p id="n2">아니오</p>
+    </label>
+
+    <h3>질문 3.<br>과일이나 야채, 우유 및 유제품을 거의 먹지 않는다.</h3>
+    <label>
+      <input type="radio" name="choice3" id="yes" onclick="updateCount(2, 'yes')">
+      <p id="y3">예</p>
+    </label>
+    <label>
+      <input type="radio" name="choice3" id="no" onclick="updateCount(2, 'no')">
+      <p id="n3">아니오</p>
+    </label>
+
+    <h3>질문 4.<br>커피를 하루에 2잔 이상 마신다.</h3>
+    <label>
+      <input type="radio" name="choice4" id="yes" onclick="updateCount(3, 'yes')">
+      <p id="y4">예</p>
+    </label>
+    <label>
+      <input type="radio" name="choice4" id="no" onclick="updateCount(3, 'no')">
+      <p id="n4">아니오</p>
+    </label>
+
+    <h3>질문 5.<br>치아나 구강 문제로 음식을 먹는데 지장이 있다.</h3>
+    <label>
+      <input type="radio" name="choice5" id="yes" onclick="updateCount(4, 'yes')">
+      <p id="y5">예</p>
+    </label>
+    <label>
+      <input type="radio" name="choice5" id="no" onclick="updateCount(4, 'no')">
+      <p id="n5">아니오</p>
+    </label>
+
+    <h3>질문 6.<br>생선을 먹지 않는다.</h3>
+    <label>
+      <input type="radio" name="choice6" id="yes" onclick="updateCount(5, 'yes')">
+      <p id="y6">예</p>
+    </label>
+    <label>
+      <input type="radio" name="choice6" id="no" onclick="updateCount(5, 'no')">
+      <p id="n6">아니오</p>
+    </label>
+
+    <h3>질문 7.<br> 반찬을 골고루 먹지 않는다.</h3>
+    <label>
+      <input type="radio" name="choice7" id="yes" onclick="updateCount(6, 'yes')">
+      <p id="y7">예</p>
+    </label>
+    <label>
+      <input type="radio" name="choice7" id="no" onclick="updateCount(6, 'no')">
+      <p id="n7">아니오</p>
+    </label>
+
+    <h3>질문 8.<br>하루에 먹는 약의 종류가 3가지 이상이다.</h3>
+    <label>
+      <input type="radio" name="choice8" id="yes" onclick="updateCount(7, 'yes')">
+      <p id="y8">예</p>
+    </label>
+    <label>
+      <input type="radio" name="choice8" id="no" onclick="updateCount(7, 'no')">
+      <p id="n8">아니오</p>
+    </label>
+
+    <h3>질문 9.<br>수저, 젓가락질을 본인의 의지대로 할 수 없다.</h3>
+    <label>
+      <input type="radio" name="choice9" id="yes" onclick="updateCount(8, 'yes')">
+      <p id="y9">예</p>
+    </label>
+    <label>
+      <input type="radio" name="choice9" id="no" onclick="updateCount(8, 'no')">
+      <p id="n9">아니오</p>
+    </label>
+
+
+    <h3>질문 10.<br>혼자 요리하거나 식사하는 것이 어렵다.</h3>
+
+    <label>
+      <input type="radio" name="choice10" id="yes" onclick="updateCount(9, 'yes')">
+      <p id="y10">예</p>
+    </label>
+    <label>
+      <input type="radio" name="choice10" id="no" onclick="updateCount(9, 'no')">
+      <p id="n10">아니오</p>
+    </label>
+
+    <p>횟수: <span class="count">0</span></p>
+
+    <input type="submit" value="결과 알아보기">
+  </form>
+
+  </script>
+  <script>
+    var counts = new Array(10).fill(0);
+    var clickedOptions = new Array(10).fill(false);
+
+    function updateCount(questionIndex, choice) {
+      if (!clickedOptions[questionIndex]) {
+        if (choice === "yes") {
+          counts[questionIndex]++;
+        } else if (choice === "no" && counts[questionIndex] > 0) {
+          counts[questionIndex]--;
+        }
+        clickedOptions[questionIndex] = true;
+        updateDisplay();
+      }
+    }
+
+    function updateDisplay() {
+      var countElements = document.getElementsByClassName("count");
+      for (var i = 0; i < countElements.length; i++) {
+        countElements[i].innerHTML = counts[i];
+      }
+    }
+
+  </script>
+
+</body>
+
+</html>

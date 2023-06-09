@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>간 문항 설문조사</title>
+  <script>
+    var counts = new Array(10).fill(0);
+
+    function updateCount(questionIndex, choice) {
+      if (choice === "yes") {
+        counts[questionIndex]++;
+      } else if (choice === "no" && counts[questionIndex] > 0) {
+        counts[questionIndex]--;
+      }
+      updateDisplay();
+    }
+
+    function updateDisplay() {
+      var countElements = document.getElementsByClassName("count");
+      for (var i = 0; i < countElements.length; i++) {
+        countElements[i].innerHTML = counts[i];
+      }
+    }
+  </script>
+</head>
+
+<body>
+  <h1>간 문항 설문조사</h1>
+  <p>간 문항에 대해 설문을 진행합니다.</p>
+
+  <h2>질문 1</h2>
+  <label>
+    <input type="radio" name="choice1" onclick="updateCount(0, 'yes')">
+    예
+  </label>
+  <label>
+    <input type="radio" name="choice1" onclick="updateCount(0, 'no')">
+    아니오
+  </label>
+  <p>선택 횟수: <span class="count">0</span></p>
+
+  <!-- 나머지 9개의 질문도 동일한 패턴으로 작성 -->
+
+</body>
+
+</html>
