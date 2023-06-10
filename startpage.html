@@ -1,83 +1,280 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html>
 
 <head>
-  <meta charset="UTF-8" />
-  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>시작페이지</title>
-  <style>
-    .img_logo {
-      margin-bottom: 12px;
-      width: 20%;
-      height: 20%;
-    }
+  <link rel="stylesheet" type="text/css" href="css/alarm_dialog.css" />
+  <link rel="stylesheet" type="text/css" href="css/style_startpage.css" />
 
-    .img_content {
-      width: 100%;
-      height: 60%;
-    }
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Jua&display=swap" rel="stylesheet">
 
-    .item {
-      display: flex;
-      flex-direction: column;
-      background: white;
-      margin: 10px;
-      flex-grow: 1;
-      flex-basis: 0;
-      border-radius: 20px 20px;
-      overflow: hidden;
-      transition-duration: 0.5s
-    }
-
-    .item:hover {
-      cursor: pointer;
-      transform: translate(0, -30px);
-    }
-
-    .item h1 {
-      padding: 30px;
-      font-size: 30px;
-      font-weight: bold;
-      color: #111;
-      font-family: 'KBO-Dia-Gothic_bold';
-    }
-
-    @font-face {
-      font-family: 'KBO-Dia-Gothic_bold';
-      src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2304-2@1.0/KBO-Dia-Gothic_bold.woff') format('woff');
-      font-weight: 300;
-      font-style: normal;
-    }
-  </style>
 </head>
 
-<body
-  style="display:flex; flex-direction: column; min-height: 100vh; background-image: linear-gradient(to top, #fff1eb 0%, #ace0f9 100%)">
-  <header style="text-align: center">
-    <a href="startpage.html"><img src="media/top.png" class="img_logo"></a>
+<body>
+  <header id="top_bar">
+    <a href="startpage.html"><img src="media/logo-removebg-preview.png" class="img_logo"></a>
+    <div>
+      <button id="alarmButton"><img src="media/free-icon-alarm-bell-1059065.png" width="50px" height="50px"></button>
+      <img src="media/free-icon-search-2697422.png" width="50px" height="50px" alt="검색" style="margin-right: 5px;">
+      <img src="media/free-icon-enter-1828395.png" onclick="location.href='loginpage.html'" width="50px" height="50px"
+        alt="로그인">
+      <img src="media/free-icon-person-5393061.png" onclick="location.href='mypage.html'" width="50px" height="50px"
+        alt="마이페이지">
+    </div>
   </header>
-  <main style="flex: 1 0 auto">
-    <div
-      style="display: flex; padding: 50px 20% 0 20%; text-align: center; vertical-align: middle; justify-content: space-between; height: 600px">
-      <div class="item" onclick="location.href='startpage.html'"><img src="media/eldery.png" class="img_content">
-        <h1>노숙인 복지시설/일자리 현황</h1>
+
+  <div class="modal" id="modal">
+    <div class="modal-content">
+      <h2>최신 일자리</h2>
+      <table class="board-list">
+        <thead>
+          <tr>
+            <th>회사명<br>/ 정보제공처</th>
+            <th>채용공고명/담당업무/<br>지원자격</th>
+            <th>근무조건</th>
+            <th>등록/마감일</th>
+          </tr>
+          <colgroup>
+            <col width="20%">
+            <col width="40%">
+            <col width="20%">
+            <col width="20%">
+          </colgroup>
+        </thead>
+        <tbody>
+          <tr>
+            <td></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <p id="sample_data"></p>
+      <button class="close-button" id="closeButton">닫기</button>
+    </div>
+  </div>
+
+  <main>
+    <div id=button_list>
+      <div class="item" onclick="location.href='bokjiapi_homeless.html'"><img src="media/welfare.png"
+          class="img_content">
+        <h2>노숙인<br>복지시설</h2>
       </div>
-      <div class="item" onclick="location.href='startpage.html'"><img src="media/job.png" class="img_content">
-        <h1>노인 복지시설/일자리 현황</h1>
+      <div class="item" onclick="location.href='bokjiapi_order.html'"><img src="media/eldery.png" class="img_content">
+        <h2>노인<br>복지시설</h2>
       </div>
-      <div class="item" onclick="redirectToMainPost()"><img src="media/communication.png" class="img_content">
-        <h1>자유게시판</h1>
+      <div class="item" onclick="location.href='worknet_post.html'"><img src="media/recruitment.png"
+          class="img_content">
+        <h2>구인정보<br>(사기업)</h2>
+      </div>
+      <div class="item" onclick="location.href='openapi_workpost.html'"><img src="media/handshake.png"
+          class="img_content">
+        <h2>구인정보<br>(공공)</h2>
+      </div>
+      <div class="item" onclick="location.href='openapi_workpost.html'"><img src="media/free-icon-density-8709539.png"
+          class="img_content">
+        <h2>복지사업<br>밀도</h2>
+      </div>
+      <div class="item" onclick="location.href='self_check_nutrition.html'"><img
+          src="media/free-icon-nutritional-pyramid-10504844.png" class="img_content">
+        <h2>건강 및<br>영양</h2>
+      </div>
+      <div class="item" onclick="location.href='main_post.html'"><img src="media/communication.png" class="img_content">
+        <h2>자유<br>게시판</h2>
       </div>
     </div>
   </main>
-  <footer style="display:flex; justify-content: center; padding:50px">@ 웹프로그래밍 9조</footer>
-
+  <footer>@ 웹프로그래밍 9조</footer>
 
   <script>
-    function redirectToMainPost() {
-      window.location.href = 'main_post.html';
+    const alarmButton = document.getElementById('alarmButton');
+    const modal = document.getElementById('modal');
+    const closeButton = document.getElementById('closeButton');
+
+
+    const table = document.querySelector('.board-list');
+    const tbody = table.querySelector('tbody');
+    const dataPane = document.getElementById('sample_data');
+    const paginationContainer = document.getElementById('pagination');
+
+    alarmButton.addEventListener('click', () => {
+      modal.style.display = 'block';
+    });
+
+    closeButton.addEventListener('click', () => {
+      modal.style.display = 'none';
+    });
+
+    const url = '';
+
+
+    let currentPage = 1; // 현재 페이지 번호
+    let totalData = 0; // 전체 데이터 항목 개수
+
+    // 현재 날짜와 비교하여 2023-06-01 이전인지 확인하는 함수
+    function isBefore2023June(date) {
+      const currentDate = new Date();
+      const targetDate = new Date(date);
+      const comparisonDate = new Date('2023-06-01');
+
+      return targetDate > comparisonDate && targetDate > currentDate;
     }
+
+
+    function updateTableData(page) {
+      const start = (page - 1) * pageSize; // 현재 페이지에 해당하는 데이터 시작 인덱스
+      const end = start + pageSize; // 현재 페이지에 해당하는 데이터 끝 인덱스
+
+      fetch(url)
+        .then((response) => response.json())
+        .then((resJson) => {
+          if (
+            resJson.getJobOpnngInfo &&
+            resJson.getJobOpnngInfo.body &&
+            resJson.getJobOpnngInfo.body.items
+          ) {
+            const items = resJson.getJobOpnngInfo.body.items.item;
+            const filteredData = items.filter((item) => {
+              const workDateTypes = item.workDate_type.split(',');
+              return (
+                workDateTypes.includes('무기계약직') ||
+                workDateTypes.includes('비정규직') ||
+                workDateTypes.includes('정규직')
+              ) && isBefore2023June(item.reqDate_e); // 2023-06 이전 데이터만 필터링
+            });
+
+            // 마감일을 최신순으로 정렬
+            const sortedData = filteredData.sort((a, b) => {
+              const dateA = new Date(a.reqDate_e);
+              const dateB = new Date(b.reqDate_e);
+              return dateB - dateA;
+            });
+
+            totalData = filteredData.length; // 전체 데이터 항목 개수 업데이트
+
+            if (totalData > 0) {
+              tbody.innerHTML = ''; // 이전 데이터 지우기
+
+              for (let i = start; i < end && i < totalData; i++) {
+                const item = sortedData[i];
+                const row = document.createElement('tr');
+
+                // 회사명/정보제공처
+                const companyCell = document.createElement('td');
+                companyCell.textContent = item.recruitAgencyName;
+                row.appendChild(companyCell);
+
+                // 채용공고명/담당업무/지원자격
+                const recruitmentCell = document.createElement('td');
+                recruitmentCell.textContent = item.title + ' / ' + item.recruitAgencyName + ' / ' + item.mngDept + ' / ' + item.bunya;
+                row.appendChild(recruitmentCell);
+
+                // 근무조건
+                const workConditionCell = document.createElement('td');
+                workConditionCell.textContent = item.workDate_nm + ' ~ ' + item.workregiontxt;
+                row.appendChild(workConditionCell);
+
+                // 등록/마감일
+                const dateCell = document.createElement('td');
+                dateCell.textContent = item.reqDate_s + ' ~ ' + item.reqDate_e + ' / ' + item.reqType_nm;
+                row.appendChild(dateCell);
+
+                tbody.appendChild(row);
+              }
+
+              //dataPane.innerText = '조건을 만족하는 데이터가 있습니다.';
+            } else {
+              tbody.innerHTML = ''; // 이전 데이터 지우기
+              dataPane.innerText = '';
+            }
+          } else {
+            dataPane.innerText = '데이터가 올바르게 구조화되어 있지 않습니다.';
+          }
+
+          // 페이지네이션 컨트롤 업데이트
+          updatePagination();
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
+
+    // 현재 페이지와 전체 데이터 항목에 기반하여 페이지네이션 컨트롤 업데이트하는 함수
+    function updatePagination() {
+      paginationContainer.innerHTML = ''; // 이전 페이지네이션 컨트롤 지우기
+
+      const totalPages = Math.ceil(totalData / pageSize);
+
+      // 페이지네이션 버튼 생성 및 추가
+      for (let i = 1; i <= totalPages; i++) {
+        const button = document.createElement('div');
+        button.textContent = i;
+        button.classList.add('pagination-button'); // 버튼에 클래스 추가
+        button.addEventListener('click', () => {
+          currentPage = i;
+          updateTableData(currentPage);
+
+          // 페이지네이션 버튼 클릭 시 스타일 변경
+          updatePaginationStyle();
+        });
+        paginationContainer.appendChild(button);
+      }
+    }
+
+    // 페이지네이션 스타일 업데이트 함수
+    function updatePaginationStyle() {
+      const buttons = paginationContainer.querySelectorAll('.pagination-button');
+
+      buttons.forEach((button) => {
+        button.classList.remove('active'); // 모든 버튼의 active 클래스 제거
+      });
+
+      // 현재 페이지 버튼에 active 클래스 추가
+      buttons[currentPage - 1].classList.add('active');
+    }
+    // 초기 데이터 로딩
+    updateTableData(currentPage);
+
+
+    function redirectToDetailsPage(page, row) {
+      const company = row.cells[0].textContent.trim();
+      const jobTitle = row.cells[1].textContent.trim();
+      const workingCondition = row.cells[2].textContent.trim();
+      const registrationDate = row.cells[3].textContent.trim();
+
+      // 선택된 행의 데이터를 URL 파라미터로 인코딩하여 .html 파일로 넘어갑니다.
+      const url = `${page}?company=${encodeURIComponent(company)}&jobTitle=${encodeURIComponent(jobTitle)}&workingCondition=${encodeURIComponent(workingCondition)}&registrationDate=${encodeURIComponent(registrationDate)}`;
+      window.location.href = url;
+    }
+
+
+    function rowClickHandler(event) {
+      const row = event.target.closest('tr');
+      if (row) {
+        redirectToDetailsPage('openapi_details.html', row);
+      }
+    }
+
+    // 각 행에 클릭 이벤트 리스너 추가
+    tbody.addEventListener('click', rowClickHandler);
+
+    // ...
+
+    // 선택된 행의 데이터를 URL 파라미터로 인코딩하여 상세 페이지로 전달하는 함수
+    function redirectToDetailsPage(page, row) {
+      const company = row.cells[0].textContent.trim();
+      const jobTitle = row.cells[1].textContent.trim();
+      const workingCondition = row.cells[2].textContent.trim();
+      const registrationDate = row.cells[3].textContent.trim();
+
+      // 선택된 행의 데이터를 URL 파라미터로 인코딩하여 .html 파일로 넘어갑니다.
+      const url = `${page}?company=${encodeURIComponent(company)}&jobTitle=${encodeURIComponent(jobTitle)}&workingCondition=${encodeURIComponent(workingCondition)}&registrationDate=${encodeURIComponent(registrationDate)}`;
+      window.location.href = url;
+    }
+
   </script>
 </body>
 

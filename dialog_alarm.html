@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+
+  <div class="dialog-container" id="dialogContainer">
+    <div class="dialog">
+      <h2>다이얼로그 제목</h2>
+      <p>다이얼로그 내용</p>
+      <button class="close-button" id="closeButton">닫기</button>
+    </div>
+  </div>
+
+  <script>
+    const openButton = document.getElementById('alarm'); // 수정: 'alarm' 이미지를 선택하도록 변경
+    const dialogContainer = document.getElementById('dialogContainer');
+    const closeButton = document.getElementById('closeButton');
+
+    openButton.addEventListener('click', () => {
+      dialogContainer.style.display = 'flex';
+    });
+
+    closeButton.addEventListener('click', () => {
+      dialogContainer.style.display = 'none';
+    });
+  </script>
+
+</body>
+
+</html>
