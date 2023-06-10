@@ -33,9 +33,12 @@
   font-family: 'Jua', sans-serif;
 }
 
+.close-button:hover {
+  background-color: black;
+}
+
 table {
   border-collapse: collapse;
-  display: flex;
   justify-content: center;
   align-items: center;
   text-align: center;
@@ -44,6 +47,7 @@ table {
 thead {
   display: table-header-group;
   vertical-align: middle;
+  border-top: 1px solid #333;
 }
 
 table>thead>tr {
@@ -64,6 +68,13 @@ table td:last-child {
   border-right: none;
 }
 
-button:hover {
-  background-color: #000;
+.alarmButton {
+  background-color: inherit;
+  border:none;
 }
+
+.alarmButton:hover {
+  cursor: pointer;
+  transform: translate(0, -10px);
+}
+
