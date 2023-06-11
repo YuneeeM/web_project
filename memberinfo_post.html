@@ -168,11 +168,7 @@
     <input type="submit" value="제출">
   </form>
 
-
-
-
   <script src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=&libraries=services">
-    const apiKey = process.env.API_KEY;
   </script>
   <script>
     const form = document.getElementById('member-form');
@@ -229,8 +225,12 @@
         education: education
       };
 
+      let non_users = [];
+
+      non_users.push(memberData);
+
       // 데이터를 localStorage에 저장
-      localStorage.setItem('memberData', JSON.stringify(memberData));
+      localStorage.setItem('non_users', JSON.stringify(non_users));
 
       // 저장된 데이터 확인
       console.log('저장된 데이터:', localStorage.getItem('memberData'));
@@ -238,8 +238,6 @@
       // 폼 초기화
       form.reset();
     });
-
-
 
   </script>
 

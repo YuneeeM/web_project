@@ -302,19 +302,19 @@
   <nav id="menu_bar">
     <div id="menu_nav">
       <ul>
-        <li onclick="location.href='bokjiapi_homeless.html'">
+        <li onclick="checkAuthTokenAndRedirect('bokjiapi_homeless.html')">
           <span class="menu_icon icon1"></span>
           <span class="menu_text">노숙인 복지시설</span>
         </li>
-        <li onclick="location.href='bokjiapi_order.html'">
+        <li onclick="checkAuthTokenAndRedirect('bokjiapi_order.html')">
           <span class="menu_icon icon2"></span>
           <span class="menu_text">노인 복지시설</span>
         </li>
-        <li onclick="location.href='worknet_post.html'">
+        <li onclick="checkAuthTokenAndRedirect('worknet_post.html')">
           <span class="menu_icon icon3"></span>
           <span class="menu_text">구인정보(사기업)</span>
         </li>
-        <li onclick="location.href='openapi_workpost.html'">
+        <li onclick="checkAuthTokenAndRedirect('openapi_workpost.html')">
           <span class="menu_icon icon4"></span>
           <span class="menu_text">구인정보(공공)</span>
         </li>
@@ -326,7 +326,7 @@
           <span class="menu_icon icon6"></span>
           <span class="menu_text">자유게시판</span>
         </li>
-        <li onclick="location.href='mypage.html'">
+        <li onclick="checkAuthTokenAndRedirect_login('mypage.html')">
           <span class="menu_icon icon7"></span>
           <span class="menu_text">마이페이지</span>
         </li>
@@ -765,10 +765,44 @@
 
       if (confirmLogout) {
         // authToken 값을 null로 변경
-        localStorage.setItem("authToken", null);
+        localStorage.setItem("authToken", 0);
 
         // startpage.html로 이동
         window.location.href = "startpage.html";
+      }
+    }
+  </script>
+
+  <script>
+    function checkAuthTokenAndRedirect(page) {
+      // localStorage에서 authToken 가져오기
+      var token = parseInt(localStorage.getItem("authToken"));
+
+
+      if (token === 0) {
+        location.href = 'memberinfo_post.html';
+      } else {
+        location.href = page;
+      }
+    }
+    function checkAuthTokenAndRedirect_login(page) {
+      // localStorage에서 authToken 가져오기
+      var token = parseInt(localStorage.getItem("authToken"));
+
+      if (token === 0) {
+
+        // 확인 메시지 출력
+        var confirmLogin = confirm("로그인을 하셔야 접속할 수 있습니다!");
+
+        if (confirmLogin) {
+
+          window.location.href = 'loginpage.html';
+        }
+        else {
+        }
+
+      } else {
+        location.href = page;
       }
     }
   </script>

@@ -282,6 +282,11 @@
     .icon7 {
       background: url('media/001.png') center center no-repeat;
     }
+
+    .marker {
+      filter: hue-rotate(120deg);
+      /* 마커의 색상을 120도 회전하여 변경 */
+    }
   </style>
 
 </head>
@@ -293,10 +298,10 @@
       <button id="alarmButton" class="alarmButton"><img src="media/free-icon-alarm-bell-1059065.png" width="50px"
           height="50px"></button>
       <img src="media/free-icon-search-2697422.png" width="50px" height="50px" alt="검색" style="margin-right: 5px;">
-      <img src="media/free-icon-enter-1828395.png" onclick="location.href='loginpage.html'" width="50px" height="50px"
+      <img src="media/free-icon-enter-1828395.png" onclick=" checklogin('loginpage.html')" width="50px" height="50px"
         alt="로그인">
-      <img src="media/free-icon-person-5393061.png" onclick="location.href='mypage.html'" width="50px" height="50px"
-        alt="마이페이지">
+      <img src="media/free-icon-person-5393061.png" onclick="checkAuthTokenAndRedirect_login('mypage.html')"
+        width="50px" height="50px" alt="마이페이지">
     </div>
   </header>
 
@@ -333,19 +338,19 @@
   <nav id="menu_bar">
     <div id="menu_nav">
       <ul>
-        <li onclick="location.href='bokjiapi_homeless.html'">
+        <li onclick="checkAuthTokenAndRedirect('bokjiapi_homeless.html')">
           <span class="menu_icon icon1"></span>
           <span class="menu_text">노숙인 복지시설</span>
         </li>
-        <li onclick="location.href='bokjiapi_order.html'">
+        <li onclick="checkAuthTokenAndRedirect('bokjiapi_order.html')">
           <span class="menu_icon icon2"></span>
           <span class="menu_text">노인 복지시설</span>
         </li>
-        <li onclick="location.href='worknet_post.html'">
+        <li onclick="checkAuthTokenAndRedirect('worknet_post.html')">
           <span class="menu_icon icon3"></span>
           <span class="menu_text">구인정보(사기업)</span>
         </li>
-        <li onclick="location.href='openapi_workpost.html'">
+        <li onclick="checkAuthTokenAndRedirect('openapi_workpost.html')">
           <span class="menu_icon icon4"></span>
           <span class="menu_text">구인정보(공공)</span>
         </li>
@@ -357,7 +362,7 @@
           <span class="menu_icon icon6"></span>
           <span class="menu_text">자유게시판</span>
         </li>
-        <li onclick="location.href='mypage.html'">
+        <li onclick="checkAuthTokenAndRedirect_login('mypage.html')">
           <span class="menu_icon icon7"></span>
           <span class="menu_text">마이페이지</span>
         </li>
@@ -384,12 +389,14 @@
     <div class="loading-message">로딩중입니다...</div>
   </div>
 
-  <div id="map_wrap" style="margin-top: 20px; margin-left: 100px;">
-    <div id="menu" style="width:420px; height: 600px; display:inline-block;">
-      <ul id="placeList" style="overflow:auto; width: 400px; height:600px; padding-left: 20px;"></ul>
+  <div id="map_wrap"
+    style="margin-top: 20px; margin-left: 100px; display: flex; justify-content: center; align-items: center;">
+    <div id="menu" style="width: 400px; height: 600px; display: inline-block; overflow: auto; text-align: left;">
+      <ul id="placeList" style="padding-left: 20px; display: block;"></ul>
     </div>
-    <div id="map" style="width: 750px; height: 600px; display:inline-block;"></div>
+    <div id="map" style="width: 750px; height: 600px; display: inline-block;"></div>
   </div>
+
 
 
   <script src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=&libraries=services,clusterer"></script>
@@ -430,7 +437,6 @@
       // 로딩 오버레이를 보이도록 스타일 변경
       loadingOverlay.style.display = 'block';
 
-      removeMarkers();
       clusterer.clear();
 
       if (url) {
@@ -451,7 +457,8 @@
               });
 
               var infoWindow = new kakao.maps.InfoWindow({
-                content: centers[i]["시설명"],
+                content: '<div style="width: 200px; text-align: center; padding: 6px 0; font-size: 20px;">' + centers[i]["시설명"] + '</div>' +
+                  '<div>' + centers[i]["전화번호"] + '</div>' + '<div>' + centers[i]["도로명주소"] + '</div>'
               });
               // 마커 추가
               markers.push(marker);
@@ -556,6 +563,10 @@
 
         map.setCenter(placePosition);
         map.setLevel(5);
+        marker.setOptions({
+          // CSS 클래스를 추가하여 마커의 스타일 변경
+          className: 'marker'
+        })
       });
 
       return el;
@@ -578,10 +589,22 @@
         if (status === kakao.maps.services.Status.OK) {
           var coords = new kakao.maps.LatLng(result[0].y, result[0].x);
 
+          // 사용자 정의 마커 이미지 생성
+          var imageSrc = 'media/eldery.png'; // 사용자 정의 마커 이미지 URL
+          var imageSize = new kakao.maps.Size(40, 40); // 마커 이미지 크기
+          var imageOptions = {
+            spriteSize: new kakao.maps.Size(40, 40), // 스프라이트 이미지 크기
+            spriteOrigin: new kakao.maps.Point(0, 0) // 스프라이트 이미지의 좌상단 좌표
+          };
+
+          // 사용자 정의 마커 생성
+          var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize, imageOptions);
+
           // 결과값으로 받은 위치를 마커로 표시합니다
           var marker = new kakao.maps.Marker({
             map: map,
-            position: coords
+            position: coords,
+            image: markerImage // 사용자 정의 마커 이미지 사용
           });
 
           // 인포윈도우로 장소에 대한 설명을 표시합니다
@@ -592,6 +615,7 @@
 
           // 마커 배열에 추가
           markers.push(marker);
+          marker.setMap(map);
           infowindows.push(infowindow);
 
           // 지도의 중심을 결과값으로 받은 위치로 이동시킵니다
@@ -620,6 +644,7 @@
   </script>
 
   <script>
+
     const alarmButton = document.getElementById('alarmButton');
     const modal = document.getElementById('modal');
     const closeButton = document.getElementById('closeButton');
@@ -630,6 +655,14 @@
     const dataPane = document.getElementById('sample_data');
 
     let currentPage = 1; // 현재 페이지 번호
+
+    // localStorage에서 authToken 가져오기
+    var token_a = parseInt(localStorage.getItem("authToken"));
+
+
+    if (token_a == 0) {
+      alarmButton.style.display = 'none';
+    }
 
     alarmButton.addEventListener('click', () => {
       modal.style.display = 'block';
@@ -753,6 +786,124 @@
     tbody.addEventListener('click', rowClickHandler);
 
 
+  </script>
+
+  <script>
+    function checkAuthTokenAndRedirect(page) {
+      // localStorage에서 authToken 가져오기
+      var token = parseInt(localStorage.getItem("authToken"));
+
+      if (token === 0) {
+        location.href = 'memberinfo_post.html';
+      } else {
+        location.href = page;
+      }
+    }
+
+    function checkAuthTokenAndRedirect_login(page) {
+      // localStorage에서 authToken 가져오기
+      var token = parseInt(localStorage.getItem("authToken"));
+
+      if (token === 0) {
+        // 확인 메시지 출력
+        var confirmLogin = confirm("로그인을 하셔야 접속할 수 있습니다!");
+
+        if (confirmLogin) {
+
+          window.location.href = 'loginpage.html';
+        }
+        else {
+
+        }
+
+      } else {
+        location.href = page;
+      }
+    }
+
+    function checklogin(page) {
+
+      // localStorage에서 authToken 가져오기
+      var token = parseInt(localStorage.getItem("authToken"));
+
+
+      if (token === 0) {
+
+        window.location.href = page;
+
+
+      } else {
+
+        // 확인 메시지 출력
+        var confirmLogin = confirm("로그아웃 하시겠습니까?");
+        if (confirmLogin) {
+
+          // authToken 값을 null로 변경
+          localStorage.setItem("authToken", 0);
+
+          // startpage.html로 이동
+          window.location.href = "startpage.html";
+        }
+        else {
+          // startpage.html로 이동
+          window.location.href = "startpage.html";
+        }
+      }
+
+    }
+
+  </script>
+
+  <script>
+
+    // 로컬 스토리지에서 데이터 가져오기
+    var users = JSON.parse(localStorage.getItem("users"));
+    // localStorage에서 authToken 가져오기
+    var token = parseInt(localStorage.getItem("authToken"));
+
+    var print_value = users.find(function (user) {
+      return user.personid === token;
+    });
+
+    console.log(print_value);
+
+
+    var userResidence = print_value.residence;
+
+    console.log(userResidence);
+    console.log(userAge);
+
+    if (userResidence.length > 0) {
+      var address = users.address;
+
+      // Kakao Maps API를 초기화합니다.
+      kakao.maps.load(function () {
+        // 주소로 좌표 변환을 위한 geocoder 객체를 생성합니다.
+        var geocoder = new kakao.maps.services.Geocoder();
+
+        // 주소로 좌표를 검색합니다.
+        geocoder.addressSearch(address, function (result, status) {
+          if (status === kakao.maps.services.Status.OK) {
+            var coords = new kakao.maps.LatLng(result[0].y, result[0].x);
+
+            var container = document.getElementById('map');
+            var options = {
+              center: coords,
+              level: 10
+            };
+
+            // 지도를 생성합니다.
+            var map = new kakao.maps.Map(container, options);
+
+            // 마커를 생성하고 지도에 표시합니다.
+            var marker = new kakao.maps.Marker({
+              position: coords
+            });
+            marker.setMap(map);
+          }
+        });
+      });
+    }
   </script>
 </body>
 

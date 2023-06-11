@@ -249,12 +249,14 @@
       };
 
       //데이터를 저장할 배열 생성
-      let users = [];
+      var users = [];
 
       users.push(userData);
 
       // 배열을 JSON 문자열로 변환하여 localStorage에 저장
       localStorage.setItem("users", JSON.stringify(users));
+
+      window.location.href = "loginpage.html"
 
       // 서버로 회원가입 정보 전송
       fetch('/register', {

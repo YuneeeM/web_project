@@ -21,10 +21,10 @@
       <button id="alarmButton" class="alarmButton"><img src="media/free-icon-alarm-bell-1059065.png" width="50px"
           height="50px"></button>
       <img src="media/free-icon-search-2697422.png" width="50px" height="50px" alt="검색" style="margin-right: 5px;">
-      <img src="media/free-icon-enter-1828395.png" onclick="location.href='loginpage.html'" width="50px" height="50px"
+      <img src="media/free-icon-enter-1828395.png" onclick=" checklogin('loginpage.html')" width="50px" height="50px"
         alt="로그인">
-      <img src="media/free-icon-person-5393061.png" onclick="location.href='mypage.html'" width="50px" height="50px"
-        alt="마이페이지">
+      <img src="media/free-icon-person-5393061.png" onclick="checkAuthTokenAndRedirect_login('mypage.html')"
+        width="50px" height="50px" alt="마이페이지">
     </div>
   </header>
 
@@ -60,18 +60,19 @@
 
   <main>
     <div id=button_list>
-      <div class="item" onclick="location.href='bokjiapi_homeless.html'"><img src="media/welfare.png"
+      <div class="item" onclick="checkAuthTokenAndRedirect('bokjiapi_homeless.html')"><img src="media/welfare.png"
           class="img_content">
         <h2>노숙인<br>복지시설</h2>
       </div>
-      <div class="item" onclick="location.href='bokjiapi_order.html'"><img src="media/eldery.png" class="img_content">
+      <div class="item" onclick="checkAuthTokenAndRedirect('bokjiapi_order.html')"><img src="media/eldery.png"
+          class="img_content">
         <h2>노인<br>복지시설</h2>
       </div>
-      <div class="item" onclick="location.href='worknet_post.html'"><img src="media/recruitment.png"
+      <div class="item" onclick="checkAuthTokenAndRedirect('worknet_post.html')"><img src="media/recruitment.png"
           class="img_content">
         <h2>구인정보<br>(사기업)</h2>
       </div>
-      <div class="item" onclick="location.href='openapi_workpost.html'"><img src="media/handshake.png"
+      <div class="item" onclick="checkAuthTokenAndRedirect('openapi_workpost.html')"><img src="media/handshake.png"
           class="img_content">
         <h2>구인정보<br>(공공)</h2>
       </div>
@@ -90,6 +91,9 @@
   <footer>@ 웹프로그래밍 9조</footer>
 
   <script>
+
+
+
     const alarmButton = document.getElementById('alarmButton');
     const modal = document.getElementById('modal');
     const closeButton = document.getElementById('closeButton');
@@ -101,6 +105,14 @@
     const paginationContainer = document.getElementById('pagination');
 
     let currentPage = 1; // 현재 페이지 번호
+
+    // localStorage에서 authToken 가져오기
+    var token_a = parseInt(localStorage.getItem("authToken"));
+
+
+    if (token_a == 0) {
+      alarmButton.style.display = 'none';
+    }
 
     alarmButton.addEventListener('click', () => {
       modal.style.display = 'block';
@@ -224,6 +236,74 @@
     // 각 행에 클릭 이벤트 리스너 추가
     tbody.addEventListener('click', rowClickHandler);
 
+
+  </script>
+
+
+  <script>
+    function checkAuthTokenAndRedirect(page) {
+      // localStorage에서 authToken 가져오기
+      var token = parseInt(localStorage.getItem("authToken"));
+
+      if (token === 0) {
+        location.href = 'memberinfo_post.html';
+      } else {
+        location.href = page;
+      }
+    }
+
+    function checkAuthTokenAndRedirect_login(page) {
+      // localStorage에서 authToken 가져오기
+      var token = parseInt(localStorage.getItem("authToken"));
+
+      if (token === 0) {
+
+        // 확인 메시지 출력
+        var confirmLogin = confirm("로그인을 하셔야 접속할 수 있습니다!");
+
+        if (confirmLogin) {
+
+          window.location.href = 'loginpage.html';
+        }
+        else {
+
+        }
+
+      } else {
+        location.href = page;
+      }
+    }
+
+    function checklogin(page) {
+
+      // localStorage에서 authToken 가져오기
+      var token = parseInt(localStorage.getItem("authToken"));
+
+
+      if (token === 0) {
+
+        window.location.href = page;
+
+
+      } else {
+
+        // 확인 메시지 출력
+        var confirmLogin = confirm("로그아웃 하시겠습니까?");
+        if (confirmLogin) {
+
+          // authToken 값을 null로 변경
+          localStorage.setItem("authToken", 0);
+
+          // startpage.html로 이동
+          window.location.href = "startpage.html";
+        }
+        else {
+          // startpage.html로 이동
+          window.location.href = "startpage.html";
+        }
+      }
+
+    }
 
   </script>
 </body>

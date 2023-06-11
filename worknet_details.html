@@ -342,10 +342,10 @@
       <button id="alarmButton" class="alarmButton"><img src="media/free-icon-alarm-bell-1059065.png" width="50px"
           height="50px"></button>
       <img src="media/free-icon-search-2697422.png" width="50px" height="50px" alt="검색" style="margin-right: 5px;">
-      <img src="media/free-icon-enter-1828395.png" onclick="location.href='loginpage.html'" width="50px" height="50px"
+      <img src="media/free-icon-enter-1828395.png" onclick=" checklogin('loginpage.html')" width="50px" height="50px"
         alt="로그인">
-      <img src="media/free-icon-person-5393061.png" onclick="location.href='mypage.html'" width="50px" height="50px"
-        alt="마이페이지">
+      <img src="media/free-icon-person-5393061.png" onclick="checkAuthTokenAndRedirect_login('mypage.html')"
+        width="50px" height="50px" alt="마이페이지">
     </div>
   </header>
 
@@ -359,19 +359,19 @@
   <nav id="menu_bar">
     <div id="menu_nav">
       <ul>
-        <li onclick="location.href='bokjiapi_homeless.html'">
+        <li onclick="checkAuthTokenAndRedirect('bokjiapi_homeless.html')">
           <span class="menu_icon icon1"></span>
           <span class="menu_text">노숙인 복지시설</span>
         </li>
-        <li onclick="location.href='bokjiapi_order.html'">
+        <li onclick="checkAuthTokenAndRedirect('bokjiapi_order.html')">
           <span class="menu_icon icon2"></span>
           <span class="menu_text">노인 복지시설</span>
         </li>
-        <li onclick="location.href='worknet_post.html'">
+        <li onclick="checkAuthTokenAndRedirect('worknet_post.html')">
           <span class="menu_icon icon3"></span>
           <span class="menu_text">구인정보(사기업)</span>
         </li>
-        <li onclick="location.href='openapi_workpost.html'">
+        <li onclick="checkAuthTokenAndRedirect('openapi_workpost.html')">
           <span class="menu_icon icon4"></span>
           <span class="menu_text">구인정보(공공)</span>
         </li>
@@ -383,7 +383,7 @@
           <span class="menu_icon icon6"></span>
           <span class="menu_text">자유게시판</span>
         </li>
-        <li onclick="location.href='mypage.html'">
+        <li onclick="checkAuthTokenAndRedirect_login('mypage.html')">
           <span class="menu_icon icon7"></span>
           <span class="menu_text">마이페이지</span>
         </li>
@@ -464,10 +464,10 @@
 
     // "담당업무" 이전과 이후의 글자 추출
     const jobTitleWithBreak = title.replace(/[.*-]/g, '<br>');
-    const startIndex = jobTitleWithBreak.indexOf('담당');
+    const startIndex = jobTitleWithBreak.indexOf('모집');
     const endIndex = startIndex !== -1 ? startIndex + 2 : jobTitleWithBreak.length;
-    const jobTitle = jobTitleWithBreak.substring(0, startIndex).trim();
-    let remainingText = jobTitleWithBreak.substring(startIndex).trim();
+    const jobTitle = jobTitleWithBreak.substring(0, endIndex).trim();
+    var remainingText = jobTitleWithBreak.substring(endIndex).trim();
     const addressStartIndex = remainingText.indexOf('부산');
     const address = remainingText.substring(addressStartIndex);
 
@@ -553,6 +553,15 @@
     const modal = document.getElementById('modal');
     const closeButton = document.getElementById('closeButton');
 
+    // localStorage에서 authToken 가져오기
+    var token_a = parseInt(localStorage.getItem("authToken"));
+
+
+    if (token_a == 0) {
+      alarmButton.style.display = 'none';
+    }
+
+
     alarmButton.addEventListener('click', () => {
       modal.style.display = 'block';
     });
@@ -560,6 +569,73 @@
     closeButton.addEventListener('click', () => {
       modal.style.display = 'none';
     });
+
+  </script>
+
+  <script>
+    function checkAuthTokenAndRedirect(page) {
+      // localStorage에서 authToken 가져오기
+      var token = parseInt(localStorage.getItem("authToken"));
+
+      if (token === 0) {
+        location.href = 'memberinfo_post.html';
+      } else {
+        location.href = page;
+      }
+    }
+
+    function checkAuthTokenAndRedirect_login(page) {
+      // localStorage에서 authToken 가져오기
+      var token = parseInt(localStorage.getItem("authToken"));
+
+      if (token === 0) {
+
+        // 확인 메시지 출력
+        var confirmLogin = confirm("로그인을 하셔야 접속할 수 있습니다!");
+
+        if (confirmLogin) {
+
+          window.location.href = 'loginpage.html';
+        }
+        else {
+
+        }
+
+      } else {
+        location.href = page;
+      }
+    }
+
+    function checklogin(page) {
+
+      // localStorage에서 authToken 가져오기
+      var token = parseInt(localStorage.getItem("authToken"));
+
+
+      if (token === 0) {
+
+        window.location.href = page;
+
+
+      } else {
+
+        // 확인 메시지 출력
+        var confirmLogin = confirm("로그아웃 하시겠습니까?");
+        if (confirmLogin) {
+
+          // authToken 값을 null로 변경
+          localStorage.setItem("authToken", 0);
+
+          // startpage.html로 이동
+          window.location.href = "startpage.html";
+        }
+        else {
+          // startpage.html로 이동
+          window.location.href = "startpage.html";
+        }
+      }
+
+    }
 
   </script>
 </body>

@@ -9,32 +9,36 @@ app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, '/bokjiapi_order.html'));
 });
 
-app.get('/dolbom.json', (req, res) => {
-  res.sendFile(path.join(__dirname, 'dolbom.json'));
+app.get('json/dolbom.json', (req, res) => {
+  res.sendFile(path.join(__dirname, 'json/dolbom.json'));
 });
 
 app.get('/bokjiguan.json', (req, res) => {
-  res.sendFile(path.join(__dirname, 'bokjiguan.json'));
+  res.sendFile(path.join(__dirname, 'json/bokjiguan.json'));
 });
 
-app.get('/gyeongro.json', (req, res) => {
-  res.sendFile(path.join(__dirname, 'gyeongro.json'));
+app.get('json/gyeongro.json', (req, res) => {
+  res.sendFile(path.join(__dirname, 'json/gyeongro.json'));
 });
 
-app.get('/gyosil.json', (req, res) => {
-  res.sendFile(path.join(__dirname, 'gyosil.json'));
+app.get('json/gyosil.json', (req, res) => {
+  res.sendFile(path.join(__dirname, 'json/gyosil.json'));
 });
 
-app.get('/yoyang.json', (req, res) => {
-  res.sendFile(path.join(__dirname, 'yoyang.json'));
+app.get('json/yoyang.json', (req, res) => {
+  res.sendFile(path.join(__dirname, 'json/yoyang.json'));
 });
 
-app.get('/meals.json', (req, res) => {
-  res.sendFile(path.join(__dirname, 'meals.json'));
+app.get('json/meals.json', (req, res) => {
+  res.sendFile(path.join(__dirname, 'json/meals.json'));
 });
 
 app.get('/media/free-icon-family-4547180.png', (req, res) => {
   res.sendFile(path.join(__dirname, '/media/free-icon-family-4547180.png'));
+});
+
+app.get('/media/logo-removebg-preview.png', (req, res) => {
+  res.sendFile(path.join(__dirname, '/media/logo-removebg-preview.png'));
 });
 
 
