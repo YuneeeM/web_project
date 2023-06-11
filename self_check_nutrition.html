@@ -103,10 +103,139 @@
       align-items: center;
       justify-content: center;
     }
+
+    #menu_bar {
+      position: fixed;
+      top: 0;
+      width: 50px;
+      height: 100%;
+      background-color: #0099FF;
+      z-index: 3;
+      overflow: hidden;
+      transition: width 0.3s;
+    }
+
+    #menu_bar:hover {
+      width: 250px;
+    }
+
+    #menu_bar ul {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-top: 100px;
+    }
+
+    #menu_bar li {
+      position: relative;
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      width: 100%;
+      height: 55px;
+      border-bottom: none;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    #menu_bar li:hover {
+      background-color: rgba(255, 255, 255, 0.2);
+    }
+
+    #menu_bar li .menu_icon {
+      width: 30px;
+      height: 30px;
+      margin-right: 10px;
+      background-size: cover;
+      opacity: 1;
+      transition: opacity 0.3s;
+    }
+
+    #menu_bar li:hover .menu_icon {
+      opacity: 1;
+    }
+
+    #menu_bar li .menu_text {
+      position: absolute;
+      left: -9999px;
+      color: #fff;
+    }
+
+    #menu_bar:hover li .menu_text {
+      left: 0;
+      margin-left: 40px;
+      font-size: 25px;
+    }
+
+    .icon1 {
+      background: url('media/007.png') center center no-repeat;
+    }
+
+    .icon2 {
+      background: url('media/006.png') center center no-repeat;
+    }
+
+    .icon3 {
+      background: url('media/004.png') center center no-repeat;
+    }
+
+    .icon4 {
+      background: url('media/003.png') center center no-repeat;
+    }
+
+    .icon5 {
+      background: url('media/005.png') center center no-repeat;
+    }
+
+    .icon6 {
+      background: url('media/002.png') center center no-repeat;
+    }
+
+    .icon7 {
+      background: url('media/001.png') center center no-repeat;
+    }
   </style>
 </head>
 
 <body>
+
+  <nav id="menu_bar">
+    <div id="menu_nav">
+      <ul>
+        <li onclick="location.href='bokjiapi_homeless.html'">
+          <span class="menu_icon icon1"></span>
+          <span class="menu_text">노숙인 복지시설</span>
+        </li>
+        <li onclick="location.href='bokjiapi_order.html'">
+          <span class="menu_icon icon2"></span>
+          <span class="menu_text">노인 복지시설</span>
+        </li>
+        <li onclick="location.href='worknet_post.html'">
+          <span class="menu_icon icon3"></span>
+          <span class="menu_text">구인정보(사기업)</span>
+        </li>
+        <li onclick="location.href='openapi_workpost.html'">
+          <span class="menu_icon icon4"></span>
+          <span class="menu_text">구인정보(공공)</span>
+        </li>
+        <li onclick="location.href='self_check_nutrition.html'">
+          <span class="menu_icon icon5"></span>
+          <span class="menu_text">건강 및 영양</span>
+        </li>
+        <li onclick="location.href='main_post.html'">
+          <span class="menu_icon icon6"></span>
+          <span class="menu_text">자유게시판</span>
+        </li>
+        <li onclick="location.href='mypage.html'">
+          <span class="menu_icon icon7"></span>
+          <span class="menu_text">마이페이지</span>
+        </li>
+      </ul>
+    </div>
+  </nav>
   <h1 style="text-align: center; color:#003F5F"><img src="media/free-icon-nutrients-5286612.png">영양상태 체크리스트</h1>
   <p style="text-align: center;">노년기에 건강한 식생활을 위해 영양상태를 체크 해봅시다!</p>
   <form id="ncheck-form">

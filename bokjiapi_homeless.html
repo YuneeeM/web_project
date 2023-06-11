@@ -5,6 +5,7 @@
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" type="text/css" href="css/alarm_dialog.css" />
   <title>복지시설 현황-노숙인</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -19,17 +20,19 @@
 
     input[type="text"] {
       width: 300px;
-      height: 30px;
+      height: 50px;
       padding: 5px;
-      font-size: 16px;
+      font-size: 24px;
       border-radius: 5px;
       border: 1px solid #ccc;
       font-family: 'Jua', sans-serif;
     }
 
     input[type="submit"] {
-      padding: 5px 10px;
+      width: 70px;
+      height: 50px;
       font-size: 20px;
+      margin-top: -5px;
       background-color: #0099FF;
       color: #fff;
       border: none;
@@ -46,7 +49,15 @@
     ul {
       list-style-type: none;
       padding: 0;
-      margin: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    #m-roadway {
+      display: flex;
+      justify-content: center;
+      align-items: center;
     }
 
     .facility li {
@@ -106,15 +117,258 @@
       background-color: #F1F5FF;
 
     }
+
+    #top_bar {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+      height: 100px;
+      margin-bottom: 20px;
+    }
+
+    #top_bar>a {
+      padding-left: 280px;
+    }
+
+    #top_bar>div {
+      padding: 10px;
+    }
+
+    #top_bar>div>img {
+      margin-right: 13px;
+    }
+
+    #top_bar>div>img:hover {
+      cursor: pointer;
+      transform: translate(0, -10px);
+    }
+
+    #top_bar>a {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin: 0 auto;
+    }
+
+    .img_logo {
+      margin-bottom: 10px;
+      width: 80px;
+      height: 80px;
+      text-align: center;
+    }
+
+    .board-list {
+      border-collapse: collapse;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+    }
+
+    table thead {
+      display: table-header-group;
+      vertical-align: middle;
+      border-top: 1px solid #333;
+    }
+
+    table>thead>tr {
+      color: #333;
+      height: 20px;
+      border-bottom: 2px solid slategray;
+    }
+
+    table th,
+    table td {
+      padding: 10px;
+      border-right: 1px solid #ccc;
+      border-bottom: 1px solid #ccc;
+    }
+
+    table th:last-child,
+    table td:last-child {
+      border-right: none;
+    }
+
+    #menu_bar {
+      position: fixed;
+      top: 0;
+      width: 50px;
+      height: 100%;
+      background-color: #0099FF;
+      z-index: 3;
+      overflow: hidden;
+      transition: width 0.3s;
+    }
+
+    #menu_bar:hover {
+      width: 250px;
+    }
+
+    #menu_bar ul {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-top: 100px;
+    }
+
+    #menu_bar li {
+      position: relative;
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      width: 100%;
+      height: 55px;
+      border-bottom: none;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    #menu_bar li:hover {
+      background-color: rgba(255, 255, 255, 0.2);
+    }
+
+    #menu_bar li .menu_icon {
+      width: 30px;
+      height: 30px;
+      margin-right: 10px;
+      background-size: cover;
+      opacity: 1;
+      transition: opacity 0.3s;
+    }
+
+    #menu_bar li:hover .menu_icon {
+      opacity: 1;
+    }
+
+    #menu_bar li .menu_text {
+      position: absolute;
+      left: -9999px;
+      color: #fff;
+    }
+
+    #menu_bar:hover li .menu_text {
+      left: 0;
+      margin-left: 40px;
+      font-size: 25px;
+    }
+
+    .icon1 {
+      background: url('media/007.png') center center no-repeat;
+    }
+
+    .icon2 {
+      background: url('media/006.png') center center no-repeat;
+    }
+
+    .icon3 {
+      background: url('media/004.png') center center no-repeat;
+    }
+
+    .icon4 {
+      background: url('media/003.png') center center no-repeat;
+    }
+
+    .icon5 {
+      background: url('media/005.png') center center no-repeat;
+    }
+
+    .icon6 {
+      background: url('media/002.png') center center no-repeat;
+    }
+
+    .icon7 {
+      background: url('media/001.png') center center no-repeat;
+    }
   </style>
 
 </head>
 
 <body>
-  <form onsubmit="return searchAddress();">
-    <label id="roadway"><img src="media/free-icon-help-7071035.png" width="40px" height="40px"
-        style="margin-bottom: -10px; margin-right: 10px;"><input type="text" placeholder="주소를 입력해주세요." id="addressInput"
-        style="height: 30px; font-size: 20px;"><input type="submit" value="확인"></label>
+  <header id="top_bar">
+    <a href="startpage.html"><img src="media/logo-removebg-preview.png" class="img_logo"></a>
+    <div>
+      <button id="alarmButton" class="alarmButton"><img src="media/free-icon-alarm-bell-1059065.png" width="50px"
+          height="50px"></button>
+      <img src="media/free-icon-search-2697422.png" width="50px" height="50px" alt="검색" style="margin-right: 5px;">
+      <img src="media/free-icon-enter-1828395.png" onclick="location.href='loginpage.html'" width="50px" height="50px"
+        alt="로그인">
+      <img src="media/free-icon-person-5393061.png" onclick="location.href='mypage.html'" width="50px" height="50px"
+        alt="마이페이지">
+    </div>
+  </header>
+
+  <div class="modal" id="modal">
+    <div class="modal-content">
+      <h2>최신 일자리</h2>
+      <table class="board-list">
+        <thead>
+          <tr>
+            <th>회사명<br>/ 정보제공처</th>
+            <th>채용공고명/담당업무/<br>지원자격</th>
+            <th>근무조건</th>
+            <th>등록/마감일</th>
+          </tr>
+          <colgroup>
+            <col width="20%">
+            <col width="40%">
+            <col width="20%">
+            <col width="20%">
+          </colgroup>
+        </thead>
+        <tbody>
+          <tr>
+            <td></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <p id="sample_data"></p>
+      <button class="close-button" id="closeButton">닫기</button>
+    </div>
+  </div>
+
+  <nav id="menu_bar">
+    <div id="menu_nav">
+      <ul>
+        <li onclick="location.href='bokjiapi_homeless.html'">
+          <span class="menu_icon icon1"></span>
+          <span class="menu_text">노숙인 복지시설</span>
+        </li>
+        <li onclick="location.href='bokjiapi_order.html'">
+          <span class="menu_icon icon2"></span>
+          <span class="menu_text">노인 복지시설</span>
+        </li>
+        <li onclick="location.href='worknet_post.html'">
+          <span class="menu_icon icon3"></span>
+          <span class="menu_text">구인정보(사기업)</span>
+        </li>
+        <li onclick="location.href='openapi_workpost.html'">
+          <span class="menu_icon icon4"></span>
+          <span class="menu_text">구인정보(공공)</span>
+        </li>
+        <li onclick="location.href='self_check_nutrition.html'">
+          <span class="menu_icon icon5"></span>
+          <span class="menu_text">건강 및 영양</span>
+        </li>
+        <li onclick="location.href='main_post.html'">
+          <span class="menu_icon icon6"></span>
+          <span class="menu_text">자유게시판</span>
+        </li>
+        <li onclick="location.href='mypage.html'">
+          <span class="menu_icon icon7"></span>
+          <span class="menu_text">마이페이지</span>
+        </li>
+      </ul>
+    </div>
+  </nav>
+  <form id="m-roadway" onsubmit="return searchAddress();">
+    <label id="roadway"><img src="media/free-icon-help-7071035.png" width="50px" height="50px"
+        onclick="location.href='bokjiapi_homeless.html'" style="margin-bottom: -15px; margin-right: 10px;"><input
+        type="text" placeholder="주소를 입력해주세요." id="addressInput" style=" font-size: 24px; padding-left: 10px;"><input
+        type="submit" value="확인"></label>
   </form>
   <ul class="facility" style="margin-top: 20px;">
     <li class="facility-btn" onclick="facilities('homeless.json');">자활 시설</li>
@@ -130,7 +384,7 @@
     <div class="loading-message">로딩중입니다...</div>
   </div>
 
-  <div id="map_wrap" style="margin-top: 20px;">
+  <div id="map_wrap" style="margin-top: 20px; margin-left: 100px;">
     <div id="menu" style="width:420px; height: 600px; display:inline-block;">
       <ul id="placeList" style="overflow:auto; width: 400px; height:600px; padding-left: 20px;"></ul>
     </div>
@@ -362,6 +616,142 @@
       }
       infowindows = [];
     }
+
+  </script>
+
+  <script>
+    const alarmButton = document.getElementById('alarmButton');
+    const modal = document.getElementById('modal');
+    const closeButton = document.getElementById('closeButton');
+
+
+    const table = document.querySelector('.board-list');
+    const tbody = table.querySelector('tbody');
+    const dataPane = document.getElementById('sample_data');
+
+    let currentPage = 1; // 현재 페이지 번호
+
+    alarmButton.addEventListener('click', () => {
+      modal.style.display = 'block';
+    });
+
+    closeButton.addEventListener('click', () => {
+      modal.style.display = 'none';
+    });
+
+    const url = '';
+
+    // 현재 날짜와 비교하여 2023-06-01 이전인지 확인하는 함수
+    function isBefore2023June(date) {
+      const currentDate = new Date();
+      const targetDate = new Date(date);
+      const comparisonDate = new Date('2023-06-01');
+
+      return targetDate > comparisonDate && targetDate > currentDate;
+    }
+
+
+    function updateTableData(page) {
+      const start = (page - 1) * pageSize; // 현재 페이지에 해당하는 데이터 시작 인덱스
+      const end = start + pageSize;
+
+      fetch(url)
+        .then((response) => response.json())
+        .then((resJson) => {
+          if (
+            resJson.getJobOpnngInfo &&
+            resJson.getJobOpnngInfo.body &&
+            resJson.getJobOpnngInfo.body.items
+          ) {
+            const items = resJson.getJobOpnngInfo.body.items.item;
+            const filteredData = items.filter((item) => {
+              const workDateTypes = item.workDate_type.split(',');
+              return (
+                workDateTypes.includes('무기계약직') ||
+                workDateTypes.includes('비정규직') ||
+                workDateTypes.includes('정규직')
+              ) && isBefore2023June(item.reqDate_e); // 2023-06 이전 데이터만 필터링
+            });
+
+            // 마감일을 최신순으로 정렬
+            const sortedData = filteredData.sort((a, b) => {
+              const dateA = new Date(a.reqDate_e);
+              const dateB = new Date(b.reqDate_e);
+              return dateB - dateA;
+            });
+
+            const totalData = sortedData.length; // 전체 데이터 항목 개수 업데이트
+
+            if (totalData > 0) {
+              tbody.innerHTML = ''; // 이전 데이터 지우기
+
+              for (let i = start; i < end && i < totalData; i++) {
+                const item = sortedData[i];
+                const row = document.createElement('tr');
+
+                // 회사명/정보제공처
+                const companyCell = document.createElement('td');
+                companyCell.textContent = item.recruitAgencyName;
+                row.appendChild(companyCell);
+
+                // 채용공고명/담당업무/지원자격
+                const recruitmentCell = document.createElement('td');
+                recruitmentCell.textContent = item.title + ' / ' + item.recruitAgencyName + ' / ' + item.mngDept + ' / ' + item.bunya;
+                row.appendChild(recruitmentCell);
+
+                // 근무조건
+                const workConditionCell = document.createElement('td');
+                workConditionCell.textContent = item.workDate_nm + ' ~ ' + item.workregiontxt;
+                row.appendChild(workConditionCell);
+
+                // 등록/마감일
+                const dateCell = document.createElement('td');
+                dateCell.textContent = item.reqDate_s + ' ~ ' + item.reqDate_e + ' / ' + item.reqType_nm;
+                row.appendChild(dateCell);
+
+                tbody.appendChild(row);
+              }
+
+              //dataPane.innerText = '조건을 만족하는 데이터가 있습니다.';
+            } else {
+              tbody.innerHTML = ''; // 이전 데이터 지우기
+              dataPane.innerText = '';
+            }
+          } else {
+            dataPane.innerText = '데이터가 올바르게 구조화되어 있지 않습니다.';
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
+
+    // 초기 데이터 로딩
+    updateTableData(currentPage);
+
+
+    function redirectToDetailsPage(page, row) {
+      const company = row.cells[0].textContent.trim();
+      const jobTitle = row.cells[1].textContent.trim();
+      const workingCondition = row.cells[2].textContent.trim();
+      const registrationDate = row.cells[3].textContent.trim();
+
+      // 선택된 행의 데이터를 URL 파라미터로 인코딩하여 .html 파일로 넘어갑니다.
+      const url = `${page}?company=${encodeURIComponent(company)}&jobTitle=${encodeURIComponent(jobTitle)}&workingCondition=${encodeURIComponent(workingCondition)}&registrationDate=${encodeURIComponent(registrationDate)}`;
+      window.location.href = url;
+    }
+
+
+    function rowClickHandler(event) {
+      const row = event.target.closest('tr');
+      if (row) {
+        redirectToDetailsPage('openapi_details.html', row);
+      }
+    }
+
+    // 각 행에 클릭 이벤트 리스너 추가
+    tbody.addEventListener('click', rowClickHandler);
+
 
   </script>
 </body>

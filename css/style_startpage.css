@@ -102,3 +102,35 @@ footer {
   font-weight: 300;
   font-style: normal;
 }
+
+
+.board-list {
+  border-collapse: collapse;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+table thead {
+  display: table-header-group;
+  vertical-align: middle;
+  border-top: 1px solid #333;
+}
+
+table>thead>tr {
+  color: #333;
+  height: 20px;
+  border-bottom: 2px solid slategray;
+}
+
+table th,
+table td {
+  padding: 10px;
+  border-right: 1px solid #ccc;
+  border-bottom: 1px solid #ccc;
+}
+
+table th:last-child,
+table td:last-child {
+  border-right: none;
+}

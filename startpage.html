@@ -111,6 +111,7 @@
     });
 
     const url = '';
+    const pageSize = 2; // 페이지당 리스트 개수
 
     // 현재 날짜와 비교하여 2023-06-01 이전인지 확인하는 함수
     function isBefore2023June(date) {
@@ -223,19 +224,6 @@
     // 각 행에 클릭 이벤트 리스너 추가
     tbody.addEventListener('click', rowClickHandler);
 
-    // ...
-
-    // 선택된 행의 데이터를 URL 파라미터로 인코딩하여 상세 페이지로 전달하는 함수
-    function redirectToDetailsPage(page, row) {
-      const company = row.cells[0].textContent.trim();
-      const jobTitle = row.cells[1].textContent.trim();
-      const workingCondition = row.cells[2].textContent.trim();
-      const registrationDate = row.cells[3].textContent.trim();
-
-      // 선택된 행의 데이터를 URL 파라미터로 인코딩하여 .html 파일로 넘어갑니다.
-      const url = `${page}?company=${encodeURIComponent(company)}&jobTitle=${encodeURIComponent(jobTitle)}&workingCondition=${encodeURIComponent(workingCondition)}&registrationDate=${encodeURIComponent(registrationDate)}`;
-      window.location.href = url;
-    }
 
   </script>
 </body>
