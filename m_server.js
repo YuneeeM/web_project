@@ -88,6 +88,16 @@ app.get('/userchange_page.html', (req, res) => {
   res.sendFile(path.join(__dirname, '/userchange_page.html'));
 });
 
+//밀도
+app.get('/bokjimildo.html', (req, res) => {
+  res.sendFile(path.join(__dirname, '/bokjimildo.html'));
+});
+
+app.get('/busangeo.json', (req, res) => {
+  res.sendFile(path.join(__dirname, '/json/busangeo.json'));
+});
+
+
 //json파일
 
 //노숙인
@@ -228,6 +238,10 @@ app.get('/media/006.png', (req, res) => {
 
 app.get('/media/007.png', (req, res) => {
   res.sendFile(path.join(__dirname, '/media/007.png'));
+});
+
+app.get('/media/mildo.png', (req, res) => {
+  res.sendFile(path.join(__dirname, '/media/mildo.png'));
 });
 
 app.get('/media/free-icon-alarm-bell-1059065.png', (req, res) => {
