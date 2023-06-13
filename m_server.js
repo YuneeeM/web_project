@@ -93,12 +93,18 @@ app.get('/bokjimildo.html', (req, res) => {
   res.sendFile(path.join(__dirname, '/bokjimildo.html'));
 });
 
-app.get('/busangeo.json', (req, res) => {
-  res.sendFile(path.join(__dirname, '/json/busangeo.json'));
+//건강페이지
+app.get('/healthcare.html', (req, res) => {
+  res.sendFile(path.join(__dirname, '/healthcare.html'));
 });
 
 
 //json파일
+
+//밀도
+app.get('/busangeo.json', (req, res) => {
+  res.sendFile(path.join(__dirname, '/json/busangeo.json'));
+});
 
 //노숙인
 app.get('/homeless.json', (req, res) => {
@@ -403,6 +409,11 @@ app.get('/media/free-icon-school-desk-6917653.png', (req, res) => {
 app.get('/media/free-icon-hearts-138533.png', (req, res) => {
   res.sendFile(path.join(__dirname, '/media/free-icon-hearts-138533.png'));
 });
+
+app.get('/media/youtube.png', (req, res) => {
+  res.sendFile(path.join(__dirname, '/media/youtube.png'));
+});
+
 
 
 
