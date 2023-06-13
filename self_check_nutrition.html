@@ -40,31 +40,6 @@
 
     }
 
-    #y {
-      margin-left: 20px;
-    }
-
-    #n {
-      margin-left: 20px;
-    }
-
-
-    .yes {
-      width: 50%;
-    }
-
-    .no {
-      width: 50%;
-    }
-
-    .blue {
-      color: blue;
-    }
-
-    .red {
-      color: red;
-    }
-
     h3 {
       margin-inline-start: 20px;
     }
@@ -201,6 +176,68 @@
     .icon8 {
       background: url('media/mildo.png') center center no-repeat;
     }
+
+    .modal-result {
+      display: none;
+      position: fixed;
+      z-index: 999;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+      font-family: 'Jua', sans-serif;
+      font-size: 20px;
+    }
+
+    .modal-result-content {
+      background-color: #fff;
+      width: 550px;
+      max-width: 90%;
+      margin: 100px auto;
+      padding: 20px;
+      border-radius: 20px;
+      text-align: center;
+    }
+
+    /* 닫기 버튼 스타일 */
+    .close-button {
+      background-color: #333;
+      color: #fff;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-family: 'Jua', sans-serif;
+    }
+
+    .close-button:hover {
+      background-color: black;
+    }
+
+
+    #result-button:hover {
+      cursor: pointer;
+
+    }
+
+    span {
+      color: red;
+      font-size: larger;
+    }
+
+    p {
+      margin-left: 10px;
+    }
+
+    #health-detail {
+      color: #0099FF;
+    }
+
+    #health-detail:hover {
+      cursor: pointer;
+      font-size: larger;
+    }
   </style>
 </head>
 
@@ -246,138 +283,172 @@
   </nav>
   <h1 style="text-align: center; color:#003F5F"><img src="media/free-icon-nutrients-5286612.png">영양상태 체크리스트</h1>
   <p style="text-align: center;">노년기에 건강한 식생활을 위해 영양상태를 체크 해봅시다!</p>
-  <form id="ncheck-form">
+  <form id="nutrition-form" onsubmit="showResult(event)">
 
     <h3>질문 1.<br>육고기를 전혀 먹지 않는다.</h3>
     <label>
-      <input type="radio" name="choice1" id="yes" onclick="updateCount(0, 'yes')">
-      <p id="y">예</p>
+      <input type="radio" name="choice1" id="choice1-yes">
+      <p id="choice1-y">예</p>
     </label>
     <label>
-      <input type="radio" name="choice1" id="no" onclick="updateCount(0, 'no')">
-      <p id="n">아니오</p>
+      <input type="radio" name="choice1" id="choice1-no">
+      <p id="choice1-n">아니오</p>
     </label>
     <h3>질문 2.<br>하루에 한끼의 식사를 한다.</h3>
     <label>
-      <input type="radio" name="choice2" id="yes" onclick="updateCount(1, 'yes')">
-      <p id="y2">예</p>
+      <input type="radio" name="choice2" id="choice2-yes">
+      <p id="choice2-y">예</p>
     </label>
     <label>
-      <input type="radio" name="choice2" id="no" onclick="updateCount(1, 'no')">
-      <p id="n2">아니오</p>
+      <input type="radio" name="choice2" id="choice2-no">
+      <p id="choice2-n">아니오</p>
     </label>
 
     <h3>질문 3.<br>과일이나 야채, 우유 및 유제품을 거의 먹지 않는다.</h3>
     <label>
-      <input type="radio" name="choice3" id="yes" onclick="updateCount(2, 'yes')">
-      <p id="y3">예</p>
+      <input type="radio" name="choice3" id="choice3-yes">
+      <p id="choice3-y">예</p>
     </label>
     <label>
-      <input type="radio" name="choice3" id="no" onclick="updateCount(2, 'no')">
-      <p id="n3">아니오</p>
+      <input type="radio" name="choice3" id="choice3-no">
+      <p id="choice3-n">아니오</p>
     </label>
 
     <h3>질문 4.<br>커피를 하루에 2잔 이상 마신다.</h3>
     <label>
-      <input type="radio" name="choice4" id="yes" onclick="updateCount(3, 'yes')">
-      <p id="y4">예</p>
+      <input type="radio" name="choice4" id="choice4-yes">
+      <p id="choice4-y">예</p>
     </label>
     <label>
-      <input type="radio" name="choice4" id="no" onclick="updateCount(3, 'no')">
-      <p id="n4">아니오</p>
+      <input type="radio" name="choice4" id="choice4-no">
+      <p id="choice4-n">아니오</p>
     </label>
 
     <h3>질문 5.<br>치아나 구강 문제로 음식을 먹는데 지장이 있다.</h3>
     <label>
-      <input type="radio" name="choice5" id="yes" onclick="updateCount(4, 'yes')">
-      <p id="y5">예</p>
+      <input type="radio" name="choice5" id="choice5-yes">
+      <p id="choice5-y">예</p>
     </label>
     <label>
-      <input type="radio" name="choice5" id="no" onclick="updateCount(4, 'no')">
-      <p id="n5">아니오</p>
+      <input type="radio" name="choice5" id="choice5-no">
+      <p id="choice5-n">아니오</p>
     </label>
 
     <h3>질문 6.<br>생선을 먹지 않는다.</h3>
     <label>
-      <input type="radio" name="choice6" id="yes" onclick="updateCount(5, 'yes')">
-      <p id="y6">예</p>
+      <input type="radio" name="choice6" id="choice6-yes">
+      <p id="choice6-y">예</p>
     </label>
     <label>
-      <input type="radio" name="choice6" id="no" onclick="updateCount(5, 'no')">
-      <p id="n6">아니오</p>
+      <input type="radio" name="choice6" id="choice6-no">
+      <p id="choice6-n">아니오</p>
     </label>
 
     <h3>질문 7.<br> 반찬을 골고루 먹지 않는다.</h3>
     <label>
-      <input type="radio" name="choice7" id="yes" onclick="updateCount(6, 'yes')">
-      <p id="y7">예</p>
+      <input type="radio" name="choice7" id="choice7-yes">
+      <p id="choice7-y">예</p>
     </label>
     <label>
-      <input type="radio" name="choice7" id="no" onclick="updateCount(6, 'no')">
-      <p id="n7">아니오</p>
+      <input type="radio" name="choice7" id="choice7-no">
+      <p id="choice7-n">아니오</p>
     </label>
 
     <h3>질문 8.<br>하루에 먹는 약의 종류가 3가지 이상이다.</h3>
     <label>
-      <input type="radio" name="choice8" id="yes" onclick="updateCount(7, 'yes')">
-      <p id="y8">예</p>
+      <input type="radio" name="choice8" id="choice8-yes">
+      <p id="choice8-y">예</p>
     </label>
     <label>
-      <input type="radio" name="choice8" id="no" onclick="updateCount(7, 'no')">
-      <p id="n8">아니오</p>
+      <input type="radio" name="choice8" id="choice8-no">
+      <p id="choice8-n">아니오</p>
     </label>
 
     <h3>질문 9.<br>수저, 젓가락질을 본인의 의지대로 할 수 없다.</h3>
     <label>
-      <input type="radio" name="choice9" id="yes" onclick="updateCount(8, 'yes')">
-      <p id="y9">예</p>
+      <input type="radio" name="choice9" id="choice9-yes">
+      <p id="choice9-y">예</p>
     </label>
     <label>
-      <input type="radio" name="choice9" id="no" onclick="updateCount(8, 'no')">
-      <p id="n9">아니오</p>
+      <input type="radio" name="choice9" id="choice9-no">
+      <p id="choice9-n">아니오</p>
     </label>
+
 
 
     <h3>질문 10.<br>혼자 요리하거나 식사하는 것이 어렵다.</h3>
-
     <label>
-      <input type="radio" name="choice10" id="yes" onclick="updateCount(9, 'yes')">
-      <p id="y10">예</p>
+      <input type="radio" name="choice10" id="choice10-yes">
+      <p id="choice10-y">예</p>
     </label>
     <label>
-      <input type="radio" name="choice10" id="no" onclick="updateCount(9, 'no')">
-      <p id="n10">아니오</p>
+      <input type="radio" name="choice10" id="choice10-no">
+      <p id="choice10-n">아니오</p>
     </label>
 
-    <p>횟수: <span class="count">0</span></p>
 
-    <input type="submit" value="결과 알아보기">
+    <input type="submit" value="결과 알아보기" id="result-button">
   </form>
 
-  </script>
+
+  <div class="modal-result" id="modal-result">
+    <div class="modal-result-content">
+      <h2>결과</h2>
+
+      <p id="sample_data" style="margin-left: -10px;"></p>
+      <p id="health-detail" style="margin-left: -10px;" onclick=" location.href='healthcare.html'"></p>
+      <button class=" close-button" id="closeButton">닫기</button>
+    </div>
+  </div>
+
+
+
   <script>
-    var counts = new Array(10).fill(0);
-    var clickedOptions = new Array(10).fill(false);
 
-    function updateCount(questionIndex, choice) {
-      if (!clickedOptions[questionIndex]) {
-        if (choice === "yes") {
-          counts[questionIndex]++;
-        } else if (choice === "no" && counts[questionIndex] > 0) {
-          counts[questionIndex]--;
+    const resultButton = document.getElementById('result-button');
+    const modal = document.getElementById('modal-result');
+    const resultText = document.getElementById('sample_data');
+    const closeButton = document.getElementById('closeButton');
+    const detailText = document.getElementById('health-detail');
+
+
+    function showResult(event) {
+      event.preventDefault();
+
+      var count = 0;
+
+      for (var i = 1; i <= 10; i++) {
+        var checkbox = document.getElementById('choice' + i + '-yes');
+        if (checkbox.checked) {
+          count += 1;
         }
-        clickedOptions[questionIndex] = true;
-        updateDisplay();
       }
+
+      modal.style.display = 'block';
+
+      console.log(count);
+
+      if (count >= 0 && count <= 2) {
+        resultText.textContent = "영양상태가 '양호' 합니다!"
+        detailText.textContent = "건강 유지법을 알아볼까요?"
+      }
+      else if (count >= 3 && count <= 5) {
+        resultText.textContent = "식습관과 생활습관 '개선'이 필요합니다!"
+        detailText.textContent = "식습관과 생활습과 개선법을 알아볼까요?"
+      }
+      else {
+        resultText.textContent = "위험!! 영양상태 '개선'이 필요합니다!"
+        detailText.textContent = "지금 당장 영양상태 개선법을 알아볼까요?"
+      }
+
     }
 
-    function updateDisplay() {
-      var countElements = document.getElementsByClassName("count");
-      for (var i = 0; i < countElements.length; i++) {
-        countElements[i].innerHTML = counts[i];
-      }
-    }
+    resultButton.addEventListener('click', showResult);
 
+
+    closeButton.addEventListener('click', () => {
+      modal.style.display = 'none';
+    });
   </script>
 
 </body>
