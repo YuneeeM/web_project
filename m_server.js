@@ -98,6 +98,11 @@ app.get('/healthcare.html', (req, res) => {
   res.sendFile(path.join(__dirname, '/healthcare.html'));
 });
 
+//지원금페이지
+app.get('/fundingpage.html', (req, res) => {
+  res.sendFile(path.join(__dirname, '/fundingpage.html'));
+});
+
 
 //json파일
 
@@ -414,7 +419,9 @@ app.get('/media/youtube.png', (req, res) => {
   res.sendFile(path.join(__dirname, '/media/youtube.png'));
 });
 
-
+app.get('/media/funding_home.png', (req, res) => {
+  res.sendFile(path.join(__dirname, '/media/funding_home.png'));
+});
 
 
 //회원정보 수정
@@ -423,6 +430,29 @@ app.get('/media/free-icon-correction-tape-3196902.png', (req, res) => {
   res.sendFile(path.join(__dirname, '/media/free-icon-correction-tape-3196902.png'));
 });
 
+app.get('/media/free-icon-money-817729.png', (req, res) => {
+  res.sendFile(path.join(__dirname, '/media/free-icon-money-817729.png'));
+});
+
+app.get('/media/img_funding.png', (req, res) => {
+  res.sendFile(path.join(__dirname, '/media/img_funding.png'));
+});
+
+app.get('/media/free-icon-donation-2800496.png', (req, res) => {
+  res.sendFile(path.join(__dirname, '/media/free-icon-donation-2800496.png'));
+});
+
+app.get('/media/funding_video1.jpg', (req, res) => {
+  res.sendFile(path.join(__dirname, '/media/funding_video1.jpg'));
+});
+
+app.get('/media/funding_video2.jpg', (req, res) => {
+  res.sendFile(path.join(__dirname, '/media/funding_video2.jpg'));
+});
+
+app.get('/media/free-icon-internet-364092.png', (req, res) => {
+  res.sendFile(path.join(__dirname, '/media/free-icon-internet-364092.png'));
+});
 
 //css
 
