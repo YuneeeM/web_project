@@ -801,11 +801,16 @@
     function checkAuthTokenAndRedirect(page) {
       // localStorage에서 authToken 가져오기
       var token = parseInt(localStorage.getItem("authToken"));
+      var non_users = JSON.parse(localStorage.getItem("non_users")) || [];
+      var non_id = non_users.length > 0 ? non_users[0].id : 0;
 
+      console.log(non_id);
 
-      if (token === 0) {
+      if (token === 0 && non_id === 0) {
         location.href = 'memberinfo_post.html';
-      } else {
+
+      }
+      else {
         location.href = page;
       }
     }

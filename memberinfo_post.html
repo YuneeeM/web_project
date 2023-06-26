@@ -189,9 +189,6 @@
               const roadAddress = result[0].road_address.address_name;
               console.log('도로명 주소:', roadAddress);
               document.getElementById('residence').value = roadAddress;
-
-              // 폼 제출
-              form.submit();
             }
           } else {
             console.log('주소 검색에 실패했습니다.');
@@ -213,8 +210,11 @@
       const occupation = document.getElementById('occupation').value;
       const education = document.getElementById('education').value;
 
+      var token = parseInt(localStorage.getItem("authToken"));
+
       // 데이터를 객체로 저장
       const memberData = {
+        id: token + 1,
         name: name,
         age: age,
         gender: gender,
@@ -225,7 +225,7 @@
         education: education
       };
 
-      let non_users = [];
+      var non_users = [];
 
       non_users.push(memberData);
 
@@ -235,8 +235,11 @@
       // 저장된 데이터 확인
       console.log('저장된 데이터:', localStorage.getItem('memberData'));
 
+      window.location.href = "startpage.html"
+
       // 폼 초기화
       form.reset();
+
     });
 
   </script>

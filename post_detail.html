@@ -419,12 +419,11 @@
     <a href="startpage.html"><img src="media/logo-removebg-preview.png" class="img_logo"></a>
     <div>
       <button id="alarmButton" class="alarmButton"><img src="media/free-icon-alarm-bell-1059065.png" width="50px"
-          height="50px"></button>
-      <img src="media/free-icon-search-2697422.png" width="50px" height="50px" alt="검색" style="margin-right: 5px;">
+          height="50px" title="최신일자리 알람서비스"></button>
       <img src="media/free-icon-enter-1828395.png" onclick=" checklogin('loginpage.html')" width="50px" height="50px"
-        alt="로그인">
+        alt="로그인" title="로그인/로그아웃/새로고침">
       <img src="media/free-icon-person-5393061.png" onclick="checkAuthTokenAndRedirect_login('mypage.html')"
-        width="50px" height="50px" alt="마이페이지">
+        width="50px" height="50px" alt="마이페이지" title="마이페이지">
     </div>
   </header>
 
@@ -546,6 +545,10 @@
 
 
   <script>
+
+    // localStorage에서 authToken 가져오기
+    var token = parseInt(localStorage.getItem("authToken"));
+
     // 메인 게시판 페이지(main_post.html)에서 클릭한 게시물의 ID를 URL 매개변수로 전달하고,
     // 상세 페이지(post_detail.html)에서 해당 ID를 가져옵니다.
     const urlParams = new URLSearchParams(window.location.search);
@@ -558,22 +561,27 @@
     const post = postList.find((post) => post.postNumber === postId);
 
 
-    const removeButton = document.querySelector('.remove-post');
 
-    var user_rm = JSON.parse(localStorage.getItem("users"));
-    var token_rm = parseInt(localStorage.getItem("authToken"));
+    if (token !== 0) {
+      const removeButton = document.querySelector('.remove-post');
 
-    var remove_value = user_rm.find(function (user) {
-      return user.personid === token_rm;
-    });
+      var user_rm = JSON.parse(localStorage.getItem("users")) || [];
+      var token_rm = parseInt(localStorage.getItem("authToken"));
 
-    var rm_value = remove_value.userid;
-    var wirter_v = post.writer;
+      var remove_value = user_rm.find(function (user) {
+        return user.personid === token_rm;
+      });
+
+      var rm_value = remove_value.userid;
+      var wirter_v = post.writer;
 
 
-    if (String(rm_value) != String(wirter_v)) {
-      removeButton.style.display = 'none';
+      if (String(rm_value) != String(wirter_v)) {
+        removeButton.style.display = 'none';
+      }
+
     }
+
 
 
     // 게시물 리스트(post_list)에서 해당 ID에 해당하는 게시물을 찾습니다.
@@ -780,10 +788,16 @@
     function checkAuthTokenAndRedirect(page) {
       // localStorage에서 authToken 가져오기
       var token = parseInt(localStorage.getItem("authToken"));
+      var non_users = JSON.parse(localStorage.getItem("non_users")) || [];
+      var non_id = non_users.length > 0 ? non_users[0].id : 0;
 
-      if (token === 0) {
+      console.log(non_id);
+
+      if (token === 0 && non_id === 0) {
         location.href = 'memberinfo_post.html';
-      } else {
+
+      }
+      else {
         location.href = page;
       }
     }
@@ -819,6 +833,8 @@
       if (token === 0) {
 
         window.location.href = page;
+        // non_users 값 삭제
+        localStorage.removeItem('non_users');
 
 
       } else {

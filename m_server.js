@@ -450,9 +450,67 @@ app.get('/media/funding_video2.jpg', (req, res) => {
   res.sendFile(path.join(__dirname, '/media/funding_video2.jpg'));
 });
 
+app.get('/media/funding_video3.jpg', (req, res) => {
+  res.sendFile(path.join(__dirname, '/media/funding_video3.jpg'));
+});
+
+app.get('/media/funding_video4.png', (req, res) => {
+  res.sendFile(path.join(__dirname, '/media/funding_video4.png'));
+});
+
+app.get('/media/funding_video5.png', (req, res) => {
+  res.sendFile(path.join(__dirname, '/media/funding_video5.png'));
+});
+
+app.get('/media/funding_video6.jpg', (req, res) => {
+  res.sendFile(path.join(__dirname, '/media/funding_video6.jpg'));
+});
+
+app.get('/media/funding_home2.jpg', (req, res) => {
+  res.sendFile(path.join(__dirname, '/media/funding_home2.jpg'));
+});
+
+app.get('/media/funding_home3.jpg', (req, res) => {
+  res.sendFile(path.join(__dirname, '/media/funding_home3.jpg'));
+});
+
+app.get('/media/funding_home4.jpg', (req, res) => {
+  res.sendFile(path.join(__dirname, '/media/funding_home4.jpg'));
+});
+
+app.get('/media/funding_home5.jpg', (req, res) => {
+  res.sendFile(path.join(__dirname, '/media/funding_home5.jpg'));
+});
+
+app.get('/media/funding_home6.jpg', (req, res) => {
+  res.sendFile(path.join(__dirname, '/media/funding_home6.jpg'));
+});
+
 app.get('/media/free-icon-internet-364092.png', (req, res) => {
   res.sendFile(path.join(__dirname, '/media/free-icon-internet-364092.png'));
 });
+
+app.get('/media/free-icon-company-1810755.png', (req, res) => {
+  res.sendFile(path.join(__dirname, '/media/free-icon-company-1810755.png'));
+});
+
+app.get('/media/free-icon-grandparents-769650.png', (req, res) => {
+  res.sendFile(path.join(__dirname, '/media/free-icon-grandparents-769650.png'));
+});
+
+app.get('/media/free-icon-homeless-7653302.png', (req, res) => {
+  res.sendFile(path.join(__dirname, '/media/free-icon-homeless-7653302.png'));
+});
+
+app.get('/media/free-icon-company-2761008.png', (req, res) => {
+  res.sendFile(path.join(__dirname, '/media/free-icon-company-2761008.png'));
+});
+
+app.get('/media/free-icon-home-3771140.png', (req, res) => {
+  res.sendFile(path.join(__dirname, '/media/free-icon-home-3771140.png'));
+});
+
+
 
 //css
 

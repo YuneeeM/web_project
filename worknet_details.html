@@ -340,6 +340,16 @@
   .icon10 {
     background: url('media/img_funding.png') center center no-repeat;
   }
+
+  #map {
+    margin-top: 20px;
+    margin-bottom: 20px;
+    width: 500px;
+    height: 400px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    border-radius: 25px;
+    background-color: #fff;
+  }
 </style>
 
 <body>
@@ -348,12 +358,11 @@
     <a href="startpage.html"><img src="media/logo-removebg-preview.png" class="img_logo"></a>
     <div>
       <button id="alarmButton" class="alarmButton"><img src="media/free-icon-alarm-bell-1059065.png" width="50px"
-          height="50px"></button>
-      <img src="media/free-icon-search-2697422.png" width="50px" height="50px" alt="검색" style="margin-right: 5px;">
+          height="50px" title="최신일자리 알람서비스"></button>
       <img src="media/free-icon-enter-1828395.png" onclick=" checklogin('loginpage.html')" width="50px" height="50px"
-        alt="로그인">
+        alt="로그인" title="로그인/로그아웃/새로고침">
       <img src="media/free-icon-person-5393061.png" onclick="checkAuthTokenAndRedirect_login('mypage.html')"
-        width="50px" height="50px" alt="마이페이지">
+        width="50px" height="50px" alt="마이페이지" title="마이페이지">
     </div>
   </header>
 
@@ -439,6 +448,7 @@
               <h3 id="element1">채용공고명 / 담당업무 / 지원자격</h3>
               <p id="element1-content"></p>
               <p id="element1-address"></p>
+              <div id="map"></div>
               <h3 id="element2">근무조건</h3>
               <p id="element2-content"></p>
               <h3 id="element3">등록 / 마감일</h3>
@@ -469,6 +479,8 @@
 
   <div class="back-button" id="back-button"><a href="worknet_post.html">목록</a></div>
 
+
+
   <script>
     // URL 매개변수 가져오기
     const urlParams = new URLSearchParams(window.location.search);
@@ -480,7 +492,22 @@
 
     // "담당업무" 이전과 이후의 글자 추출
     const jobTitleWithBreak = title.replace(/[.*-]/g, '<br>');
-    const startIndex = jobTitleWithBreak.indexOf('모집');
+    var startIndex = jobTitleWithBreak.indexOf('모집');
+
+    console.log(startIndex);
+    console.log(jobTitleWithBreak);
+
+    if (startIndex === -1) {
+      startIndex = jobTitleWithBreak.indexOf('구인');
+    }
+
+
+    if (startIndex === -1) {
+      startIndex = jobTitleWithBreak.indexOf('채용');
+
+    }
+
+
     const endIndex = startIndex !== -1 ? startIndex + 2 : jobTitleWithBreak.length;
     const jobTitle = jobTitleWithBreak.substring(0, endIndex).trim();
     var remainingText = jobTitleWithBreak.substring(endIndex).trim();
@@ -564,6 +591,64 @@
 
   </script>
 
+  <script src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=&libraries=services,clusterer"></script>
+  <script>
+
+    // 지도 생성 및 중심 좌표 설정
+    var mapContainer = document.getElementById('map'), // 지도를 표시할 div
+      mapOption = {
+        center: new kakao.maps.LatLng(35.13417, 129.11397), // 지도의 중심좌표
+        level: 6, // 지도의 확대 레벨
+      };
+
+    console.log(address);
+
+    var map = new kakao.maps.Map(mapContainer, mapOption);
+
+    // 주소로 좌표를 검색합니다
+    var geocoder = new kakao.maps.services.Geocoder();
+    geocoder.addressSearch(address, function (result, status) {
+      // 정상적으로 검색이 완료됐으면
+      if (status === kakao.maps.services.Status.OK) {
+        var coords = new kakao.maps.LatLng(result[0].y, result[0].x);
+
+        // 사용자 정의 마커 이미지 생성
+        var imageSrc = 'media/free-icon-company-1810755.png'; // 사용자 정의 마커 이미지 URL
+        var imageSize = new kakao.maps.Size(40, 40); // 마커 이미지 크기
+        var imageOptions = {
+          spriteSize: new kakao.maps.Size(40, 40), // 스프라이트 이미지 크기
+          spriteOrigin: new kakao.maps.Point(0, 0) // 스프라이트 이미지의 좌상단 좌표
+        };
+
+        // 사용자 정의 마커 생성
+        var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize, imageOptions);
+
+        // 결과값으로 받은 위치를 마커로 표시합니다
+        var marker = new kakao.maps.Marker({
+          map: map,
+          position: coords,
+          image: markerImage // 사용자 정의 마커 이미지 사용
+        });
+
+        // 인포윈도우로 장소에 대한 설명을 표시합니다
+        var infowindow = new kakao.maps.InfoWindow({
+          content: '<div style="width: 200px; text-align: center; padding: 6px 0; font-size: 20px;">' + address + '</div>'
+        });
+        infowindow.open(map, marker);
+
+        // 마커 배열에 추가
+        markers.push(marker);
+        marker.setMap(map);
+        infowindows.push(infowindow);
+
+        // 지도를 마커의 위치로 이동시킵니다
+        map.panTo(coords);
+      }
+    });
+
+
+  </script>
+
   <script>
     const alarmButton = document.getElementById('alarmButton');
     const modal = document.getElementById('modal');
@@ -592,10 +677,16 @@
     function checkAuthTokenAndRedirect(page) {
       // localStorage에서 authToken 가져오기
       var token = parseInt(localStorage.getItem("authToken"));
+      var non_users = JSON.parse(localStorage.getItem("non_users")) || [];
+      var non_id = non_users.length > 0 ? non_users[0].id : 0;
 
-      if (token === 0) {
+      console.log(non_id);
+
+      if (token === 0 && non_id === 0) {
         location.href = 'memberinfo_post.html';
-      } else {
+
+      }
+      else {
         location.href = page;
       }
     }
@@ -631,6 +722,8 @@
       if (token === 0) {
 
         window.location.href = page;
+        // non_users 값 삭제
+        localStorage.removeItem('non_users');
 
 
       } else {

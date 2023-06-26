@@ -459,6 +459,81 @@
     });
   </script>
 
+  <script>
+    function checkAuthTokenAndRedirect(page) {
+      // localStorage에서 authToken 가져오기
+      var token = parseInt(localStorage.getItem("authToken"));
+      var non_users = JSON.parse(localStorage.getItem("non_users")) || [];
+      var non_id = non_users.length > 0 ? non_users[0].id : 0;
+
+      console.log(non_id);
+
+      if (token === 0 && non_id === 0) {
+        location.href = 'memberinfo_post.html';
+
+      }
+      else {
+        location.href = page;
+      }
+    }
+
+    function checkAuthTokenAndRedirect_login(page) {
+      // localStorage에서 authToken 가져오기
+      var token = parseInt(localStorage.getItem("authToken"));
+
+      if (token === 0) {
+
+        // 확인 메시지 출력
+        var confirmLogin = confirm("로그인을 하셔야 접속할 수 있습니다!");
+
+        if (confirmLogin) {
+
+          window.location.href = 'loginpage.html';
+        }
+        else {
+
+        }
+
+      } else {
+        location.href = page;
+      }
+    }
+
+    function checklogin(page) {
+
+      // localStorage에서 authToken 가져오기
+      var token = parseInt(localStorage.getItem("authToken"));
+
+
+      if (token === 0) {
+
+        window.location.href = page;
+        // non_users 값 삭제
+        localStorage.removeItem('non_users');
+
+
+      } else {
+
+        // 확인 메시지 출력
+        var confirmLogin = confirm("로그아웃 하시겠습니까?");
+        if (confirmLogin) {
+
+          // authToken 값을 null로 변경
+          localStorage.setItem("authToken", 0);
+
+          // startpage.html로 이동
+          window.location.href = "startpage.html";
+        }
+        else {
+          // startpage.html로 이동
+          window.location.href = "startpage.html";
+        }
+      }
+
+    }
+
+  </script>
+
 </body>
 
 </html>

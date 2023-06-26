@@ -172,6 +172,9 @@
 
       // 토큰을 localStorage에 저장
       localStorage.setItem('authToken', token);
+
+      // non_users 값 삭제
+      localStorage.removeItem('non_users');
     }
 
     // 토큰 생성 함수 (예시)

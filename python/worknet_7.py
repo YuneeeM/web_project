@@ -60,5 +60,5 @@ for data in data_list:
     print(data)
 
 # JSON 파일로 저장
-with open('worknet_7.json', 'w', encoding='utf-8') as f:
+with open('json/worknet_7.json', 'w', encoding='utf-8') as f:
     json.dump(data_list, f, ensure_ascii=False, indent=4)

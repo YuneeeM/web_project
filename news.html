@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <style>
+    .swipe-container {
+      position: relative;
+      width: 100%;
+      overflow-x: hidden;
+      white-space: nowrap;
+    }
+
+    .news-item {
+      display: inline-block;
+      width: 300px;
+      height: 200px;
+      margin-right: 10px;
+      background-color: #f2f2f2;
+      text-align: center;
+      line-height: 200px;
+      font-size: 24px;
+    }
+
+    .prev-btn,
+    .next-btn {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      padding: 10px;
+      font-size: 18px;
+      color: #ffffff;
+      background-color: rgba(0, 0, 0, 0.3);
+      border: none;
+      outline: none;
+      cursor: pointer;
+      transition: opacity 0.3s;
+    }
+
+    .prev-btn:hover,
+    .next-btn:hover {
+      opacity: 0.7;
+    }
+
+    .prev-btn {
+      left: 10px;
+    }
+
+    .next-btn {
+      right: 10px;
+    }
+
+    .hide-btn {
+      opacity: 0;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="swipe-container" id="swipeContainer">
+    <!-- News items will be dynamically added here -->
+  </div>
+
+  <button class="prev-btn hide-btn" id="prevBtn">Previous</button>
+  <button class="next-btn" id="nextBtn">Next</button>
+
+  <script>
+    // Example news data
+    const newsData = [
+      "News 1",
+      "News 2",
+      "News 3",
+      "News 4",
+      "News 5"
+    ];
+
+    const swipeContainer = document.getElementById('swipeContainer');
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+    let currentPosition = 0;
+
+    // Generate news items
+    function generateNewsItems() {
+      for (let i = 0; i < newsData.length; i++) {
+        const newsItem = document.createElement('div');
+        newsItem.className = 'news-item';
+        newsItem.textContent = newsData[i];
+        swipeContainer.appendChild(newsItem);
+      }
+    }
+
+    // Move swipe container
+    function moveContainer() {
+      swipeContainer.style.transform = `translateX(-${currentPosition}px)`;
+
+      // Check if reached the beginning or end
+      if (currentPosition === 0) {
+        prevBtn.classList.add('hide-btn');
+        nextBtn.classList.remove('hide-btn');
+      } else if (currentPosition === (swipeContainer.scrollWidth - swipeContainer.offsetWidth)) {
+        nextBtn.classList.add('hide-btn');
+        prevBtn.classList.remove('hide-btn');
+      } else {
+        prevBtn.classList.remove('hide-btn');
+        nextBtn.classList.remove('hide-btn');
+      }
+    }
+
+    // Event listeners for previous and next buttons
+    prevBtn.addEventListener('click', () => {
+      currentPosition -= 310; // Adjust based on news item width + margin
+      if (currentPosition < 0) currentPosition = 0;
+      moveContainer();
+    });
+
+    nextBtn.addEventListener('click', () => {
+      const containerWidth = swipeContainer.offsetWidth;
+      const maxPosition = swipeContainer.scrollWidth - containerWidth;
+      currentPosition += 310; // Adjust based on news item width + margin
+      if (currentPosition > maxPosition) currentPosition = maxPosition;
+      moveContainer();
+    });
+
+    generateNewsItems();
+  </script>
+</body>
+
+</html>

@@ -164,6 +164,40 @@
     .icon10 {
       background: url('media/img_funding.png') center center no-repeat;
     }
+
+    .info {
+      width: 200px;
+      text-align: center;
+    }
+
+    .title {
+      margin-top: 10px;
+    }
+
+    .extra-info {
+      background-color: #0099FF;
+      border-radius: 10px;
+      padding: 10px 10px;
+      margin: 10px;
+      text-align: center;
+    }
+
+    .extra-info:hover {
+      background-color: #0099ffcc;
+    }
+
+    .extra-info a {
+      color: #fff;
+      text-decoration: none;
+    }
+
+    .extra-info a:visited {
+      text-decoration: none;
+    }
+
+    .extra-info a::before {
+      text-decoration: none;
+    }
   </style>
 
 </head>
@@ -173,12 +207,11 @@
     <a href="startpage.html"><img src="media/logo-removebg-preview.png" class="img_logo"></a>
     <div>
       <button id="alarmButton" class="alarmButton"><img src="media/free-icon-alarm-bell-1059065.png" width="50px"
-          height="50px"></button>
-      <img src="media/free-icon-search-2697422.png" width="50px" height="50px" alt="검색" style="margin-right: 5px;">
+          height="50px" title="최신일자리 알람서비스"></button>
       <img src="media/free-icon-enter-1828395.png" onclick=" checklogin('loginpage.html')" width="50px" height="50px"
-        alt="로그인">
+        alt="로그인" title="로그인/로그아웃/새로고침">
       <img src="media/free-icon-person-5393061.png" onclick="checkAuthTokenAndRedirect_login('mypage.html')"
-        width="50px" height="50px" alt="마이페이지">
+        width="50px" height="50px" alt="마이페이지" title="마이페이지">
     </div>
   </header>
 
@@ -314,6 +347,57 @@
                   '   <div class="size">시설 수 : ' + total + '</div>' +
                   '</div>';
 
+                if (place === '기장군') {
+                  content += '<div class="extra-info"><a href="https://www.gijang.go.kr/index.gijang?menuCd=DOM_000000103000000000">기장군청 복지페이지</a></div>';
+                }
+                else if (place === '해운대구') {
+                  content += '<div class="extra-info"><a href="https://www.haeundae.go.kr/board/list.do?boardId=BBS_0000154&menuCd=DOM_000000103000000000&contentsSid=788">해운대구청 복지페이지</a></div>';
+                }
+                else if (place === '금정구') {
+                  content += '<div class="extra-info"><a href="https://www.geumjeong.go.kr/index.geumj?menuCd=DOM_000000126001001001&cpath=">금정구청 복지페이지</a></div>';
+                }
+                else if (place === '동래구') {
+                  content += '<div class="extra-info"><a href="https://www.dongnae.go.kr/welfare/index.dongnae">동래구청 복지페이지</a></div>';
+                }
+                else if (place === '연제구') {
+                  content += '<div class="extra-info"><a href="https://www.yeonje.go.kr/welfare/main.do">연제구청 복지페이지</a></div>';
+                }
+                else if (place === '수영구') {
+                  content += '<div class="extra-info"><a href="https://www.suyeong.go.kr/welfare/index.suyeong">수영구청 복지페이지</a></div>';
+                }
+                else if (place === '남구') {
+                  content += '<div class="extra-info"><a href="https://www.bsnamgu.go.kr/index.namgu?menuCd=DOM_000000102001002000&cpath=">남구구청 복지페이지</a></div>';
+                }
+                else if (place === '북구') {
+                  content += '<div class="extra-info"><a href="https://www.bsbukgu.go.kr/index.bsbukgu?menuCd=DOM_000000104000000000">북구구청 복지페이지</a></div>';
+                }
+                else if (place === '부산진구') {
+                  content += '<div class="extra-info"><a href="https://www.busanjin.go.kr/index.busanjin?menuCd=DOM_000000107000000000">부산진구청 복지페이지</a></div>';
+                }
+                else if (place === '사상구') {
+                  content += '<div class="extra-info"><a href="https://www.sasang.go.kr/index.sasang?menuCd=DOM_000000103000000000">사상구청 복지페이지</a></div>';
+                }
+                else if (place === '동구') {
+                  content += '<div class="extra-info"><a href="http://www.bsdonggu.go.kr/welfare/index.donggu">동구청 복지페이지</a></div>';
+                }
+                else if (place === '서구') {
+                  content += '<div class="extra-info"><a href="https://www.bsseogu.go.kr/welfare/index.bsseogu">서구청 복지페이지</a></div>';
+                }
+                else if (place === '영도구') {
+                  content += '<div class="extra-info"><a href="https://www.yeongdo.go.kr/02418/02419/02420.web">영도구청 복지페이지</a></div>';
+                }
+                else if (place === '사하구') {
+                  content += '<div class="extra-info"><a href="https://www.saha.go.kr/welfare.do">사하구청 복지페이지</a></div>';
+                }
+                else if (place === '강서구') {
+                  content += '<div class="extra-info"><a href="https://www.bsgangseo.go.kr/welfare/main.do">강서구청 복지페이지</a></div>';
+                }
+                else if (place === '중구') {
+                  content += '<div class="extra-info"><a href="https://www.bsjunggu.go.kr/welfare/index.junggu">중구청 복지페이지</a></div>';
+                }
+
+                content += '</div>';
+
                 infowindow.setContent(content);
                 infowindow.setPosition(mouseEvent.latLng);
                 infowindow.setMap(map);
@@ -348,6 +432,57 @@
                     '   <div class="size">시설 수 : ' + total + '</div>' +
                     '</div>';
 
+                  if (place === '기장군') {
+                    content += '<div class="extra-info"><a href="https://www.gijang.go.kr/index.gijang?menuCd=DOM_000000103000000000">기장군청 복지페이지</a></div>';
+                  }
+                  else if (place === '해운대구') {
+                    content += '<div class="extra-info"><a href="https://www.haeundae.go.kr/board/list.do?boardId=BBS_0000154&menuCd=DOM_000000103000000000&contentsSid=788">해운대구청 복지페이지</a></div>';
+                  }
+                  else if (place === '금정구') {
+                    content += '<div class="extra-info"><a href="https://www.geumjeong.go.kr/index.geumj?menuCd=DOM_000000126001001001&cpath=">금정구청 복지페이지</a></div>';
+                  }
+                  else if (place === '동래구') {
+                    content += '<div class="extra-info"><a href="https://www.dongnae.go.kr/welfare/index.dongnae">동래구청 복지페이지</a></div>';
+                  }
+                  else if (place === '연제구') {
+                    content += '<div class="extra-info"><a href="https://www.yeonje.go.kr/welfare/main.do">연제구청 복지페이지</a></div>';
+                  }
+                  else if (place === '수영구') {
+                    content += '<div class="extra-info"><a href="https://www.suyeong.go.kr/welfare/index.suyeong">수영구청 복지페이지</a></div>';
+                  }
+                  else if (place === '남구') {
+                    content += '<div class="extra-info"><a href="https://www.bsnamgu.go.kr/index.namgu?menuCd=DOM_000000102001002000&cpath=">남구구청 복지페이지</a></div>';
+                  }
+                  else if (place === '북구') {
+                    content += '<div class="extra-info"><a href="https://www.bsbukgu.go.kr/index.bsbukgu?menuCd=DOM_000000104000000000">북구구청 복지페이지</a></div>';
+                  }
+                  else if (place === '부산진구') {
+                    content += '<div class="extra-info"><a href="https://www.busanjin.go.kr/index.busanjin?menuCd=DOM_000000107000000000">부산진구청 복지페이지</a></div>';
+                  }
+                  else if (place === '사상구') {
+                    content += '<div class="extra-info"><a href="https://www.sasang.go.kr/index.sasang?menuCd=DOM_000000103000000000">사상구청 복지페이지</a></div>';
+                  }
+                  else if (place === '동구') {
+                    content += '<div class="extra-info"><a href="http://www.bsdonggu.go.kr/welfare/index.donggu">동구청 복지페이지</a></div>';
+                  }
+                  else if (place === '서구') {
+                    content += '<div class="extra-info"><a href="https://www.bsseogu.go.kr/welfare/index.bsseogu">서구청 복지페이지</a></div>';
+                  }
+                  else if (place === '영도구') {
+                    content += '<div class="extra-info"><a href="https://www.yeongdo.go.kr/02418/02419/02420.web">영도구청 복지페이지</a></div>';
+                  }
+                  else if (place === '사하구') {
+                    content += '<div class="extra-info"><a href="https://www.saha.go.kr/welfare.do">사하구청 복지페이지</a></div>';
+                  }
+                  else if (place === '강서구') {
+                    content += '<div class="extra-info"><a href="https://www.bsgangseo.go.kr/welfare/main.do">강서구청 복지페이지</a></div>';
+                  }
+                  else if (place === '중구') {
+                    content += '<div class="extra-info"><a href="https://www.bsjunggu.go.kr/welfare/index.junggu">중구청 복지페이지</a></div>';
+                  }
+
+                  content += '</div>';
+
                   infowindow.setContent(content);
                   infowindow.setPosition(mouseEvent.latLng);
                   infowindow.setMap(map);
@@ -361,16 +496,51 @@
     function getColor(total) {
       var colors = ['#DEB887', '#F4A460', '#CD853F', '#D2691E', '#A0522D', '#8B4513'];
       var thresholds = [50, 100, 150, 200, 250, Infinity];
+      var gradientColors = ['#FFA500', '#FF8C00', '#FF7F00', '#FF4500', '#FF0000', '#8B0000'];
+
 
       for (var i = 0; i < thresholds.length; i++) {
         if (total <= thresholds[i]) {
-          return colors[i];
+          return gradientColors[i];
         }
         else if (total > thresholds[thresholds.length - 1]) {
-          return colors[6];
+          return gradientColors[6];
+        }
+        else {
+          var range = thresholds[i + 1] - thresholds[i];
+          var percentage = (total - thresholds[i]) / range;
+          var startColor = hexToRgb(gradientColors[i]);
+          var endColor = hexToRgb(gradientColors[i + 1]);
+          var interpolatedColor = interpolateColor(startColor, endColor, percentage);
+          return rgbToHex(interpolatedColor);
         }
       }
     }
+
+    function hexToRgb(hex) {
+      var shorthandRegex = /^#?([a-f\d])([a-f\d])([a-f\d])$/i;
+      hex = hex.replace(shorthandRegex, function (m, r, g, b) {
+        return r + r + g + g + b + b;
+      });
+      var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+      return result ? {
+        r: parseInt(result[1], 16),
+        g: parseInt(result[2], 16),
+        b: parseInt(result[3], 16)
+      } : null;
+    }
+
+    function rgbToHex(rgb) {
+      return "#" + ((1 << 24) | (rgb.r << 16) | (rgb.g << 8) | rgb.b).toString(16).slice(1);
+    }
+
+    function interpolateColor(startColor, endColor, percentage) {
+      var r = Math.round(startColor.r + (endColor.r - startColor.r) * percentage);
+      var g = Math.round(startColor.g + (endColor.g - startColor.g) * percentage);
+      var b = Math.round(startColor.b + (endColor.b - startColor.b) * percentage);
+      return { r: r, g: g, b: b };
+    }
+
 
 
   </script>
@@ -379,10 +549,16 @@
     function checkAuthTokenAndRedirect(page) {
       // localStorage에서 authToken 가져오기
       var token = parseInt(localStorage.getItem("authToken"));
+      var non_users = JSON.parse(localStorage.getItem("non_users")) || [];
+      var non_id = non_users.length > 0 ? non_users[0].id : 0;
 
-      if (token === 0) {
+      console.log(non_id);
+
+      if (token === 0 && non_id === 0) {
         location.href = 'memberinfo_post.html';
-      } else {
+
+      }
+      else {
         location.href = page;
       }
     }
@@ -418,6 +594,8 @@
       if (token === 0) {
 
         window.location.href = page;
+        // non_users 값 삭제
+        localStorage.removeItem('non_users');
 
 
       } else {

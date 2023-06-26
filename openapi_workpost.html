@@ -297,12 +297,11 @@
     <a href="startpage.html"><img src="media/logo-removebg-preview.png" class="img_logo"></a>
     <div>
       <button id="alarmButton" class="alarmButton"><img src="media/free-icon-alarm-bell-1059065.png" width="50px"
-          height="50px"></button>
-      <img src="media/free-icon-search-2697422.png" width="50px" height="50px" alt="검색" style="margin-right: 5px;">
+          height="50px" title="최신일자리 알람서비스"></button>
       <img src="media/free-icon-enter-1828395.png" onclick=" checklogin('loginpage.html')" width="50px" height="50px"
-        alt="로그인">
+        alt="로그인" title="로그인/로그아웃/새로고침">
       <img src="media/free-icon-person-5393061.png" onclick="checkAuthTokenAndRedirect_login('mypage.html')"
-        width="50px" height="50px" alt="마이페이지">
+        width="50px" height="50px" alt="마이페이지" title="마이페이지">
     </div>
   </header>
 
@@ -406,11 +405,11 @@
     let currentPage = 1; // 현재 페이지 번호
     let totalData = 0; // 전체 데이터 항목 개수
 
-    // 현재 날짜와 비교하여 2023-06-01 이전인지 확인하는 함수
+    // 현재 날짜와 비교하여 2023-06-25 이전인지 확인하는 함수
     function isBefore2023June(date) {
       const currentDate = new Date();
       const targetDate = new Date(date);
-      const comparisonDate = new Date('2023-06-01');
+      const comparisonDate = new Date('2023-06-25');
 
       return targetDate > comparisonDate && targetDate > currentDate;
     }
@@ -468,6 +467,8 @@
                 const workConditionCell = document.createElement('td');
                 workConditionCell.textContent = item.workDate_nm + ' ~ ' + item.workregiontxt;
                 row.appendChild(workConditionCell);
+
+                console.log(item.mngName);
 
                 // 등록/마감일
                 const dateCell = document.createElement('td');
@@ -583,10 +584,16 @@
     function checkAuthTokenAndRedirect(page) {
       // localStorage에서 authToken 가져오기
       var token = parseInt(localStorage.getItem("authToken"));
+      var non_users = JSON.parse(localStorage.getItem("non_users")) || [];
+      var non_id = non_users.length > 0 ? non_users[0].id : 0;
 
-      if (token === 0) {
+      console.log(non_id);
+
+      if (token === 0 && non_id === 0) {
         location.href = 'memberinfo_post.html';
-      } else {
+
+      }
+      else {
         location.href = page;
       }
     }
@@ -623,6 +630,8 @@
       if (token === 0) {
 
         window.location.href = page;
+        // non_users 값 삭제
+        localStorage.removeItem('non_users');
 
 
       } else {
